@@ -1,4 +1,4 @@
-function [t, A] = Ktrace1(p, holdV, holdT, P1, sim_time)
+function [A] = Ktrace1(p, holdV, hold_idx, P1, t)
     % constants
     % Gto = 0.4067;  % GKtof; Maximum transient outward K+ current conductance(apex):mS/uF
     % GKslow = 0.16;  % GKur; Maximum ultrarapidly delayed-rectifier K+ current conductance(apex):mS/uF
@@ -7,10 +7,6 @@ function [t, A] = Ktrace1(p, holdV, holdT, P1, sim_time)
     aKslow0 = 0.417069e-3;  % aur; Gating variable for ultrarapidly activating delayed-rectifier K+ current
     iKslow0 = 0.998543;  % iur; Gating variable for ultrarapidly activating delayed-rectifier K+ current0
     Ek = -91.1;
-
-    % time space (time step: 1ms)
-    t = 0:0.01:sim_time;
-    [~, hold_idx] = min(abs(t - holdT));
 
     % to avoid declaring global variables (MATLAB recommandation)
     fn_input = cell(1, 5);

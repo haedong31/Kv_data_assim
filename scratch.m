@@ -78,3 +78,16 @@ hold on
     plot(t, A(:, 3))
 hold off
 legend('Ito', 'IKslow1', 'IKslow2')
+
+%% pilot1 - fitting
+clc
+close all
+clear variables
+
+load ds_Ktrace_ko
+cap_ko = 254.3;
+
+t = ds_Ktrace_ko.time;
+y = ds_Ktrace_ko.KO/cap_ko;
+
+[~, hold_idx] = max(y);
