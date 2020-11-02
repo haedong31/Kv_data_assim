@@ -1,9 +1,14 @@
 # folders
 /FourWaysOfFitting/
+<<<<<<< refs/remotes/origin/main
+=======
+/archive/
+>>>>>>> Model debugging
 /results/
 
 # files
 **.DS_Store
+**.mat
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
