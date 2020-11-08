@@ -2,11 +2,15 @@ function [bfs, bchroms] = fit1(t, y, N0, N1, N2, max_iter)
     bfs = [];
     bchroms = [];
 
-    % initial generation
+    % initial generation for transition rates
     init_gen = unifrnd(0, 0.01, N0, 28);
+    
+    % initial generation for conduntance
     init_gen(:, 9) = unifrnd(0, 1, N0, 1);
     init_gen(:, 18) = unifrnd(0, 1, N0, 1);
     init_gen(:, 27) = unifrnd(0, 1, N0, 1);
+    
+    % initial generation for steady-state current
     init_gen(:, 28) = unifrnd(0, 1, N0, 1);
     cnt = 1;
 
