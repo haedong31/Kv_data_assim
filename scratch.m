@@ -9,9 +9,7 @@ P1s = -70:10:50; %mV
 P1_t = 25000; % msec
 
 for i=1:length(P1s)
-    tic
     [t, ~, A, ~] = RasmussonUnparam(holding_p, holding_t, P1s(i), P1_t, P1s(i), P1_t);
-    toc
     
     [t1, A1] = analytic_form(holding_p, holding_t, P1s(i), P1_t);
     
@@ -52,6 +50,54 @@ for i=1:length(P1s)
     axis tight
 end
 
+%% only for one clamp voltage
+clc
+close all
+clear variables
+
+holdV = -80;
+holdT = 500; %msec
+P1 = 50; %mV
+P1T = 5000; % msec
+
+[t, ~, A, ~] = RasmussonUnparam(holdV, holdT, P1, P1T, P1, P1T);
+[t1, A1] = analytic_form(holdV, holdT, P1, P1T);
+
+figure(1)
+hold on
+    plot(t, A(:,61))
+hold off
+title('I_{to} - Original')
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+axis tight
+
+figure(2)
+hold on
+    plot(t1, A1(:,1))
+hold off
+title('I_{to} - Analytical')
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+axis tight
+
+figure(3)
+hold on
+    plot(t, A(:,65)) 
+hold off
+title('I_{Kslow} - Original')
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+axis tight
+
+figure(4)
+hold on
+    plot(t1, A1(:,2))
+hold off
+title('I_{Kslow} - Analytical')
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+axis tight
 
 %% pilot 1
 clc

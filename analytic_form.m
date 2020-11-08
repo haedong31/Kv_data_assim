@@ -1,4 +1,4 @@
-function [t, A] = analytic_form(holding_p, holding_t, P1, P1_t)
+function [t, A] = analytic_form(holdV, holdT, P1, P1T)
     % constants
     ato0 = 0.265563e-2;  % ato_f; Gating variable for transient outward K+ current
     ito0 = 0.999977;  % ito_f; Gating variable for transient outward K+ current
@@ -9,33 +9,37 @@ function [t, A] = analytic_form(holding_p, holding_t, P1, P1_t)
     Ek = -91.1;
 
     % time space
-    t = 0:0.001:P1_t;
-    [~, holding_idx] = min(abs(t - holding_t));
+    time_step = 0.001;
+    tH = 0:time_step:holdT;
+    tP1 = 0:time_step:(P1T-holdT);
+    t = [tH, tP1+(holdT+time_step)];
+
+    hold_idx = length(tH);
 
     % matrix contains current traces
-    A = zeros(length(t), 2);
+    A = zeros(length(tH)+length(tP1), 2);
 
     % Ito; holding potential
-    CS = ch_stat(holding_p);
-    ato = CS(1) - (CS(1) - ato0).*exp(-(t(1:holding_idx)./CS(2)));
-    ito = CS(3) - (CS(3) - ito0).*exp(-(t(1:holding_idx)./CS(4)));
-    A(1:holding_idx, 1) = Gto.*ato.^3.*ito.*(holding_p-Ek);
+    CS_hold = ch_stat(holdV);
+    ato = CS_hold(1) - (CS_hold(1) - ato0).*exp(-(tH./CS_hold(2)));
+    ito = CS_hold(3) - (CS_hold(3) - ito0).*exp(-(tH./CS_hold(4)));
+    A(1:hold_idx, 1) = Gto.*ato.^3.*ito.*(holdV-Ek);
 
     % IKslow; holding potential
-    aKslow = CS(5) - (CS(5) - aKslow0).*exp(-(t(1:holding_idx)./CS(6)));
-    iKslow = CS(7) - (CS(7) - iKslow0).*exp(-(t(1:holding_idx)./CS(8)));
-    A(1:holding_idx, 2) = GKslow.*aKslow.*iKslow.*(holding_p-Ek);
+    aKslow = CS_hold(5) - (CS_hold(5) - aKslow0).*exp(-(tH./CS_hold(6)));
+    iKslow = CS_hold(7) - (CS_hold(7) - iKslow0).*exp(-(tH./CS_hold(8)));
+    A(1:hold_idx, 2) = GKslow.*aKslow.*iKslow.*(holdV-Ek);
     
     % Ito; P1
-    CS = ch_stat(P1);
-    ato = CS(1) - (CS(1) - ato0).*exp(-(t(holding_idx+1:end)./CS(2)));
-    ito = CS(3) - (CS(3) - ito0).*exp(-(t(holding_idx+1:end)./CS(4)));
-    A(holding_idx+1:end, 1) = Gto.*ato.^3.*ito.*(P1-Ek);
+    CS_p1 = ch_stat(P1);
+    ato = CS_p1(1) - (CS_p1(1) - ato0).*exp(-(tP1./CS_p1(2)));
+    ito = CS_p1(3) - (CS_p1(3) - ito0).*exp(-(tP1./CS_p1(4)));
+    A(hold_idx+1:end, 1) = Gto.*ato.^3.*ito.*(P1-Ek);
 
     % IKslow; P1
-    aKslow = CS(5) - (CS(5) - aKslow0).*exp(-(t(holding_idx+1:end)./CS(6)));
-    iKslow = CS(7) - (CS(7) - iKslow0).*exp(-(t(holding_idx+1:end)./CS(8)));
-    A(holding_idx+1:end, 2) = GKslow.*aKslow.*iKslow.*(P1-Ek);
+    aKslow = CS_p1(5) - (CS_p1(5) - aKslow0).*exp(-(tP1./CS_p1(6)));
+    iKslow = CS_p1(7) - (CS_p1(7) - iKslow0).*exp(-(tP1./CS_p1(8)));
+    A(hold_idx+1:end, 2) = GKslow.*aKslow.*iKslow.*(P1-Ek);
 end
 
 function [CS] = ch_stat(V)
@@ -64,9 +68,4 @@ function [CS] = ch_stat(V)
     CS(7) = 1./(1+exp((V+45.2)./5.7));
     % IKslow inactivation tau
     CS(8) = 1200.0 - 170.0./(1+exp((V+45.2)./5.7));
-
-    % steady-state activation
-    % activation tau
-    % steady-state inactivation
-    % inactivation tau
 end
