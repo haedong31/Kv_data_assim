@@ -14,7 +14,8 @@ function [Ktrc] = Ktrace2(param, holdV, P1, time_space)
     t = time_space{1};
     tH = time_space{2};
     tP1_adj = time_space{3};
-    
+    hold_idx = length(tH);
+
     % tuning parameters (decision variables)
     param_Ito = param{1};
     param_IKslow1 = param{2};
@@ -31,13 +32,13 @@ function [Ktrc] = Ktrace2(param, holdV, P1, time_space)
     Ktrc(1:hold_idx, 1) = paramG(1).*(act_Ito_hold.^3).*(inact_Ito_hold).*(holdV - Ek);
 
     % IKslow1; holding potential
-    cs_IKslow1_hold = cs_IKslow(param_IKslow1, holdV);
+    cs_IKslow1_hold = cs_IKslow1(param_IKslow1, holdV);
     act_IKslow1_hold = cs_IKslow1_hold(1) - (cs_IKslow1_hold(1) - aKslow0).*exp(-(tH./cs_IKslow1_hold(2)));
     inact_IKslow1_hold = cs_IKslow1_hold(3) - (cs_IKslow1_hold(3) - iKslow0).*exp(-(tH./cs_IKslow1_hold(4)));
     Ktrc(1:hold_idx, 2) = paramG(2).*(act_IKslow1_hold).*(inact_IKslow1_hold).*(holdV - Ek);
 
     % IKslow2; holding potential
-    cs_IKslow2_hold = cs_IKslow(param_IKslow2, holdV);
+    cs_IKslow2_hold = cs_IKslow2(param_IKslow2, holdV);
     act_IKslow2_hold = cs_IKslow2_hold(1) - (cs_IKslow2_hold(1) - aKslow0).*exp(-(tH./cs_IKslow2_hold(2)));
     inact_IKslow2_hold = cs_IKslow2_hold(3) - (cs_IKslow2_hold(3) - iKslow0).*exp(-(tH./cs_IKslow2_hold(4)));
     Ktrc(1:hold_idx, 3) = paramG(3).*(act_IKslow2_hold).*(inact_IKslow2_hold).*(holdV - Ek);
@@ -93,7 +94,7 @@ function [cs] = cs_IKslow1(p, V)
     % cs(3): steady-state inactivation
     % cs(4): time constant of inactivation
     
-    % p0 = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0, 170.0, 45.2, 5.7]
+    % p0 = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0, 170.0, 45.2, 5.7];
     cs = zeros(1, 4);
     cs(1) = 1 ./ (1 + exp(-(V+p(1))./p(2)));
     cs(2) = p(3).*exp(-p(4).*V) + p(5);

@@ -1,3 +1,37 @@
+%% check validity of Ktrace2.m
+clc
+close all
+clear variables
+
+param = cell(1, 5);
+param{1} = [30.0, 13.5, 33.5, 7.0, 0.18064, 0.03577, 0.3956, 0.06237, 0.000152, 0.067083, 0.00095, 0.051335];
+param{2} = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0, 170.0, 45.2, 5.7];
+param{3} = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0, 170.0, 45.2, 5.7];
+param{4} = 2.5;
+param{5} = [0.4067, 0.16, 0.16];
+
+time_space = cell(1, 3);
+time_step = 0.1;
+holdT = 10;
+P1T = 5000;
+tH = 0:time_step:holdT;
+tP1 = (holdT+time_step):time_step:P1T;
+tP1_adj = tP1 - tP1(1);
+t = [tH, tP1];
+time_space{1} = t;
+time_space{2} = tH;
+time_space{3} = tP1_adj;
+
+k = Ktrace2(param, -80, 50, time_space);
+plot(t, k(:, 1))
+hold on
+    plot(t, k(:, 2))
+    plot(t, k(:, 4))
+hold off
+axis tight
+legend('I_{to}', 'I_{Kslow}', 'I_{ss}')
+xlabel('Time (ms)')
+
 %% check validity of Ktrace1.m
 clc
 close all
