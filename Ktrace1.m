@@ -1,4 +1,6 @@
 function [A] = Ktrace1(param, holdV, hold_idx, P1, t)
+    % using generic K+ current models
+
     % constants
     % Gto = 0.4067;  % GKtof; Maximum transient outward K+ current conductance(apex):mS/uF
     % GKslow = 0.16;  % GKur; Maximum ultrarapidly delayed-rectifier K+ current conductance(apex):mS/uF
