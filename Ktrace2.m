@@ -1,5 +1,7 @@
 function [Ktrc] = Ktrace2(param, holdV, P1, time_space)
     % using Rasmusson K+ current models
+    % Ito; 11 out of 12 {1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12}
+    % IKslow; 8 out of 11 {1, 2, 3, 4, 5, 6, 7, 8}
 
     % constants
     % Gto = 0.4067;  % GKtof; Maximum transient outward K+ current conductance(apex):mS/uF
@@ -25,6 +27,7 @@ function [Ktrc] = Ktrace2(param, holdV, P1, time_space)
 
     Ktrc = zeros(length(t), 4);
 
+    %% at holding potential -----
     % Ito; holding potential
     cs_Ito_hold = cs_Ito(param_Ito, holdV);
     act_Ito_hold = cs_Ito_hold(1) - (cs_Ito_hold(1) - ato0).*exp(-(tH./cs_Ito_hold(2)));
@@ -43,6 +46,7 @@ function [Ktrc] = Ktrace2(param, holdV, P1, time_space)
     inact_IKslow2_hold = cs_IKslow2_hold(3) - (cs_IKslow2_hold(3) - iKslow0).*exp(-(tH./cs_IKslow2_hold(4)));
     Ktrc(1:hold_idx, 3) = paramG(3).*(act_IKslow2_hold).*(inact_IKslow2_hold).*(holdV - Ek);
     
+    %% at P1 -----
     % Ito; P1
     cs_Ito_P1 = cs_Ito(param_Ito, P1);
     act_Ito_P1 = cs_Ito_P1(1) - (cs_Ito_P1(1) - ato0).*exp(-(tP1_adj./cs_Ito_P1(2)));
@@ -74,12 +78,12 @@ function [cs] = cs_Ito(p, V)
     % cs(3): steady-state inactivation
     % cs(4): time constant of inactivation
     
-    % p0 = [30.0, 13.5, 33.5, 7.0, 0.18064, 0.03577, 0.3956, 0.06237, 0.000152, 0.067083, 0.00095, 0.051335];
+    % p0 = [30.0, 13.5, 33.5, 7.0, 0.18064, 0.03577, 0.3956, 0.06237, 0.000152, 0.00095, 0.051335];
     cs = zeros(1, 4);
     alphaA = p(5).*exp(p(6).*(V+p(1)));
     betaA = p(7).*exp(-p(8).*(V+p(1)));
-    alphaI = (p(9).*exp(-(V+p(2))./p(4))) ./ (p(10).*exp(-(V+p(3))./p(4)) + 1);
-    betaI = (p(11).*exp((V+p(3))./p(4))) ./ (p(12).*exp((V+p(3))./p(4)) + 1);
+    alphaI = (p(9).*exp(-(V+p(2))./p(4))) ./ (0.067083.*exp(-(V+p(3))./p(4)) + 1);
+    betaI = (p(10).*exp((V+p(3))./p(4))) ./ (p(11).*exp((V+p(3))./p(4)) + 1);
 
     cs(1) = alphaA/(alphaA+betaA);
     cs(2) = 1/(alphaA+betaA);
@@ -94,12 +98,12 @@ function [cs] = cs_IKslow1(p, V)
     % cs(3): steady-state inactivation
     % cs(4): time constant of inactivation
     
-    % p0 = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0, 170.0, 45.2, 5.7];
+    % p0 = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0];
     cs = zeros(1, 4);
     cs(1) = 1 ./ (1 + exp(-(V+p(1))./p(2)));
     cs(2) = p(3).*exp(-p(4).*V) + p(5);
     cs(3) = 1 ./ (1 + exp((V+p(6))./p(7)));
-    cs(4) = p(8) - (p(9))./(1 + exp((V+p(10))./p(11)));
+    cs(4) = p(8) - (170.0)./(1 + exp((V+45.2)./5.7));
 end
 
 function [cs] = cs_IKslow2(p, V)
@@ -109,10 +113,10 @@ function [cs] = cs_IKslow2(p, V)
     % cs(3): steady-state inactivation
     % cs(4): time constant of inactivation
     
-    % p0 = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0, 170.0, 45.2, 5.7]
+    % p0 = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7, 1200.0]
     cs = zeros(1, 4);
     cs(1) = 1 ./ (1 + exp(-(V+p(1))./p(2)));
     cs(2) = p(3).*exp(-p(4).*V) + p(5);
     cs(3) = 1 ./ (1 + exp((V+p(6))./p(7)));
-    cs(4) = p(8) - (p(9))./(1 + exp((V+p(10))./p(11)));
+    cs(4) = p(8) - (170.0)./(1 + exp((V+45.2)./5.7));
 end

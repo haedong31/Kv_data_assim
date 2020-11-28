@@ -1,6 +1,8 @@
 function [Ktrc] = Ktrace3(param, holdV, P1, time_space)
     % Dongping's K+ current models
-    
+    % Ito; 6 out of 20
+    % IKslow; y out of 12
+
     % constants
     % Gto = 0.4067;  % GKtof; Maximum transient outward K+ current conductance(apex):mS/uF
     % GKslow = 0.16;  % GKur; Maximum ultrarapidly delayed-rectifier K+ current conductance(apex):mS/uF
@@ -75,10 +77,10 @@ function [cs] = cs_Ito(p, V)
     % cs(4): time constant of inactivation
 
     cs = zeros(1, 4);
-    alphaA = p(5).*exp(p(6).*(V+p(7)));
-    betaA = p(8).*exp(p(9).*(V+p(10)));
-    alphaI = (p(11).*exp(-(V+p(12))./p(13))) ./ (p(14).*exp(-(V+p(15))./p(16)) + 1);
-    betaI = (p(17).*exp((V+p(18))./p(19))) ./ (p(20).*exp((V+p(18))./p(19)) + 1);
+    alphaA = 0.1807.*exp(0.0358.*(V+40.0));
+    betaA = 0.3956.*exp(-0.0624.*(V+40.0));
+    alphaI = (0.000152.*exp(-(V+13.5)./7.0)) ./ (0.067083.*exp(-(V+33.5)./7.0) + 1);
+    betaI = (0.000950.*exp(-(V+p(5))./p(6))) ./ (0.051335.*exp((V+p(5))./p(6)) + 1);
 
     cs(1) = 1 ./ (1+exp(-(V-p(1))./p(2)));
     cs(2) = 1/(alphaA+betaA);
@@ -94,10 +96,10 @@ function [cs] = cs_IKslow1(p, V)
     % cs(4): time constant of inactivation
     
     cs = zeros(1, 4);
-    cs(1) = 1 ./ (1 + exp(-(V+p(1))./p(2)));
-    cs(2) = p(7).*exp(p(8).*V) + p(9);
-    cs(3) = (0.21./(1+exp(-(V+p(3))./p(4)))) + (0.79./(1+exp(-(V+p(5))./p(6))));
-    cs(4) = 500.0 + (p(10))./(1 + exp((V+p(11))./p(12)));
+    cs(1) = 1 ./ (1 + exp(-(V-p(1))./p(2)));
+    cs(2) = 0.4930.*exp(-0.0629.*V) + p(9);
+    cs(3) = (0.2100./(1+exp(-(V-p(3))./p(4)))) + (0.7900./(1+exp(-(V-p(5))./p(6))));
+    cs(4) = 500.0 + (p(7))./(1 + exp((V+p(8))./0.0492));
 end
 
 function [cs] = cs_IKslow2(p, V)
@@ -108,8 +110,8 @@ function [cs] = cs_IKslow2(p, V)
     % cs(4): time constant of inactivation
     
     cs = zeros(1, 4);
-    cs(1) = 1 ./ (1 + exp(-(V+p(1))./p(2)));
-    cs(2) = p(7).*exp(p(8).*V) + p(9);
-    cs(3) = (0.21./(1+exp(-(V+p(3))./p(4)))) + (0.79./(1+exp(-(V+p(5))./p(6))));
-    cs(4) = 500.0 + (p(10))./(1 + exp((V+p(11))./p(12)));
+    cs(1) = 1 ./ (1 + exp(-(V-p(1))./p(2)));
+    cs(2) = 0.4930.*exp(-0.0629.*V) + p(9);
+    cs(3) = (0.2100./(1+exp(-(V-p(3))./p(4)))) + (0.7900./(1+exp(-(V-p(5))./p(6))));
+    cs(4) = 500.0 + (p(7))./(1 + exp((V+p(8))./0.0492));
 end
