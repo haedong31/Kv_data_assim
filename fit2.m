@@ -8,35 +8,37 @@ function [bfs, bchroms] = fit2(time_space, y, N0, N1, N2, max_iter)
     tP1_adj = time_space{3};
 
     % initial population; Ito
-    init_Ito = zeros(N0, 11);
-    init_Ito(:, 1:3) = unifrnd(0, 70, N0, 3);
-    init_Ito(:, 4) = unifrnd(0.1, 15, N0, 1);
-    init_Ito(:, 5:11) = unifrnd(0.0001, 0.5, N0, 7);
+    init_Ito = lhsdesign(N0, 11);
+    init_Ito(:, 1:3) = init_Ito(:, 1:3)*70;
+    init_Ito(:, 4) = init_Ito(:, 4)*(15-0.1) + 0.1;
+    init_Ito(:, 5:11) = init_Ito(:, 5:11)*(0.5-0.0001) + 0.0001;
 
     % initial population; IKslow1
-    init_IKslow1 = zeros(N0, 8);
-    init_IKslow1(:, 1) = unifrnd(0, 50, N0, 1);
-    init_IKslow1(:, 2) = unifrnd(0.1, 15, N0, 1);
-    init_IKslow1(:, 3:5) = unifrnd(0.1, 5, N0, 3);
-    init_IKslow1(:, 6) = unifrnd(10, 80, N0, 1);
-    init_IKslow1(:, 7) = unifrnd(0.1, 15, N0, 1);
-    init_IKslow1(:, 8) = unifrnd(1500, 5000, N0, 1);
+    init_IKslow1 = lhsdesign(N0, 8);
+    init_IKslow1(:, 1) = init_IKslow1(:, 1)*50;
+    init_IKslow1(:, 2) = init_IKslow1(:, 2)*(15-0.1) + 0.1;
+    init_IKslow1(:, 3:5) = init_IKslow1(:, 3:5)*(5-0.1) + 0.1;
+    init_IKslow1(:, 6) = init_IKslow1(:, 6)*(80-10) + 10;
+    init_IKslow1(:, 7) = init_IKslow1(:, 7)*(15-0.1) + 0.1;
+    init_IKslow1(:, 8) = init_IKslow1(:, 8)*(5000-1500) + 1500;
 
     % initial population; IKslow2
-    init_IKslow2 = zeros(N0, 8);
-    init_IKslow2(:, 1) = unifrnd(0, 50, N0, 1);
-    init_IKslow2(:, 2) = unifrnd(0.1, 15, N0, 1);
-    init_IKslow2(:, 3:5) = unifrnd(0.1, 5, N0, 3);
-    init_IKslow2(:, 6) = unifrnd(10, 80, N0, 1);
-    init_IKslow2(:, 7) = unifrnd(0.1, 15, N0, 1);
-    init_IKslow2(:, 8) = unifrnd(5000, 15000, N0, 1);
+    init_IKslow2 = lhsdesign(N0, 8);
+    init_IKslow2(:, 1) = init_IKslow2(:, 1)*50;
+    init_IKslow2(:, 2) = init_IKslow2(:, 2)*(15-0.1) + 0.1;
+    init_IKslow2(:, 3:5) = init_IKslow2(:, 3:5)*(5-0.1) + 0.1;
+    init_IKslow2(:, 6) = init_IKslow2(:, 6)*(80-10) + 10;
+    init_IKslow2(:, 7) = init_IKslow2(:, 7)*(15-0.1) + 0.1;
+    init_IKslow2(:, 8) = init_IKslow2(:, 8)*(15000-5000) + 5000;
 
     % initial population; Ito
-    init_Iss = unifrnd(0.1, 5, N0, 1);
+    init_Iss = lhsdesign(N0, 1);
+    init_Iss = init_Iss*(5-0.1) + 0.1;
 
     % initial population; Ito
     initG = zeros(N0, 3);
-    initG(:, 1:3) = unifrnd(0.1, 1, N0, 3);
+    initG = lhsdesign(N0, 3);
+    initG = initG*(1-0.1) + 0.1;
 
     init_pop = [init_Ito, init_IKslow1, init_IKslow2, init_Iss, initG];
     cnt = 1;
