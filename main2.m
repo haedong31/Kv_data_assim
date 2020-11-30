@@ -19,14 +19,14 @@ tP1 = t(hold_idx+1:end);
 tP1_adj = tP1 - tP1(1);
 time_space{3} = tP1_adj;
 
-[bfs, bchroms] = fit2(time_space, y, 50, 10, 4, 500);
+[bfs, bchroms] = fit2(time_space, y, 50, 10, 4, 100);
 
 param = cell(1, 5);
-param{1} = bchroms(end, 1:12);
-param{2} = bchroms(end, 13:23);
-param{3} = bchroms(end, 24:34);
-param{4} = bchroms(end, 35);
-param{5} = bchroms(end, 36:38);
+param{1} = bchroms(end, 1:11);
+param{2} = bchroms(end, 12:19);
+param{3} = bchroms(end, 20:27);
+param{4} = bchroms(end, 28);
+param{5} = bchroms(end, 29:31);
 A = Ktrace2(param, -70, 50, time_space);
 
 plot(t, A(:, 1))
