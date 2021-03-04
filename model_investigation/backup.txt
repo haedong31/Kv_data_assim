@@ -1,0 +1,617 @@
+classdef Kv < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure                      matlab.ui.Figure
+        GridLayout                    matlab.ui.container.GridLayout
+        LeftPanel                     matlab.ui.container.Panel
+        TabGroup                      matlab.ui.container.TabGroup
+        ProtocolIssTab                matlab.ui.container.Tab
+        HoldingtimemsEditFieldLabel   matlab.ui.control.Label
+        HoldingtimemsEditField        matlab.ui.control.NumericEditField
+        HoldingpotentialmVEditFieldLabel  matlab.ui.control.Label
+        HoldingpotentialmVEditField   matlab.ui.control.NumericEditField
+        ClampvoltagemVEditFieldLabel  matlab.ui.control.Label
+        ClampvoltagemVEditField       matlab.ui.control.NumericEditField
+        VoltagetimemsEditFieldLabel   matlab.ui.control.Label
+        VoltagetimemsEditField        matlab.ui.control.NumericEditField
+        EnterButton                   matlab.ui.control.Button
+        SteadystatecurrentpApFEditFieldLabel  matlab.ui.control.Label
+        SteadystatecurrentpApFEditField  matlab.ui.control.NumericEditField
+        UIAxes                        matlab.ui.control.UIAxes
+        IKtofTab                      matlab.ui.container.Tab
+        p1KnobLabel                   matlab.ui.control.Label
+        p1Knob                        matlab.ui.control.Knob
+        p2KnobLabel                   matlab.ui.control.Label
+        p2Knob                        matlab.ui.control.Knob
+        p3KnobLabel                   matlab.ui.control.Label
+        p3Knob                        matlab.ui.control.Knob
+        p4KnobLabel                   matlab.ui.control.Label
+        p4Knob                        matlab.ui.control.Knob
+        p5KnobLabel                   matlab.ui.control.Label
+        p5Knob                        matlab.ui.control.Knob
+        p6KnobLabel                   matlab.ui.control.Label
+        p6Knob                        matlab.ui.control.Knob
+        p7KnobLabel                   matlab.ui.control.Label
+        p7Knob                        matlab.ui.control.Knob
+        p8KnobLabel                   matlab.ui.control.Label
+        p8Knob                        matlab.ui.control.Knob
+        p9KnobLabel                   matlab.ui.control.Label
+        p9Knob                        matlab.ui.control.Knob
+        p10KnobLabel                  matlab.ui.control.Label
+        p10Knob                       matlab.ui.control.Knob
+        p11KnobLabel                  matlab.ui.control.Label
+        p11Knob                       matlab.ui.control.Knob
+        p12KnobLabel                  matlab.ui.control.Label
+        p12Knob                       matlab.ui.control.Knob
+        GKtofKnobLabel                matlab.ui.control.Label
+        GKtofKnob                     matlab.ui.control.Knob
+        TextArea                      matlab.ui.control.TextArea
+        IKurTab                       matlab.ui.container.Tab
+        RightPanel                    matlab.ui.container.Panel
+        UIAxes2                       matlab.ui.control.UIAxes
+        UIAxes3                       matlab.ui.control.UIAxes
+    end
+
+    % Properties that correspond to apps with auto-reflow
+    properties (Access = private)
+        onePanelWidth = 576;
+    end
+
+    properties (Access = private)
+        tH % holding time
+        tP % voltage-clamp time
+        t % entire time
+    end
+    
+    methods (Access = private)
+        function [tH, tP, t] = time_space(app)
+            tH = 0:app.HoldingtimemsEditField.Value;
+            tP = 0:app.VoltagetimemsEditField.Value;
+            tP_shift = tP + app.HoldingtimemsEditField.Value + 1;
+            t = [tH, tP_shift];
+        end
+
+        function plot_protocol(app)            
+            yH = ones(1, length(app.tH))*app.HoldingpotentialmVEditField.Value;
+            yP = ones(1, length(app.tP))*app.ClampvoltagemVEditField.Value;
+            y = [yH, yP];
+            
+            plot(app.UIAxes, app.t, y, 'LineWidth',1.5)
+        end
+        
+        function plot_Iss(app)
+            ss_val = app.SteadystatecurrentpApFEditField.Value;
+            current_trcH = zeros(1, length(app.tH));
+            current_trcP = ones(1, length(app.tP))*ss_val;
+            current_trc = [current_trcH, current_trcP];
+            
+            plot(app.UIAxes3, app.t, current_trc, '--', 'LineWidth',1.5, "Color",'black')
+        end
+        
+        function plot_IKtof(app, axes)
+            param_to = zeros(13, 1);
+            param_to(1) = app.p1Knob.Value;
+            param_to(2) = app.p2Knob.Value;
+            param_to(3) = app.p3Knob.Value;
+            param_to(4) = app.p4Knob.Value;
+            param_to(5) = app.p5Knob.Value;
+            param_to(6) = app.p6Knob.Value;
+            param_to(7) = app.p7Knob.Value;
+            param_to(8) = app.p8Knob.Value;
+            param_to(9) = app.p9Knob.Value;
+            param_to(10) = app.p10Knob.Value;
+            param_to(11) = app.p11Knob.Value;
+            param_to(12) = app.p12Knob.Value;
+            param_to(13) = app.GKtofKnob.Value;
+            
+            tt = cell(1, 3);
+            tt{1} = app.t;
+            tt{2} = app.tH;
+            tt{3} = app.tP;
+            current_trc = IKtof(param_to, app.HoldingpotentialmVEditField.Value, app.ClampvoltagemVEditField.Value, tt);
+            
+            if axes == 1
+                plot(app.UIAxes2, app.t, current_trc, 'LineWidth',1.5, "Color",'blue')
+            elseif axes == 2
+                plot(app.UIAxes3, app.t, current_trc, 'LineWidth',1.5, "Color",'blue')
+            else
+                error("Axes not exist")
+            end
+        end
+            
+        function update_all_plot(app)
+            plot_Iss(app);
+            
+            hold(app.UIAxes3, "on")
+            plot_IKtof(app, 2);
+            hold(app.UIAxes3, "off")               
+        end
+    end    
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Code that executes after component creation
+        function startupFcn(app)
+            % generate time space
+            [app.tH, app.tP, app.t] = time_space(app);
+            
+            % plot default voltage clamp protocol
+            plot_protocol(app);
+            
+            % plot default current traces
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Changes arrangement of the app based on UIFigure width
+        function updateAppLayout(app, event)
+            currentFigureWidth = app.UIFigure.Position(3);
+            if(currentFigureWidth <= app.onePanelWidth)
+                % Change to a 2x1 grid
+                app.GridLayout.RowHeight = {624, 624};
+                app.GridLayout.ColumnWidth = {'1x'};
+                app.RightPanel.Layout.Row = 2;
+                app.RightPanel.Layout.Column = 1;
+            else
+                % Change to a 1x2 grid
+                app.GridLayout.RowHeight = {'1x'};
+                app.GridLayout.ColumnWidth = {595, '1x'};
+                app.RightPanel.Layout.Row = 1;
+                app.RightPanel.Layout.Column = 2;
+            end
+        end
+
+        % Callback function: EnterButton, GKtofKnob
+        function EnterButtonPushed(app, event)
+            [app.tH, app.tP, app.t] = time_space(app);
+            plot_protocol(app);
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: GKtofKnob
+        function GKtofKnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.GKtofKnob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p1Knob
+        function p1KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p1Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p2Knob
+        function p2KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p2Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p3Knob
+        function p3KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p3Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p4Knob
+        function p4KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p4Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p5Knob
+        function p5KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p5Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p6Knob
+        function p6KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p6Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p7Knob
+        function p7KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p7Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p8Knob
+        function p8KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p8Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p9Knob
+        function p9KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p9Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p10Knob
+        function p10KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p10Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p11Knob
+        function p11KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p11Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+
+        % Value changing function: p12Knob
+        function p12KnobValueChanging(app, event)
+            changingValue = event.Value;
+            app.p12Knob.Value = changingValue;
+            plot_IKtof(app, 1);
+            update_all_plot(app);
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure and hide until all components are created
+            app.UIFigure = uifigure('Visible', 'off');
+            app.UIFigure.AutoResizeChildren = 'off';
+            app.UIFigure.Position = [100 100 1085 624];
+            app.UIFigure.Name = 'MATLAB App';
+            app.UIFigure.SizeChangedFcn = createCallbackFcn(app, @updateAppLayout, true);
+
+            % Create GridLayout
+            app.GridLayout = uigridlayout(app.UIFigure);
+            app.GridLayout.ColumnWidth = {595, '1x'};
+            app.GridLayout.RowHeight = {'1x'};
+            app.GridLayout.ColumnSpacing = 0;
+            app.GridLayout.RowSpacing = 0;
+            app.GridLayout.Padding = [0 0 0 0];
+            app.GridLayout.Scrollable = 'on';
+
+            % Create LeftPanel
+            app.LeftPanel = uipanel(app.GridLayout);
+            app.LeftPanel.Layout.Row = 1;
+            app.LeftPanel.Layout.Column = 1;
+
+            % Create TabGroup
+            app.TabGroup = uitabgroup(app.LeftPanel);
+            app.TabGroup.Position = [6 7 584 617];
+
+            % Create ProtocolIssTab
+            app.ProtocolIssTab = uitab(app.TabGroup);
+            app.ProtocolIssTab.Title = 'Protocol & Iss';
+
+            % Create HoldingtimemsEditFieldLabel
+            app.HoldingtimemsEditFieldLabel = uilabel(app.ProtocolIssTab);
+            app.HoldingtimemsEditFieldLabel.HorizontalAlignment = 'right';
+            app.HoldingtimemsEditFieldLabel.Position = [328 517 99 22];
+            app.HoldingtimemsEditFieldLabel.Text = 'Holding time (ms)';
+
+            % Create HoldingtimemsEditField
+            app.HoldingtimemsEditField = uieditfield(app.ProtocolIssTab, 'numeric');
+            app.HoldingtimemsEditField.Position = [442 517 100 22];
+            app.HoldingtimemsEditField.Value = 100;
+
+            % Create HoldingpotentialmVEditFieldLabel
+            app.HoldingpotentialmVEditFieldLabel = uilabel(app.ProtocolIssTab);
+            app.HoldingpotentialmVEditFieldLabel.HorizontalAlignment = 'right';
+            app.HoldingpotentialmVEditFieldLabel.Position = [44 517 124 22];
+            app.HoldingpotentialmVEditFieldLabel.Text = 'Holding potential (mV)';
+
+            % Create HoldingpotentialmVEditField
+            app.HoldingpotentialmVEditField = uieditfield(app.ProtocolIssTab, 'numeric');
+            app.HoldingpotentialmVEditField.Position = [183 517 100 22];
+            app.HoldingpotentialmVEditField.Value = -70;
+
+            % Create ClampvoltagemVEditFieldLabel
+            app.ClampvoltagemVEditFieldLabel = uilabel(app.ProtocolIssTab);
+            app.ClampvoltagemVEditFieldLabel.HorizontalAlignment = 'right';
+            app.ClampvoltagemVEditFieldLabel.Position = [57 477 111 22];
+            app.ClampvoltagemVEditFieldLabel.Text = 'Clamp voltage (mV)';
+
+            % Create ClampvoltagemVEditField
+            app.ClampvoltagemVEditField = uieditfield(app.ProtocolIssTab, 'numeric');
+            app.ClampvoltagemVEditField.Position = [183 477 100 22];
+            app.ClampvoltagemVEditField.Value = 50;
+
+            % Create VoltagetimemsEditFieldLabel
+            app.VoltagetimemsEditFieldLabel = uilabel(app.ProtocolIssTab);
+            app.VoltagetimemsEditFieldLabel.HorizontalAlignment = 'right';
+            app.VoltagetimemsEditFieldLabel.Position = [328 477 99 22];
+            app.VoltagetimemsEditFieldLabel.Text = 'Voltage time (ms)';
+
+            % Create VoltagetimemsEditField
+            app.VoltagetimemsEditField = uieditfield(app.ProtocolIssTab, 'numeric');
+            app.VoltagetimemsEditField.Position = [442 477 100 22];
+            app.VoltagetimemsEditField.Value = 4500;
+
+            % Create EnterButton
+            app.EnterButton = uibutton(app.ProtocolIssTab, 'push');
+            app.EnterButton.ButtonPushedFcn = createCallbackFcn(app, @EnterButtonPushed, true);
+            app.EnterButton.Position = [256 375 100 22];
+            app.EnterButton.Text = 'Enter';
+
+            % Create SteadystatecurrentpApFEditFieldLabel
+            app.SteadystatecurrentpApFEditFieldLabel = uilabel(app.ProtocolIssTab);
+            app.SteadystatecurrentpApFEditFieldLabel.HorizontalAlignment = 'right';
+            app.SteadystatecurrentpApFEditFieldLabel.Position = [11 437 157 22];
+            app.SteadystatecurrentpApFEditFieldLabel.Text = 'Steady-state current (pA/pF)';
+
+            % Create SteadystatecurrentpApFEditField
+            app.SteadystatecurrentpApFEditField = uieditfield(app.ProtocolIssTab, 'numeric');
+            app.SteadystatecurrentpApFEditField.Position = [183 437 100 22];
+            app.SteadystatecurrentpApFEditField.Value = 4.2;
+
+            % Create UIAxes
+            app.UIAxes = uiaxes(app.ProtocolIssTab);
+            title(app.UIAxes, 'Voltage Clamp Protocol')
+            xlabel(app.UIAxes, 'ms')
+            ylabel(app.UIAxes, 'mV')
+            zlabel(app.UIAxes, 'Z')
+            app.UIAxes.Position = [43 28 498 302];
+
+            % Create IKtofTab
+            app.IKtofTab = uitab(app.TabGroup);
+            app.IKtofTab.Title = 'IKtof';
+
+            % Create p1KnobLabel
+            app.p1KnobLabel = uilabel(app.IKtofTab);
+            app.p1KnobLabel.HorizontalAlignment = 'center';
+            app.p1KnobLabel.Position = [70 214 25 22];
+            app.p1KnobLabel.Text = 'p1';
+
+            % Create p1Knob
+            app.p1Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p1Knob.Limits = [-60 60];
+            app.p1Knob.ValueChangingFcn = createCallbackFcn(app, @p1KnobValueChanging, true);
+            app.p1Knob.Position = [51 237 60 60];
+            app.p1Knob.Value = 30;
+
+            % Create p2KnobLabel
+            app.p2KnobLabel = uilabel(app.IKtofTab);
+            app.p2KnobLabel.HorizontalAlignment = 'center';
+            app.p2KnobLabel.Position = [219 215 25 22];
+            app.p2KnobLabel.Text = 'p2';
+
+            % Create p2Knob
+            app.p2Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p2Knob.Limits = [-60 60];
+            app.p2Knob.ValueChangingFcn = createCallbackFcn(app, @p2KnobValueChanging, true);
+            app.p2Knob.Position = [198 238 60 60];
+            app.p2Knob.Value = 13.5;
+
+            % Create p3KnobLabel
+            app.p3KnobLabel = uilabel(app.IKtofTab);
+            app.p3KnobLabel.HorizontalAlignment = 'center';
+            app.p3KnobLabel.Position = [355 214 25 22];
+            app.p3KnobLabel.Text = 'p3';
+
+            % Create p3Knob
+            app.p3Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p3Knob.Limits = [-60 80];
+            app.p3Knob.ValueChangingFcn = createCallbackFcn(app, @p3KnobValueChanging, true);
+            app.p3Knob.Position = [341 237 60 60];
+            app.p3Knob.Value = 33.5;
+
+            % Create p4KnobLabel
+            app.p4KnobLabel = uilabel(app.IKtofTab);
+            app.p4KnobLabel.HorizontalAlignment = 'center';
+            app.p4KnobLabel.Position = [500 215 25 22];
+            app.p4KnobLabel.Text = 'p4';
+
+            % Create p4Knob
+            app.p4Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p4Knob.Limits = [0 15];
+            app.p4Knob.ValueChangingFcn = createCallbackFcn(app, @p4KnobValueChanging, true);
+            app.p4Knob.Position = [481 238 60 60];
+            app.p4Knob.Value = 7;
+
+            % Create p5KnobLabel
+            app.p5KnobLabel = uilabel(app.IKtofTab);
+            app.p5KnobLabel.HorizontalAlignment = 'center';
+            app.p5KnobLabel.Position = [69 109 25 22];
+            app.p5KnobLabel.Text = 'p5';
+
+            % Create p5Knob
+            app.p5Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p5Knob.Limits = [0 1.5];
+            app.p5Knob.ValueChangingFcn = createCallbackFcn(app, @p5KnobValueChanging, true);
+            app.p5Knob.Position = [50 132 60 60];
+            app.p5Knob.Value = 0.18064;
+
+            % Create p6KnobLabel
+            app.p6KnobLabel = uilabel(app.IKtofTab);
+            app.p6KnobLabel.HorizontalAlignment = 'center';
+            app.p6KnobLabel.Position = [219 110 25 22];
+            app.p6KnobLabel.Text = 'p6';
+
+            % Create p6Knob
+            app.p6Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p6Knob.Limits = [0 0.5];
+            app.p6Knob.ValueChangingFcn = createCallbackFcn(app, @p6KnobValueChanging, true);
+            app.p6Knob.Position = [197 133 60 60];
+            app.p6Knob.Value = 0.03577;
+
+            % Create p7KnobLabel
+            app.p7KnobLabel = uilabel(app.IKtofTab);
+            app.p7KnobLabel.HorizontalAlignment = 'center';
+            app.p7KnobLabel.Position = [354 106 25 22];
+            app.p7KnobLabel.Text = 'p7';
+
+            % Create p7Knob
+            app.p7Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p7Knob.Limits = [0 1.5];
+            app.p7Knob.ValueChangingFcn = createCallbackFcn(app, @p7KnobValueChanging, true);
+            app.p7Knob.Position = [340 129 60 60];
+            app.p7Knob.Value = 0.3956;
+
+            % Create p8KnobLabel
+            app.p8KnobLabel = uilabel(app.IKtofTab);
+            app.p8KnobLabel.HorizontalAlignment = 'center';
+            app.p8KnobLabel.Position = [506 109 25 22];
+            app.p8KnobLabel.Text = 'p8';
+
+            % Create p8Knob
+            app.p8Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p8Knob.Limits = [-0.5 0.5];
+            app.p8Knob.ValueChangingFcn = createCallbackFcn(app, @p8KnobValueChanging, true);
+            app.p8Knob.Position = [487 132 60 60];
+            app.p8Knob.Value = 0.06237;
+
+            % Create p9KnobLabel
+            app.p9KnobLabel = uilabel(app.IKtofTab);
+            app.p9KnobLabel.HorizontalAlignment = 'center';
+            app.p9KnobLabel.Position = [69 4 25 22];
+            app.p9KnobLabel.Text = 'p9';
+
+            % Create p9Knob
+            app.p9Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p9Knob.Limits = [0 0.001];
+            app.p9Knob.ValueChangingFcn = createCallbackFcn(app, @p9KnobValueChanging, true);
+            app.p9Knob.Position = [50 27 60 60];
+            app.p9Knob.Value = 0.000152;
+
+            % Create p10KnobLabel
+            app.p10KnobLabel = uilabel(app.IKtofTab);
+            app.p10KnobLabel.HorizontalAlignment = 'center';
+            app.p10KnobLabel.Position = [219 5 26 22];
+            app.p10KnobLabel.Text = 'p10';
+
+            % Create p10Knob
+            app.p10Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p10Knob.Limits = [0 0.15];
+            app.p10Knob.ValueChangingFcn = createCallbackFcn(app, @p10KnobValueChanging, true);
+            app.p10Knob.Position = [197 28 60 60];
+            app.p10Knob.Value = 0.067083;
+
+            % Create p11KnobLabel
+            app.p11KnobLabel = uilabel(app.IKtofTab);
+            app.p11KnobLabel.HorizontalAlignment = 'center';
+            app.p11KnobLabel.Position = [354 4 25 22];
+            app.p11KnobLabel.Text = 'p11';
+
+            % Create p11Knob
+            app.p11Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p11Knob.Limits = [0 0.002];
+            app.p11Knob.ValueChangingFcn = createCallbackFcn(app, @p11KnobValueChanging, true);
+            app.p11Knob.Position = [340 27 60 60];
+            app.p11Knob.Value = 0.00095;
+
+            % Create p12KnobLabel
+            app.p12KnobLabel = uilabel(app.IKtofTab);
+            app.p12KnobLabel.HorizontalAlignment = 'center';
+            app.p12KnobLabel.Position = [503 4 26 22];
+            app.p12KnobLabel.Text = 'p12';
+
+            % Create p12Knob
+            app.p12Knob = uiknob(app.IKtofTab, 'continuous');
+            app.p12Knob.Limits = [0 0.1];
+            app.p12Knob.ValueChangingFcn = createCallbackFcn(app, @p12KnobValueChanging, true);
+            app.p12Knob.Position = [484 27 60 60];
+            app.p12Knob.Value = 0.051335;
+
+            % Create GKtofKnobLabel
+            app.GKtofKnobLabel = uilabel(app.IKtofTab);
+            app.GKtofKnobLabel.HorizontalAlignment = 'center';
+            app.GKtofKnobLabel.Position = [62 323 36 22];
+            app.GKtofKnobLabel.Text = 'GKtof';
+
+            % Create GKtofKnob
+            app.GKtofKnob = uiknob(app.IKtofTab, 'continuous');
+            app.GKtofKnob.Limits = [0 2];
+            app.GKtofKnob.ValueChangedFcn = createCallbackFcn(app, @EnterButtonPushed, true);
+            app.GKtofKnob.ValueChangingFcn = createCallbackFcn(app, @GKtofKnobValueChanging, true);
+            app.GKtofKnob.Position = [50 348 60 60];
+            app.GKtofKnob.Value = 0.4067;
+
+            % Create TextArea
+            app.TextArea = uitextarea(app.IKtofTab);
+            app.TextArea.FontWeight = 'bold';
+            app.TextArea.Position = [14 507 127 60];
+            app.TextArea.Value = {'IKtof (Ito)'; 'Transient outward'; 'K+ current '};
+
+            % Create IKurTab
+            app.IKurTab = uitab(app.TabGroup);
+            app.IKurTab.Title = 'IKur';
+
+            % Create RightPanel
+            app.RightPanel = uipanel(app.GridLayout);
+            app.RightPanel.Layout.Row = 1;
+            app.RightPanel.Layout.Column = 2;
+
+            % Create UIAxes2
+            app.UIAxes2 = uiaxes(app.RightPanel);
+            title(app.UIAxes2, 'IKtof')
+            xlabel(app.UIAxes2, 'Time (ms)')
+            ylabel(app.UIAxes2, 'pA/pF')
+            app.UIAxes2.Position = [30 307 414 292];
+
+            % Create UIAxes3
+            app.UIAxes3 = uiaxes(app.RightPanel);
+            xlabel(app.UIAxes3, 'Time (ms)')
+            ylabel(app.UIAxes3, 'pA/pF')
+            app.UIAxes3.Position = [30 15 414 278];
+
+            % Show the figure after all components are created
+            app.UIFigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = Kv
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            % Execute the startup function
+            runStartupFcn(app, @startupFcn)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+    end
+end
