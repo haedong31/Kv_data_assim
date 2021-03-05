@@ -1,11 +1,11 @@
 function [current_trc] = IKtof(param, holdV, P1, time_space)
     % Bondarenko IKtof (A67)
-    % 12 parameters
+    % 12 parameters;
 
     % constants
     act0 = 0.265563e-2; % ato_f; Gating variable for transient outward K+ current
     inact0 = 0.999977; % ito_f; Gating variable for transient outward K+ current
-    Ek = -91.1; % resting potential
+    Ek = param(14); % resting potential
 
     % time space information
     t = time_space{1};
@@ -13,17 +13,17 @@ function [current_trc] = IKtof(param, holdV, P1, time_space)
     tP1_adj = time_space{3};
     hold_idx = length(tH);
 
-    gmax = param(end);
+    gmax = param(13);
     current_trc = zeros(length(t), 1);
 
     % at holding potential
-    cv_hold = cv(param(1:(end - 1)), holdV);
+    cv_hold = cv(param(1:12), holdV);
     act_hold = cv_hold(1) - (cv_hold(1) - act0).*exp(-(tH./cv_hold(2)));
     inact_hold = cv_hold(3) - (cv_hold(3) - inact0).*exp(-(tH./cv_hold(4)));
     current_trc(1:hold_idx) = gmax.*(act_hold.^3).*(inact_hold).*(holdV - Ek);
 
     % at P1
-    cv_P1 = cv(param(1:(end - 1)), P1);
+    cv_P1 = cv(param(1:12), P1);
     act_P1 = cv_P1(1) - (cv_P1(1) - act0).*exp(-(tP1_adj./cv_P1(2)));
     inact_P1 = cv_P1(3) - (cv_P1(3) - inact0).*exp(-(tP1_adj./cv_P1(4)));
     current_trc((hold_idx + 1):end) = gmax.*(act_P1.^3).*(inact_P1).*(P1 - Ek);
