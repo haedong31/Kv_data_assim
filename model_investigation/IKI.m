@@ -3,16 +3,15 @@ function [current_trc] = IKI(param, holdV, P1, time_space)
     % 3 parameters + 1 extracellular K+ concentration + 1 Ek
     
     % constants
-    extra_Kconcent = param(4);
-    Ek = param(5);
+    extra_Kconcent = param(4); % 5400; Ko; Exracellular K+ concentration:uM
+    Ek = param(5); 
 
     % time space information
     t = time_space{1};
     tH = time_space{2};
-    tP1_adj = time_space{3};
     hold_idx = length(tH);
 
-    % p0 = [0.2938+, 210, 0.0896+]
+    % p0 = [0.2938+, 210, 0.0896+, 5400, -91.1]
     current_trc = zeros(length(t), 1);
 
     % at holding potential
