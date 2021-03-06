@@ -1,0 +1,8 @@
+Kv currents
+    1. IKtof Transient outward K+ current (or IKtos at septum)
+    2. IKI Time-independent K+ current
+    3. IKs Slow delayed rectifier K+ current
+    4. IKur Ultrarapidly activating delayed rectifier K+ current
+    5. IKss Noninactivating steady-state K+ current
+    6. IKr Rapid delayed rectifier K+ current (mERG)
+    7. INaK Na+/K+ pump current
