@@ -1,3 +1,50 @@
+%% check IKs
+clc
+close all
+clear variables
+
+time_step = 1;
+holdT = 100;
+P1T = 5000;
+
+tH = 0:time_step:holdT;
+tP1 = (holdT+time_step):time_step:P1T;
+tP1_adj = tP1 - tP1(1);
+t = [tH, tP1];
+
+time_space = cell(1, 3);
+time_space{1} = t;
+time_space{2} = tH;
+time_space{3} = tP1_adj;
+
+p0 = [26.5, 0.128, 0.038, 4.81333e-06, 9.53333e-05, 0.00575, -91.1];
+holdV = -80;
+volt = -70:10:50;
+
+for i = 1:length(volt)
+    yKs = IKs(p0, holdV, volt(i), time_space);
+    hold on
+    plot(t, yKs)
+    hold off
+end
+
+%% check IKI
+clc
+close all
+clear variables
+
+extra_Kconcent = 5400;
+Ek = -91.1;
+param = [0.2938, 210, 0.0896];
+volt = -150:10:0;
+
+yKI = zeros(1, length(volt));
+for i = 1:length(volt)
+    yKI(i) = param(3).*(extra_Kconcent./(extra_Kconcent + param(2))).*((volt(i) - Ek)./(1 + exp(param(1).*(volt(i) - Ek))));
+end
+
+plot(volt, yKI, "-o", "LineWidth",2)
+
 %% line objects
 x = 0:0.1:2*pi;
 h(1) = plot(x, sin(x));
