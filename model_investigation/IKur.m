@@ -1,6 +1,6 @@
 function [current_trc] = IKur(param, holdV, P1, time_space)
     % Bondarenko IKur (87)
-    % 11 parameters
+    % 11 parameters + 1 conductance + 1 Ek
 
     % constants
     act0 = 0.417069e-3;  % aur; Gating variable for 

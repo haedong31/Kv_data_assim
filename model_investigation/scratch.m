@@ -1,3 +1,41 @@
+%% line objects
+x = 0:0.1:2*pi;
+h(1) = plot(x, sin(x));
+hold on
+h(2) = plot(x, cos(x));
+hold off
+
+legend(h(2), "hello world");
+set(h(2), "Color","red", "LineWidth",2);
+
+%% check IKss
+clc
+close all
+clear variables
+
+time_space = cell(1, 3);
+time_step = 1;
+holdT = 100;
+P1T = 5000;
+tH = 0:time_step:holdT;
+tP1 = (holdT+time_step):time_step:P1T;
+tP1_adj = tP1 - tP1(1);
+t = [tH, tP1];
+
+time_space{1} = t;
+time_space{2} = tH;
+time_space{3} = tP1_adj;
+
+p0 = [22.5, 7.7, 39.3, 0.0862, 13.17, 0.05, -91.1];
+volt = -90:10:50;
+
+for i = 1:length(volt)
+    current_trc = IKss(p0, -100, volt(i), time_space);
+    hold on
+        plot(t, current_trc)
+    hold off
+end
+
 %% under holding potential
 clc
 close all
