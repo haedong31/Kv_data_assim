@@ -1,3 +1,45 @@
+%% DOE for IKr
+clc
+close all
+clear variables
+
+p0 = [0.022348, 0.01176, 0.047002, 0.0631, 0.013733, 0.038198, 6.89e-05, 0.04178, 5, 0.090821, 0.023391, 0.006497, 0.03268];
+cv = IKr(p0, 50);
+
+kf = 0.023761;  % kf; Rate constant for rapid delayed-rectifier K+ current:ms^-1
+kb = 0.036778;  % kb; Rate constant for rapid delayed-rectifier K+ current:ms^-1
+
+syms ck1(t) ck2(t) ok(t) ik(t)
+ode1 = diff(ck1) == cv(1) - (cv(1) + cv(2) + kf)*ck1(t) + (-cv(1) + kb)*ck2(t) - cv(1)*ok(t) - cv(1)*ik(t);
+ode2 = diff(ck2) == kf*ck1(t) - (kb + cv(3))*ck2(t) + cv(4)*ok(t);
+ode3 = diff(ok) == cv(3)*ck2(t) - (cv(4) + cv(5))*ok(t) + cv(6)*ik(t);
+ode4 = diff(ik) == cv(5)*ok(t) - cv(6)*ik(t);
+odes = [ode1; ode2; ode3; ode4];
+
+cond1 = ck1(0) == 0.992513e-3; % CK1; mERG channel closed state
+cond2 = ck2(0) == 0.641229e-3; % CK2; mERG channel closed state
+cond3 = ok(0) == 0.175298e-3; % OK; mERG channel open state
+cond4 = ik(0) == 0.319129e-4; % IK; mERG channel inactivated state
+conds = [cond1; cond2; cond3; cond4];
+
+[ck1_sol(t), ck2_sol(t), ok_sol(t), ik_sol(t)] = dsolve(odes, conds);
+
+figure(1)
+fplot(ck1_sol)
+
+double(ck1_sol(45))
+
+tt = 1:1000;
+y = zeros(length(tt), 1);
+for i = 1:length(tt)
+    disp(i)
+   y(i) = double(ck1_sol(tt(i))); 
+end
+
+% solutions have root of z and vpa() forces to find roots
+fn = matlabFunction(vpa(ck1_sol));
+plot(tt, fn(tt))
+
 %% check IKs
 clc
 close all
