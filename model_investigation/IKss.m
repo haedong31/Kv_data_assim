@@ -5,7 +5,7 @@ function [current_trc] = IKss(param, holdV, P1, time_space)
     % constants
     act0 = 0.417069e-3;  % aKss; Gating variable for noninactivating steady-state K+ current
     inact0 = 1;  % iKss; Gating variable for noninactivating steady-state K+ current
-    gmax = param(6);
+    gmax = param(6); % 0.05
     Ek = param(7);
  
     % time space information

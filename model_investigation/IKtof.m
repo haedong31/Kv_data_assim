@@ -5,6 +5,7 @@ function [current_trc] = IKtof(param, holdV, P1, time_space)
     % constants
     act0 = 0.265563e-2; % ato_f; Gating variable for transient outward K+ current
     inact0 = 0.999977; % ito_f; Gating variable for transient outward K+ current
+    gmax = param(13);  % 0.4067
     Ek = param(14); % resting potential
 
     % time space information
@@ -13,7 +14,6 @@ function [current_trc] = IKtof(param, holdV, P1, time_space)
     tP1_adj = time_space{3};
     hold_idx = length(tH);
 
-    gmax = param(13);
     current_trc = zeros(length(t), 1);
 
     % at holding potential

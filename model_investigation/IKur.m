@@ -5,6 +5,7 @@ function [current_trc] = IKur(param, holdV, P1, time_space)
     % constants
     act0 = 0.417069e-3;  % aur; Gating variable for 
     inact0 = 0.998543;  % iur; Gating variable for ultrarapidly 
+    gmax = param(12); % 0.16
     Ek = param(13); % resting potential
 
     % time space information
@@ -13,7 +14,6 @@ function [current_trc] = IKur(param, holdV, P1, time_space)
     tP1_adj = time_space{3};
     hold_idx = length(tH);
 
-    gmax = param(12);
     current_trc = zeros(length(t), 1);
 
     % at holding potential
