@@ -1,3 +1,37 @@
+%% GP
+clc
+close all
+clear variables 
+
+df = readtable("ko1.csv");
+
+% time space
+t = df.time;
+y = df.current;
+
+time_space = cell(1, 3);
+time_space{1} = t;
+hold_idx = 102; % manually found hold_idx
+tH = t(1:hold_idx);
+time_space{2} = tH;
+tP1 = t(hold_idx+1:end);
+tP1_adj = tP1 - tP1(1);
+time_space{3} = tP1_adj;
+
+init_design = readtable("init_design.csv");
+yM = zeros(height(init_design), 1);
+
+for i=1:height(init_design)
+    p = zeros(12, 1);
+    p(1:7) = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7];
+    p(8) = init_design.V1(i);
+    p(9:11) = [170.0, 45.2, 5.7];
+    p(12) = init_design.V2(i);
+    
+    yhat = IKur_test(p, -70, 50, time_space);
+    yM(i) = sqrt((1/length(t))*sum((y-yhat).^2));
+end
+
 %% DOE for IKr
 clc
 close all
