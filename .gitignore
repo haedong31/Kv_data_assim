@@ -6,6 +6,7 @@
 # files
 **.DS_Store
 **.mat
+**.psd
 
 # History files
 .Rhistory
