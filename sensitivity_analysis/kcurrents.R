@@ -1,12 +1,11 @@
-iktof <- function(param, holdV, P1, time_space) {
+iktof <- function(param, holdV, P1, time_space, Ek=-91.1) {
     # Bondarenko IKtof (A67)
-    # 14 parameters
+    # 13 parameters
 
     # constants
     act0 <- 0.265563e-2 # ato_f Gating variable for transient outward K+ current
     inact0 <- 0.999977 # ito_f Gating variable for transient outward K+ current
     gmax <- param[13]  # 0.4067
-    Ek <- param[14] # resting potential
 
     # time space information
     t <- time_space[[1]]
@@ -32,14 +31,13 @@ iktof <- function(param, holdV, P1, time_space) {
     return(current_trc)
 }
 
-iktos <- function(param, holdV, P1, time_space) {
+iktos <- function(param, holdV, P1, time_space, Ek=-91.1) {
     # Bondarenko IKtos (A75)
-    # 13 parameters
+    # 12 parameters
 
     act0 <- 0.417069e-3 # ato_s Gating variable for transient outward K+ current
     inact0 <- 0.998543 # ito_s Gating variable for transient outward K+ current
     gmax <- param[12] # 0.0629 in spetal model 0 in apical model
-    Ek <- param[13] # resting potential
 
     # time space information
     t <- time_space[[1]]
@@ -65,13 +63,12 @@ iktos <- function(param, holdV, P1, time_space) {
     return(current_trc)
 }
 
-ik1 <- function(param, holdV, P1, time_space) {
+ik1 <- function(param, holdV, P1, time_space, Ek=-91.1) {
     # Bondarenko IKI (A82)
-    # 5 parameters
+    # 4 parameters
     
     # constants
     extra_Kconcent <- param[4] # 5400 Ko Exracellular K+ concentration:uM
-    Ek <- param[5] 
 
     # time space information
     t <- time_space[[1]]
@@ -91,14 +88,13 @@ ik1 <- function(param, holdV, P1, time_space) {
     return(current_trc)
 }
 
-iks <- function(param, holdV, P1, time_space) {
+iks <- function(param, holdV, P1, time_space, Ek=-91.1) {
     # Bondarenko IKs (A83)
-    # 7 parameters
+    # 6 parameters
     
     # constants
     n0 <- 0.262753e-3  # nKs Gating variable for slow delayed-rectifier K+ current
     gmax <- param[6] # 0.00575 GKs Maximum slow delayed-rectifier K+ current conductance:mS/uF
-    Ek <- param[7]
     
     # time space information
     t <- time_space[[1]]
@@ -122,15 +118,14 @@ iks <- function(param, holdV, P1, time_space) {
     return(current_trc)
 }
 
-ikur <- function(param, holdV, P1, time_space) {
+ikur <- function(param, holdV, P1, time_space, Ek=-91.1) {
     # Bondarenko IKur (A87)
-    # 13 parameters
+    # 12 parameters
 
     # constants
     act0 <- 0.417069e-3  # aur Gating variable for 
     inact0 <- 0.998543  # iur Gating variable for ultrarapidly 
     gmax <- param[12] # 0.16
-    Ek <- param[13] # resting potential
 
     # time space information
     t <- time_space[[1]]
@@ -156,15 +151,14 @@ ikur <- function(param, holdV, P1, time_space) {
     return(current_trc)
 }
 
-ikss <- function(param, holdV, P1, time_space) {
+ikss <- function(param, holdV, P1, time_space, Ek=-91.1) {
     # Bondarenko IKss (A92)
-    # 7 parameters
+    # 6 parameters
 
     # constants
     act0 <- 0.417069e-3  # aKss Gating variable for noninactivating steady-state K+ current
     inact0 <- 1  # iKss Gating variable for noninactivating steady-state K+ current
     gmax <- param[6] # 0.05
-    Ek <- param[7]
  
     # time space information
     t <- time_space[[1]]
