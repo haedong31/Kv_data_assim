@@ -19,11 +19,11 @@ output1 <- function(time_space, current_trc) {
 	peak_time <- t[peak_time_idx]
 	peak <- current_trc[peak_time_idx]
 
-	check_pt1 <- any(current_trc < 0) # negative current
-	check_pt2 <- peak_time < holdt # can't generate current properly
-	check_pt3 <- var(current_trc[1:holdt]) > 1e-5 # not stable at holding potential
-
-	if(check_pt1 || check_pt2 || check_pt3) {return(NA)}	
+	check_pt1 <- any(is.nan(current_trc)) # not generated properly
+	check_pt2 <- any(current_trc < 0) # negative current
+	check_pt3 <- var(current_trc[1:holdt]) > 1e-5 # not stable at hold_volt
+	check_pt4 <- peak_time < holdt # not stable at hold_volt or too plat at volt
+	if(check_pt1 || check_pt2 || check_pt3 || check_pt4) {return(NA)}	
 
 	# output 1
 	out[1] <- peak_time - holdt
