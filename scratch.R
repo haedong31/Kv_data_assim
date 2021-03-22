@@ -1,5 +1,5 @@
 ## validate K+ currents functions -----
-source("./kcurrent_functions/kcurrents.R")
+source("./sensitivity_analysis/kcurrents.R")
 
 holdt <- 450
 endt <- 5000
@@ -29,3 +29,20 @@ plot(t, ykur, type="l")
 p0 <- c(22.5, 7.7, 39.3, 0.0862, 13.17, 0.05, -91.1)
 ykss <- ikss(p0, -70, 50, time_space)
 plot(t, ykss, type="l")
+
+# outputs
+peak_time_idx <- which.max(yktof)
+peak_time <- t[peak_time_idx]
+peak <- yktof[peak_time_idx]
+
+any(yktof < 0) || (peak_time < th)
+
+# calculate tau
+peak*exp(-1)
+tau_idx <- which.min(abs(yktof - peak*exp(-1)))
+t[tau_idx] - tail(th, 1)
+
+# convergence value of yktof
+p0 <- c(30.0, 13.5, 33.5, 7.0, 0.18064, 0.03577, 0.3956, 0.06237, 0.000152, 0.067083, 0.00095, 0.051335, 0.4067, -91.1)
+cv_ktof <- cv_ktof(p0, 50)
+p0[13]*cv_ktof[1]^3*cv_ktof[3]
