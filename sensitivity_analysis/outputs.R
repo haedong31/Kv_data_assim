@@ -23,7 +23,7 @@ output1 <- function(time_space, current_trc) {
 	check_pt2 <- peak_time < holdt # can't generate current properly
 	check_pt3 <- var(current_trc[1:holdt]) > 1e-5 # not stable at holding potential
 
-	if(check_pt1 || check_pt2 || check_pt3) {return NA}	
+	if(check_pt1 || check_pt2 || check_pt3) {return(NA)}	
 
 	# output 1
 	out[1] <- peak_time - holdt
@@ -77,7 +77,7 @@ output2 <- function(time_space, current_trc) {
 	check_pt2 <- peak_time < holdt # can't generate current properly
 	check_pt3 <- var(current_trc[1:holdt]) > 1e-5 # not stable at holding potential
 
-	if(check_pt1 || check_pt2 || check_pt3) {return NA}
+	if(check_pt1 || check_pt2 || check_pt3) {return(NA)}
 
 	# output 1
 	out[1] <- peak_time - holdt
