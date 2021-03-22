@@ -11,7 +11,7 @@ output1 <- function(time_space, current_trc) {
 
 	t <- time_space[[1]]
 	th <- time_space[[2]]
-	holdt_idx <- length(th)
+	hold_idx <- length(th)
 	holdt <- t[hold_idx]
 
 	# valid current trace shape?
@@ -35,14 +35,14 @@ output1 <- function(time_space, current_trc) {
 	tau_current <- peak*exp(-1)
 	tau_idx <- which.min(abs(current_trc - tau_current))
 	tau <- t[tau_idx]
-	output[3] <- tau - holdt
+	out[3] <- tau - holdt
 
 	# output 4
 	out45_jump_size <- floor((peak_time_idx + tau_idx)/3)
-	out[4] <- current_trc(peak_time_idx + out45_jump_size)
+	out[4] <- current_trc[peak_time_idx + out45_jump_size]
 
 	# output 5
-	out[5] <- current_trc(peak_time_idx + out45_jump_size*2)
+	out[5] <- current_trc[peak_time_idx + out45_jump_size*2]
 	
 	# output 6
 	last_idx <- length(t)
@@ -65,7 +65,7 @@ output2 <- function(time_space, current_trc) {
 
 	t <- time_space[[1]]
 	th <- time_space[[2]]
-	holdt_idx <- length(th)
+	hold_idx <- length(th)
 	holdt <- t[hold_idx]
 
 	# valid current trace shape?
