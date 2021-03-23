@@ -1,0 +1,3 @@
+model; Model 2 Fully parameterized Bondarenko
+optimization; SBGA
+iterations; 10000 runs

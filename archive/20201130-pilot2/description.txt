@@ -1,0 +1,6 @@
+model; Reduced Bodarenko
+    Ito; 12 -> 11
+    IKslow1; 11 -> 8
+    IKslow2; 11 -> 8
+optimization; SBGA
+iterations; 10000
