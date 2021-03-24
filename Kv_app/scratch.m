@@ -32,7 +32,7 @@ for i=1:height(init_design)
     yM(i) = sqrt((1/length(t))*sum((y-yhat).^2));
 end
 
-%% DOE for IKr
+%% ODE for IKr
 clc
 close all
 clear variables
