@@ -1,36 +1,24 @@
-%% GP
-clc
-close all
-clear variables 
-
-df = readtable("ko1.csv");
-
+%% effects of dividor < 1 in exponent
 % time space
-t = df.time;
-y = df.current;
+holdt = 100;
+endt = 5000;
+
+tH = 0:holdt;
+tp1 = (holdt + 1):endt;
+tp1_adj = tp1 - tp1(1);
+t = [tH, tp1];
 
 time_space = cell(1, 3);
 time_space{1} = t;
-hold_idx = 102; % manually found hold_idx
-tH = t(1:hold_idx);
 time_space{2} = tH;
-tP1 = t(hold_idx+1:end);
-tP1_adj = tP1 - tP1(1);
-time_space{3} = tP1_adj;
+time_space{3} = tp1_adj;
 
-init_design = readtable("init_design.csv");
-yM = zeros(height(init_design), 1);
+% IKur
+kur0 = [22.5, 7.7, 45.2, 7.7, 0.493, 0.0629, 2.058, 1200, 170, 0.16, -91.1];
+kur0(4) = 0.01;
+ykur = IKur(kur0, -70, 50, time_space);
 
-for i=1:height(init_design)
-    p = zeros(12, 1);
-    p(1:7) = [22.5, 7.7, 0.493, 0.0629, 2.058, 45.2, 5.7];
-    p(8) = init_design.V1(i);
-    p(9:11) = [170.0, 45.2, 5.7];
-    p(12) = init_design.V2(i);
-    
-    yhat = IKur_test(p, -70, 50, time_space);
-    yM(i) = sqrt((1/length(t))*sum((y-yhat).^2));
-end
+plot(t, ykur, "Color",[0,0,0,0.5])
 
 %% ODE for IKr
 clc
