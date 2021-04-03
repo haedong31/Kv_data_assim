@@ -1,3 +1,42 @@
+%% normalize & downsample 4.5-sec data
+clc
+close all
+clear variables
+
+cap_wt = 207.821428571429;
+cap_ko = 257.9375;
+
+df_ko = readtable("./4.5s-avg-ko-orig.csv");
+
+var_names = df_ko.Properties.VariableNames;
+
+df_ko = table2array(df_ko);
+
+% normalize
+df_ko(:,2:end) = df_ko(:,2:end) ./ cap_ko;
+
+% drop when t > 4600
+endt_idx_ko = find(df_ko(:,1) == 4600);
+df_ko = df_ko(1:endt_idx_ko,:);
+
+plot(df_ko(:,1), df_ko(:,2))
+hold on
+for i=3:12
+   plot(df_ko(:,1), df_ko(:,i)) 
+end
+hold off
+
+ds_ko = downsample(df_ko, 25);
+plot(ds_ko(:,1), ds_ko(:,2))
+hold on
+for i=3:12
+   plot(ds_ko(:,1), ds_ko(:,i)) 
+end
+hold off
+
+ds_ko = array2table(ds_ko, "VariableNames",var_names);
+writetable(ds_ko, "./4.5s-avg-ko.csv");
+
 %% effects of dividor < 1 in exponent
 % time space
 holdt = 100;
