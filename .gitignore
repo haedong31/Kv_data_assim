@@ -1,6 +1,7 @@
 # folders
 /literature/
 /data/
+/.vs/
 
 # files
 **.DS_Store
