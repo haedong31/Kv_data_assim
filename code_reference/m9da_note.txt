@@ -1,0 +1,10 @@
+initial conditions
+    132 - 359
+constants
+    704 - 1364
+Ionic currents (current models)
+    1384 - 1487
+    IKto: Kto + Ktop by weight Y(134)
+        Kto*Y(134): see 1439, Y(25), and Y(26)
+        Ktop*(1-Y(134)): see 1440, Y(135), and Y(136)
+    
