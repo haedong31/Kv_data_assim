@@ -1,3 +1,28 @@
+%% new function form of taua in Bondarenko 2020
+clc
+close all
+clear variables
+
+f = @(v) 6.1./(exp(0.0629.*(v+40.0))+ exp(-0.0629.*(v+40.0)))+2.058;
+f1 = @(v) exp(0.0629.*(v+40.0));
+f2 = @(v) exp(-0.0629.*(v+40.0));
+
+v = -140:70;
+
+y = f(v);
+y1 = f1(v);
+y2 = f2(v);
+
+figure(1)
+plot(v, y)
+
+figure(2)
+plot(v, y1)
+hold on
+plot(v, y2)
+hold off
+
+
 %% GUI with interactive response-plot updates
 % https://www.mathworks.com/help/control/ug/build-app-with-interactive-plot-updates.html
 % display the step response of a second-order dynamic system

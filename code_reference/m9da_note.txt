@@ -20,10 +20,10 @@ Ionic currents
             diff with Y(26) 15.5 -> 13.5 and -6.0 in exponent
     Ikur current 1467 - 1473
         Ikur1 + Ikur2 + Ikur3 + Ikur4
-        Ikur1: typical G*a*i(V-Ek)
-        Ikur2: devided by 2 with weight Y(132)
-        Ikur3: activation gate only G*a*(V-Ek)
-        Ikur4: typical G*a*i(V-Ek)
+        Ikur1: typical G*a*i(V-Ek); Iktos
+        Ikur2: devided by 2 with weight Y(132); Ikslow1
+        Ikur3: activation gate only G*a*(V-Ek); Ikss
+        Ikur4: typical G*a*i(V-Ek); Ikslow2
     Ikur1 state variables 2161 - 2171
         aur: almost same with the activation variable of Iktos in Bondarenko 2004
         iur: same with the inactivation variable of Iktos in Bondarenko 2004
