@@ -1,3 +1,5 @@
+# fully parameterized 2004-model + L-BFGS-B
+
 library(tidyverse)
 eps <- .Machine$double.eps
 
