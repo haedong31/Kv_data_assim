@@ -101,6 +101,39 @@ end
 fn = matlabFunction(vpa(ck1_sol));
 plot(tt, fn(tt))
 
+%% check Iktof
+clc
+close all
+clear variables
+
+time_step = 1;
+holdT = 100;
+P1T = 5000;
+
+tH = 0:time_step:holdT;
+tP1 = (holdT+time_step):time_step:P1T;
+tP1_adj = tP1 - tP1(1);
+t = [tH, tP1];
+
+time_space = cell(1, 3);
+time_space{1} = t;
+time_space{2} = tH;
+time_space{3} = tP1_adj;
+
+p0 = [30.0, 13.5, 33.5, 7.0, 0.18064, 0.03577, 0.3956, 0.06237, 0.000152, 0.067083, 0.00095, 0.051335, 0.4067, -91.1];
+holdV = -80;
+volt = -70:10:50;
+
+y = IKtof(p0, holdV, volt(1), time_space);
+plot(t,y)
+
+hold on
+for i = 2:length(volt)
+    y = IKtof(p0, holdV, volt(i), time_space);
+    plot(t, y)
+end
+hold off
+
 %% check IKs
 clc
 close all
