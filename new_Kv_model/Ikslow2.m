@@ -1,5 +1,6 @@
 function [current_trc] = Ikslow2(p, hold_volt, volt, time_space, Ek)
-    % 11 parameters; {p(11): gmax}
+    % 11 parameters; {p(11): gmax} 
+    % see 2020 Bondarenko
 
     % constants & initial values
     gmax = p(11); % 0.05766
@@ -30,7 +31,7 @@ end
 function [gv] = gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow1
     % gv(1) = gv(1) in Ikss
-    % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912];
+    % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
 
     gv = zeros(4,1);
     gv(1) = 1.0./(1.0+exp(-(p(1)+V)./p(4))); % ass

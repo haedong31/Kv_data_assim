@@ -1,6 +1,7 @@
 function [current_trc] = Ikslow1(p, hold_volt, volt, time_space, Ek)
     % 13 parameters; {p(11): f_ecav, p(12): gmax, p(13): gmaxp}
-    
+    % see 2020 Bondarenko
+
     % constants & initial values
     f_eacv = p(11); % 0.9214774521 Ikslow1 fraction of nonphospholatedl
     gmax = p(12); % 0.05766
