@@ -8,16 +8,12 @@ Ionic currents
         kto + ktop by weight Y(134)
         kto*Y(134): see 1439, Y(25), and Y(26)
         ktop*(1-Y(134)): see 1440, Y(135), and Y(136)
-    Iktof state variables
-        ato Y(25) 2136
-            dito is defined as a membrane current parameter, 7.0
-        ito Y(26) 2137
-            similar with the one in Bondarenko 2004
-    Iktofp state variables
-        ato_phosphorylated Y(135) 2150
-            diff with Y(25) -13 in exponent
-        ito_phosphorylated Y(136) 2151
-            diff with Y(26) 15.5 -> 13.5 and -6.0 in exponent
+    Iktof state variables 2125 - 2137
+        ato Y(25) dito is defined as a membrane current parameter, 7.0
+        ito Y(26) similar with the one in Bondarenko 2004
+    Iktofp state variables 2139 - 2151
+        ato_phosphorylated Y(135) diff with Y(25) -13 in exponent
+        ito_phosphorylated Y(136) diff with Y(26) 15.5 -> 13.5 and -6.0 in exponent
     Ikur current 1467 - 1473
         Ikur1 + Ikur2 + Ikur3 + Ikur4
         Ikur1: typical G*a*i(V-Ek); Iktos

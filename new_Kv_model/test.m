@@ -57,3 +57,17 @@ for i=2:length(v)
    plot(t, y)
 end
 hold off
+
+% Ikto
+p0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.04516, 4, ...
+    0.0989, 0.0019, 0.067083, 0.051335, 0.08, 0.5, 0.2087704319, 0.14067, 0.387];
+
+y =Ikto(p0, -70, v(1), time_space, -91.1);
+figure(4)
+plot(t, y)
+hold on
+for i=2:length(v)
+    y = Ikto(p0, -70, v(i), time_space, -91.1);
+    plot(t,y)
+end
+hold off
