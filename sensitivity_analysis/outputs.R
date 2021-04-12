@@ -22,7 +22,7 @@ output1 <- function(time_space, current_trc) {
 	check_pt1 <- any(is.nan(current_trc)) # not generated properly
 	check_pt2 <- any(current_trc < 0) # negative current
 	check_pt3 <- var(current_trc[1:holdt]) > 1e-5 # not stable at hold_volt
-	check_pt4 <- peak_time < holdt # not stable at hold_volt or too plat at volt
+	check_pt4 <- peak_time < holdt # not stable at hold_volt or too flat at volt
 	if(check_pt1 || check_pt2 || check_pt3 || check_pt4) {return(NA)}	
 
 	# output 1
