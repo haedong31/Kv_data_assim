@@ -1,14 +1,13 @@
 %% model calibration phase 1 
-% for Mgat1KO
+% for WT
 % fully parameterized model
 clc
 close all
 clear variables
 
 % data to calculate objectives
-exp_ksum = readtable('./ko1.csv');
-exp_ksum.current = exp_ksum.current./254.3;
-peak_vals = [17.6, 3.1, 3.6, 3.9];
+exp_ksum = readtable('./25s-50mv-avg-wt.csv');
+peak_vals = [24.8, 17.1, 7.3, 3.7];
 
 % phase1: peak values
 hold_volt = -70;
@@ -85,8 +84,8 @@ disp(fval1)
 figure(1)
 plot(t, yksum, "--", "Color","black", "LineWidth",1.5)
 hold on
-plot(exp_ksum.time, exp_ksum.current, "Color","red", "LineWidth",1.5)
-title('Phase 1')
+plot(exp_ksum.time, exp_ksum.current, "Color","blue", "LineWidth",1.5)
+title('Phase 1 - WT')
 legend('Simulated', 'Experimenta')
 hold off
 
@@ -97,7 +96,7 @@ plot(t, ykslow1)
 plot(t, ykslow2)
 plot(t, ykss)
 hold off
-title('Phase 1')
+title('Phase 1 - WT')
 legend("I_{Kto}", "I_{Kslow1}", "I_{Kslow2}", "I_{Kss}");
 
 % phase 2: RMSE
@@ -131,8 +130,8 @@ disp(fval2)
 figure(3)
 plot(t, yksum, "--", "Color","black", "LineWidth",1.5)
 hold on
-plot(exp_ksum.time, exp_ksum.current, "Color","red", "LineWidth",1.5)
-title('Phase 2')
+plot(exp_ksum.time, exp_ksum.current, "Color","blue", "LineWidth",1.5)
+title('Phase 2 - WT')
 legend('Simulated', 'Experimenta')
 hold off
 
@@ -143,10 +142,5 @@ plot(t, ykslow1)
 plot(t, ykslow2)
 plot(t, ykss)
 hold off
-title('Phase 2')
+title('Phase 2 - WT')
 legend("I_{Kto}", "I_{Kslow1}", "I_{Kslow2}", "I_{Kss}");
-
-%% reduced model
-clc
-close all
-clear variables
