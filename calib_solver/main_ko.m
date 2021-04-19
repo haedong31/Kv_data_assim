@@ -1,6 +1,7 @@
-%% model calibration phase 1 
-% for Mgat1KO
-% fully parameterized model
+%% fully parameterized model
+% 25-sec-single-clamp-voltage data
+% model calibration phase 1 
+% Mgat1KO
 clc
 close all
 clear variables
@@ -99,7 +100,7 @@ hold off
 title('Phase 1 - Mgat1KO')
 legend("I_{Kto}", "I_{Kslow1}", "I_{Kslow2}", "I_{Kss}");
 
-% phase 2: RMSE
+% model calibration phase 2: RMSE
 t = exp_ksum.time;
 ksum = exp_ksum.current;
 
@@ -145,7 +146,116 @@ hold off
 title('Phase 2 - Mgat1KO')
 legend("I_{Kto}", "I_{Kslow1}", "I_{Kslow2}", "I_{Kss}");
 
+save('param_25s','p2');
+
 %% reduced model
 clc
 close all
 clear variables
+
+%% fully parameterized model
+% 4.5-sec-voltage-dependent data
+% Mgat1KO
+clc
+close all
+clear variables
+
+load('param_25s.mat');
+
+% find holding-time index from experimental data
+exp_ksum = table2array(readtable('./4.5s-avg-ko.csv'));
+t = exp_ksum(:,1);
+mean_ksum = mean(exp_ksum(:,2:end), 2);
+
+[~, peak_idx] = max(mean_ksum);
+early_ksum = mean_ksum(1:peak_idx);
+
+early_ksum(early_ksum < 0) = 0; % negative to 0
+stable_val = min(early_ksum);
+hold_idx = min(early_ksum);
+
+% generate time space
+time_space = cell(1,3);
+time_space{1} = t;
+
+hold_t = t(1:hold_idx);
+time_space{2} = hold_t;
+
+pulse_t = t(hold_idx+1:end);
+pulse_t_adj = pulse_t - pulse_t(1);
+time_space{3} = pulse_t_adj;
+
+% protocol
+hold_volt = -70;
+volt = -50:10:50;
+Ek = -91.1;
+
+% optimization
+% 17 + 13 + 2 + 4 = 36 parameters
+% p0_kto = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+% p0_kslow1 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+% p0_kslow2 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
+% p0_kss = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428];
+p0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387, ...
+    22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496, ...
+    5334, 4912, ...
+    0.0862, 1235.5, 13.17, 0.0428];
+
+% fix phophorylation rates
+pp0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.14067, 0.387, ...
+    22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.05766, 0.07496, ...
+    5334, 4912, ...
+    0.0862, 1235.5, 13.17, 0.0428];
+
+% box constraints
+lb = pp0 - pp0*5;
+ub = pp0 + pp0*5;
+
+% adjust lower bound for parameters that has to be non-zero
+lb(6) = 1;
+lb(7:16) = eps;
+
+lb(20:21) = 1;
+lb(22:24) = eps;
+lb(25) = 10;
+lb(26) = 1;
+lb(27:28) = eps;
+
+lb(29) = 10;
+lb(30) = 1;
+
+lb(31) = eps;
+lb(32) = 1;
+lb(33:34) = eps;
+
+% other constraints
+A = [];
+b = [];
+Aeq = [];
+beq = [];
+nonlcon = [];
+
+% obj_rmse_over_volt(p2, hold_volt, volt, time_space, Ek, exp_ksum(:,2:end));
+fun = @(p) obj_rmse_over_volt(p, hold_volt, volt, time_space, Ek, exp_ksum(:,2:end));
+
+[p, fval] = fmincon(fun, p2, A, b, Aeq, beq, lb, ub, nonlcon);
+
+% plot - simulation
+figure(1)
+[~, ~, ~, ~, yksum] = full_model(p2, hold_volt, volt(1), time_space, Ek);
+plot(t, yksum)
+hold on
+for i=2:length(volt)
+    [~, ~, ~, ~, yksum] = full_model(p2, hold_volt, volt(i), time_space, Ek);
+    plot(t, yksum)
+end
+hold off
+
+% plot - experimental
+figure(2)
+plot(t, exp_ksum(:,2))
+hold on
+for i=3:12
+    plot(t, exp_ksum(:,i))
+end
+hold off
