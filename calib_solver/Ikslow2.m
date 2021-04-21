@@ -31,12 +31,14 @@ end
 function [gv] = gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow1
     % gv(1) = gv(1) in Ikss
+    % gv(4) = p(9) - p(1)*[gv(2) in Ikslow1]
     % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
+    % {p(9): p1, p(10): p2}
 
     gv = zeros(4,1);
     gv(1) = 1.0./(1.0+exp(-(p(1)+V)./p(4))); % ass
     gv(2) = 1.0./(1.0+exp((p(2)+V)./p(5))); % iss
-    gv(3)  = p(6)./(exp(p(7)*(V+p(3))) + exp(-p(7)*(V+p(3))))+p(8); % taua
+    gv(3) = p(6)./(exp(p(7)*(V+p(3))) + exp(-p(7)*(V+p(3))))+p(8); % taua
     gv(4) = p(9) - p(10)./(1.0+exp((p(2)+V)./p(5)));
 end
 
