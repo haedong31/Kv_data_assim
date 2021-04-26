@@ -12,7 +12,7 @@ function [ykto, ykslow1, ykslow2, ykss, yksum] = full_model(p, hold_volt, volt, 
     param_kslow2 = zeros(11,1);
     param_kss = zeros(7,1);
 
-    % for Iktof
+    % for Ikto
     param_kto(1:14) = p(1:14);
     param_kto(15) = kto0(15);
     param_kto(16:17) = p(15:16);
