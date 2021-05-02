@@ -29,7 +29,9 @@ time_space{3} = pulse_t_adj;
 
 Ek = -91.1;
 
-fun1 = @(p) obj_peak(p, hold_volt, volt, time_space, Ek, peak_vals);
+param_select = false;
+
+fun1 = @(p) obj_peak(p, hold_volt, volt, time_space, Ek, peak_vals, param_select);
 
 % initialization with default values; note shared parameters of Ikslow1, Ikslow2, and Ikss
 % 17 + 13 + 2 + 4 = 36 parameters
@@ -119,8 +121,8 @@ tP1 = t(hold_idx+1:end);
 tP1_adj = tP1 - tP1(1);
 time_space{3} = tP1_adj;
 
-obj_rmse(p1, hold_volt, volt, time_space, Ek, ksum);
-fun2 = @(p) obj_rmse(p, hold_volt, volt, time_space, Ek, ksum);
+% obj_rmse(p1, hold_volt, volt, time_space, Ek, ksum);
+fun2 = @(p) obj_rmse(p, hold_volt, volt, time_space, Ek, ksum, param_select);
 
 [p2, fval2] = fmincon(fun2, p1, A, b, Aeq, beq, lb, ub, nonlcon);
 disp(fval2)
@@ -147,11 +149,6 @@ title('Phase 2 - Mgat1KO')
 legend("I_{Kto}", "I_{Kslow1}", "I_{Kslow2}", "I_{Kss}");
 
 save('param_25s','p2');
-
-%% reduced model
-clc
-close all
-clear variables
 
 %% fully parameterized model
 % 4.5-sec-voltage-dependent data
@@ -259,3 +256,8 @@ for i=3:12
     plot(t, exp_ksum(:,i))
 end
 hold off
+
+%% reduced model
+% 4.5-sec-voltage-dependent data
+% Mgat1KO
+

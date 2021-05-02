@@ -1,6 +1,10 @@
-function [z] = obj_rmse(p, hold_volt, volt, time_space, Ek, exp_ksum)
-    [~, ~, ~, ~, yksum] = full_model(p, hold_volt, volt, time_space, Ek);
-
+function [z] = obj_rmse(p, hold_volt, volt, time_space, Ek, exp_ksum, param_select)
+    if param_select == true
+        [~, ~, ~, ~, yksum] = reduced_model(p, hold_volt, volt, time_space, Ek);
+    elseif param_select == false        
+        [~, ~, ~, ~, yksum] = full_model(p, hold_volt, volt, time_space, Ek);
+    end
+    
     % check validty of trace shape
     hold_idx = length(time_space{2});
     [~, peak_idx] = max(yksum);

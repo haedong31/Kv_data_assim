@@ -1,5 +1,9 @@
-function [z] = obj_peak(p, hold_volt, volt, time_space, Ek, peak_vals)
-    [ykto, ykslow1, ykslow2, ykss, ~] = full_model(p, hold_volt, volt, time_space, Ek);
+function [z] = obj_peak(p, hold_volt, volt, time_space, Ek, peak_vals, param_select)
+    if param_select == true
+        [ykto, ykslow1, ykslow2, ykss, ~] = reduced_model(p, hold_volt, volt, time_space, Ek);
+    elseif param_select == false
+        [ykto, ykslow1, ykslow2, ykss, ~] = full_model(p, hold_volt, volt, time_space, Ek);
+    end
 
     % get peaks
     hold_idx = length(time_space{2});
