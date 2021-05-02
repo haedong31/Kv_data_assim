@@ -1,3 +1,61 @@
+%% initial value for tri-exponential fitting
+clc
+close all
+clear variables
+
+% amplitude and tau ratios
+wt_amp = [24.8, 17.1, 7.3, 3.7];
+wt_amp./sum(wt_amp)
+
+ko_amp = [17.6, 3.1, 3.6, 3.9];
+ko_amp./sum(ko_amp)
+
+wt_tau = [105.2, 1119.6, 7271.9];
+wt_tau./sum(wt_tau)
+
+ko_tau = [111.2, 1115.1, 11266.1];
+ko_tau./sum(ko_tau)
+
+% check the experimental data
+exp_ksum = table2array(readtable('./4.5s-avg-ko.csv'));
+t = exp_ksum(:,1);
+yksum = exp_ksum(:, 2:end);
+
+[amp50, tau50] = trace_stat(yksum(:,end));
+
+%% preprocessing for 4.5-2-avg-ko data
+clc
+close all
+clear variables
+
+exp_ksum = readtable('./4.5s-avg-ko.csv');
+col_names = exp_ksum.Properties.VariableNames;
+
+exp_ksum = table2array(exp_ksum);
+
+t = exp_ksum(:,1);
+[~, num_volts] = size(exp_ksum);
+num_volts = num_volts - 1;
+
+% remove sharp negative peaks at the early phase
+for i=1:num_volts
+    y = exp_ksum(:,i+1);
+    y(y < 0) = 0;
+    exp_ksum(:,i+1) = y;
+end
+
+% visualize experimental data 
+plot(t, exp_ksum(:,1+1))
+hold on
+for i=2:num_volts
+    plot(t, exp_ksum(:,i+1))
+end
+hold off
+
+exp_ksum = array2table(exp_ksum, 'VariableNames',col_names);
+writetable(exp_ksum,'./4.5s-avg-ko.csv');
+
+%% test reduced_model.m
 clc
 close all
 clear variables
