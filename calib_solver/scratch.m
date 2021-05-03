@@ -20,8 +20,21 @@ ko_tau./sum(ko_tau)
 exp_ksum = table2array(readtable('./4.5s-avg-ko.csv'));
 t = exp_ksum(:,1);
 yksum = exp_ksum(:, 2:end);
+[~, num_volts] = size(yksum);
 
-[amp50, tau50] = trace_stat(yksum(:,end));
+hold_idx = zeros(num_volts,1);
+for i = 1:num_volts
+    current_trc = yksum(:,i);
+    [~, peak_idx] = max(current_trc);
+
+    early_current_trc = current_trc(1:peak_idx);
+    stable_val = min(early_current_trc);
+    hold_idx(i) = find(early_current_trc == stable_val, 1, 'last');
+end
+
+volt_idx = 10;
+[amp, tau] = trace_stat(t, yksum(:,volt_idx), hold_idx(volt_idx));
+plot(t, yksum(:,volt_idx))
 
 %% preprocessing for 4.5-2-avg-ko data
 clc

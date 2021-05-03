@@ -261,3 +261,28 @@ hold off
 % 4.5-sec-voltage-dependent data
 % Mgat1KO
 
+clc
+close all
+clear variables
+
+% load experimental data
+exp_ksum = table2array(readtable('./4.5s-avg-ko.csv'));
+t = exp_ksum(:,1);
+[~, num_volts] = size(exp_ksum);
+num_volts = num_volts - 1;
+
+% visualize experimental data 
+% plot(t, exp_ksum(:,1+1))
+% hold on
+% for i=2:num_volts
+%     plot(t, exp_ksum(:,i+1))
+% end
+% hold off
+
+% remove sharp negative peaks at the early phase
+for i=1:num_volts
+    y = exp_ksum(:,i+1);
+    y(y < 0) = 0;
+    exp_ksum(:,i+1) = y;
+end
+
