@@ -10,7 +10,7 @@ function [z] = obj_rmse(p, hold_volt, volt, time_space, Ek, exp_ksum, param_sele
     [~, peak_idx] = max(yksum);
     check_pt1 = any(isnan(yksum));
     check_pt2 = any(yksum < 0);
-    check_pt3 = var(yksum(1:hold_idx)) > 1e-3; % not stable at hold_volt
+    check_pt3 = var(yksum(1:hold_idx)) > 1; % not stable at hold_volt
     check_pt4 = peak_idx < hold_idx; % not stable at hold_volt of too flat at pulse
     
     if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
