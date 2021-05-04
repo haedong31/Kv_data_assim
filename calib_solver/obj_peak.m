@@ -13,7 +13,7 @@ function [z] = obj_peak(p, hold_volt, volt, time_space, Ek, peak_vals, param_sel
     pkss = get_peak(ykss, hold_idx);
 
     % objective
-    sim_peaks = [pkto, pkslow1, pkslow2, pkss];
+    sim_peaks = [pkto; pkslow1; pkslow2; pkss];
     if any(sim_peaks == -1)
         z = 1e+3; % arbtrary big number
     else
