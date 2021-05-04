@@ -33,8 +33,12 @@ for i = 1:num_volts
 end
 
 volt_idx = 10;
-[amp, tau] = trace_stat(t, yksum(:,volt_idx), hold_idx(volt_idx));
+[amp, time_stat] = trace_stat(t, yksum(:,volt_idx), hold_idx(volt_idx));
 plot(t, yksum(:,volt_idx))
+
+for i = 1:num_volts
+    t(hold_idx(i))
+end
 
 %% preprocessing for 4.5-2-avg-ko data
 clc
@@ -65,6 +69,52 @@ for i=2:num_volts
 end
 hold off
 
+% remove sharp pulse in -50 ~ 0 mV
+% -50 mV
+y = exp_ksum(:,6);
+[peak, peak_idx] = max(y);
+impute_val = mean(y(1:100));
+y(y>0.5) = impute_val;
+y(255:257) = impute_val;
+plot(t, y)
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+exp_ksum(:,2) = y;
+
+% - 40 mV;
+y = exp_ksum(:,3);
+[peak, peak_idx] = max(y);
+impute_val = mean(y(1:155));
+y(y>0.5) = impute_val;
+y(250:255) = impute_val;
+plot(t,y)
+exp_ksum(:,3) = y;
+
+% -30 mV;
+y = exp_ksum(:,4);
+[peak, peak_idx] = max(y);
+impute_val = mean(y(1:180));
+y(y>0.6) = impute_val;
+plot(t,y)
+exp_ksum(:,4) = y;
+
+% -20 mV
+y = exp_ksum(:,5);
+[peak, peak_idx] = max(y);
+impute_val = mean(y(1:200));
+y(y>1.5) = impute_val;
+plot(t,y)
+exp_ksum(:,5) = y;
+
+% -10 mV
+y = exp_ksum(:,6);
+[peak, peak_idx] = max(y);
+impute_val = mean(y(1:220));
+y(y>3.5) = impute_val;
+plot(t,y)
+exp_ksum(:,6) = y;
+
+% save
 exp_ksum = array2table(exp_ksum, 'VariableNames',col_names);
 writetable(exp_ksum,'./4.5s-avg-ko.csv');
 
