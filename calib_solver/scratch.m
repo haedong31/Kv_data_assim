@@ -5,16 +5,16 @@ clear variables
 
 % amplitude and tau ratios
 wt_amp = [24.8, 17.1, 7.3, 3.7];
-wt_amp./sum(wt_amp)
+disp(wt_amp./sum(wt_amp))
 
 ko_amp = [17.6, 3.1, 3.6, 3.9];
-ko_amp./sum(ko_amp)
+disp(ko_amp./sum(ko_amp))
 
 wt_tau = [105.2, 1119.6, 7271.9];
-wt_tau./sum(wt_tau)
+disp(wt_tau./sum(wt_tau))
 
 ko_tau = [111.2, 1115.1, 11266.1];
-ko_tau./sum(ko_tau)
+disp(ko_tau./sum(ko_tau))
 
 % check the experimental data
 exp_ksum = table2array(readtable('./4.5s-avg-ko.csv'));
