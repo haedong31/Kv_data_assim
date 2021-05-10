@@ -1,0 +1,4 @@
+4.5-sec Mgat1KO data
+two-phase calibration
+    phase 1: peaks from -50 to 50 mV
+    phase 2: aggregated RMSE
