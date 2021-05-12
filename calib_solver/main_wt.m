@@ -310,3 +310,23 @@ xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
 
 % save parameters
+save('wt_param.mat', 'p2')
+
+volt_idx = 11;
+time_space = cell(1,3);
+time_space{1} = t;
+time_space{2} = t(1:hold_idx(volt_idx));
+time_space{3} = t(hold_idx(volt_idx)+1:end) - t(hold_idx(volt_idx)+1);
+
+[ykto, ykslow1, ykslow2, ykss] = reduced_model(p2, hold_volt, volts(volt_idx), time_space, Ek);
+
+plot(t, ykto)
+hold on
+plot(t, ykslow1)
+plot(t, ykslow2)
+plot(t, ykss)
+hold off
+title('WT with 50 mV')
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+legend("I_{Kto}", "I_{Kslow1}", "I_{Kslow2}", "I_{Kss}");
