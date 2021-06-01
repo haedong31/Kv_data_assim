@@ -44,9 +44,9 @@ function [ykto, ykslow1, ykslow2, ykss, yksum] = reduced_model(p, hold_volt, vol
     param_kss(tune_kss_idx) = p([11, 13, 19, 20]);
 
     % generate K+ currents
-    ykto = Ikto(param_kto, hold_volt, volt, time_space, Ek);
-    ykslow1 = Ikslow1(param_kslow1, hold_volt, volt, time_space, Ek);
-    ykslow2 = Ikslow2(param_kslow2, hold_volt, volt, time_space, Ek);
-    ykss = Ikss(param_kss, hold_volt, volt, time_space, Ek);
+    ykto = ikto(param_kto, hold_volt, volt, time_space, Ek);
+    ykslow1 = ikslow1(param_kslow1, hold_volt, volt, time_space, Ek);
+    ykslow2 = ikslow2(param_kslow2, hold_volt, volt, time_space, Ek);
+    ykss = ikss(param_kss, hold_volt, volt, time_space, Ek);
     yksum = ykto + ykslow1 + ykslow2 + ykss;
 end

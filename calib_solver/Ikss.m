@@ -1,4 +1,4 @@
-function [current_trc] = Ikss(p, hold_volt, volt, time_space, Ek)
+function [current_trc] = ikss(p, hold_volt, volt, time_space, Ek)
     % 7 parameters; {p(7): gmax}
 
     % constants & initial values

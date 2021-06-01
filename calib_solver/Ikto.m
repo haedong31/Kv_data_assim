@@ -1,4 +1,4 @@
-function [current_trc] = Ikto(p, hold_volt, volt, time_space, Ek)
+function [current_trc] = ikto(p, hold_volt, volt, time_space, Ek)
     % 17 parameters 
     % see 2014 Bondarenko and 2020 Bondarenko
     
