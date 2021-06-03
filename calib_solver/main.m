@@ -75,47 +75,10 @@ lb([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 % optimization
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',6e+3);
 
-opt_fun1 = @(p) obj_current_stats(p, hold_volt, hold_idx, volts, t, yksum, Ek);
-[p1, ~] = fmincon(opt_fun1, p0, A, b, Aeq, beq, lb, ub, nonlcon);
+opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
+[sol, ~] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
 
-opt_fun1 = @(p) obj_rmse_over_volt(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
-[sol, ~] = fmincon(opt_fun1, p1, A, b, Aeq, beq, lb, ub, nonlcon, options);
-
-% visualization - warm up
-volt_idx = 1;
-volt = volts(volt_idx);
-
-time_space = cell(1,3);
-time_space{1} = t;
-time_space{2} = t(1:hold_idx(volt_idx));
-pulse_t = t(hold_idx(volt_idx)+1:end);
-pulse_t_adj = pulse_t - pulse_t(1);
-time_space{3} = pulse_t_adj;
-
-[~, ~, ~, ~, yksum] = reduced_model(p1, hold_volt, volt, time_space, Ek);
-figure(2)
-plot(t, yksum)
-hold on
-for i=2:num_volts
-    volt_idx = i;
-    volt = volts(volt_idx);
-    
-    time_space = cell(1,3);
-    time_space{1} = t;
-    time_space{2} = t(1:hold_idx(volt_idx));
-    pulse_t = t(hold_idx(volt_idx)+1:end);
-    pulse_t_adj = pulse_t - pulse_t(1);
-    time_space{3} = pulse_t_adj;
-
-    [~, ~, ~, ~, yksum] = reduced_model(p1, hold_volt, volt, time_space, Ek);
-    plot(t, yksum)
-end
-hold off
-axis tight
-xlabel('Time (ms)')
-ylabel('Current (pA/pF)')
-
-% visualization - final
+% visualization calibration result
 volt_idx = 1;
 volt = volts(volt_idx);
 
@@ -127,7 +90,7 @@ pulse_t_adj = pulse_t - pulse_t(1);
 time_space{3} = pulse_t_adj;
 
 [~, ~, ~, ~, yksum] = reduced_model(sol, hold_volt, volt, time_space, Ek);
-figure(3)
+figure(2)
 plot(t, yksum)
 hold on
 for i=2:num_volts
@@ -148,28 +111,6 @@ hold off
 axis tight
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
-
-% save parameters
-% save('wt_param.mat', 'p2')
-% 
-% volt_idx = 11;
-% time_space = cell(1,3);
-% time_space{1} = t;
-% time_space{2} = t(1:hold_idx(volt_idx));
-% time_space{3} = t(hold_idx(volt_idx)+1:end) - t(hold_idx(volt_idx)+1);
-% 
-% [ykto, ykslow1, ykslow2, ykss] = reduced_model(p2, hold_volt, volts(volt_idx), time_space, Ek);
-% 
-% plot(t, ykto)
-% hold on
-% plot(t, ykslow1)
-% plot(t, ykslow2)
-% plot(t, ykss)
-% hold off
-% title('WT with 50 mV')
-% xlabel('Time (ms)')
-% ylabel('Current (pA/pF)')
-% legend("I_{Kto}", "I_{Kslow1}", "I_{Kslow2}", "I_{Kss}");
 
 %% same routine for Mgat1KO
 % 4.5-sec voltage-dependent data
@@ -248,47 +189,10 @@ lb([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 % optimization
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',6e+3);
 
-opt_fun1 = @(p) obj_current_stats(p, hold_volt, hold_idx, volts, t, yksum, Ek);
-[p1, ~] = fmincon(opt_fun1, p0, A, b, Aeq, beq, lb, ub, nonlcon);
+opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
+[sol, ~] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
 
-opt_fun1 = @(p) obj_rmse_over_volt(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
-[sol, ~] = fmincon(opt_fun1, p1, A, b, Aeq, beq, lb, ub, nonlcon, options);
-
-% visualization - warm up
-volt_idx = 1;
-volt = volts(volt_idx);
-
-time_space = cell(1,3);
-time_space{1} = t;
-time_space{2} = t(1:hold_idx(volt_idx));
-pulse_t = t(hold_idx(volt_idx)+1:end);
-pulse_t_adj = pulse_t - pulse_t(1);
-time_space{3} = pulse_t_adj;
-
-[~, ~, ~, ~, yksum] = reduced_model(p1, hold_volt, volt, time_space, Ek);
-figure(2)
-plot(t, yksum)
-hold on
-for i=2:num_volts
-    volt_idx = i;
-    volt = volts(volt_idx);
-    
-    time_space = cell(1,3);
-    time_space{1} = t;
-    time_space{2} = t(1:hold_idx(volt_idx));
-    pulse_t = t(hold_idx(volt_idx)+1:end);
-    pulse_t_adj = pulse_t - pulse_t(1);
-    time_space{3} = pulse_t_adj;
-
-    [~, ~, ~, ~, yksum] = reduced_model(p1, hold_volt, volt, time_space, Ek);
-    plot(t, yksum)
-end
-hold off
-axis tight
-xlabel('Time (ms)')
-ylabel('Current (pA/pF)')
-
-% visualization - final
+% visualization calibration result
 volt_idx = 1;
 volt = volts(volt_idx);
 
@@ -300,7 +204,7 @@ pulse_t_adj = pulse_t - pulse_t(1);
 time_space{3} = pulse_t_adj;
 
 [~, ~, ~, ~, yksum] = reduced_model(sol, hold_volt, volt, time_space, Ek);
-figure(3)
+figure(2)
 plot(t, yksum)
 hold on
 for i=2:num_volts
@@ -321,4 +225,3 @@ hold off
 axis tight
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
-
