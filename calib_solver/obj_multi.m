@@ -31,14 +31,21 @@ function [z] = obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_sele
         if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
             eval_list(i) = 1e+3; % arbitrary big number
         else
+            % RMSE betwenn two curves
             rmse = sqrt(mean((yksum - yksum_hat).^2));
-            
+
+            % MSE of trace statistics
+            stats = trace_stat(t, yksum);
+            stats_hat = trace_stat(t, yksum_hat);
+            mse_stat = mean((stats - stats_hat).^2);
+
+            eval_list(i) = rmse + mse_stat;
         end   
     end
     z = sum(eval_list);
 end
 
-function [e] = trace_stat(t, current_trace)
+function [stats] = trace_stat(t, current_trace)
         % statistics of current trace
     % stat 1: peak time
 	% stat 2: peak current value
