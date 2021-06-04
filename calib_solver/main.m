@@ -73,9 +73,10 @@ ub = p0 + 10*p0;
 lb([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 
 % optimization
-options = optimoptions('fmincon', 'MaxFunctionEvaluations',6e+3);
+% obj_multi(p0, hold_volt, hold_idx, volts, t, yksum, Ek, true)
 
-opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
+options = optimoptions('fmincon', 'MaxFunctionEvaluations',6e+3);
+opt_fun = @(p) obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
 [sol, ~] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
 
 % visualization calibration result

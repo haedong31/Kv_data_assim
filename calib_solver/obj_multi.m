@@ -1,9 +1,10 @@
 function [z] = obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_select)
     num_volts = length(volts);
-    eval_list = length(num_volts, 1);
+    eval_list = zeros(num_volts, 1);
 
     for i = 1:num_volts
         volt = volts(i);
+        yksum_i = yksum(:, i);
 
         % generate time space for given voltage
         time_space = cell(1, 3);
@@ -21,21 +22,20 @@ function [z] = obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_sele
         end
         
         % check validty of trace shape
-        hold_idx = length(time_space{2});
         [~, peak_idx] = max(yksum_hat);
         check_pt1 = any(isnan(yksum_hat));
         check_pt2 = any(yksum_hat < 0);
-        check_pt3 = var(yksum_hat(1:hold_idx)) > 0.01; % not stable at hold_volt
-        check_pt4 = peak_idx < hold_idx; % not stable at hold_volt of too flat at pulse
+        check_pt3 = var(yksum_hat(1:hold_idx(i))) > 0.01; % not stable at hold_volt
+        check_pt4 = peak_idx < hold_idx(i); % not stable at hold_volt of too flat at pulse
 
         if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
             eval_list(i) = 1e+3; % arbitrary big number
         else
             % RMSE betwenn two curves
-            rmse = sqrt(mean((yksum - yksum_hat).^2));
+            rmse = sqrt(mean((yksum_i - yksum_hat).^2));
 
             % MSE of trace statistics
-            stats = trace_stat(t, yksum);
+            stats = trace_stat(t, yksum_i);
             stats_hat = trace_stat(t, yksum_hat);
             mse_stat = mean((stats - stats_hat).^2);
 
@@ -46,7 +46,7 @@ function [z] = obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_sele
 end
 
 function [stats] = trace_stat(t, current_trace)
-        % statistics of current trace
+    % statistics of current trace
     % stat 1: peak time
 	% stat 2: peak current value
 	% stat 3: tau, peak reduced by exp(-1) (~63%)
