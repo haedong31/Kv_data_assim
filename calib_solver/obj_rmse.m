@@ -1,4 +1,4 @@
-function [z] = obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_select)
+function [z] = obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_select, norm_select)
     num_volts = length(volts);
     rmse_list = zeros(num_volts, 1);
 
@@ -29,12 +29,16 @@ function [z] = obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_selec
 
         if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
             rmse_list(i) = 1e+3; % arbitrary big number
-        else            
+        else
             running_rmse = sqrt(mean((yksum_i - yksum_hat).^2));
-            miny = min(yksum_i);
-            maxy = max(yksum_i);
-
-            rmse_list(i) = (running_rmse - miny) / (maxy - miny);
+            
+            if norm_select == true
+                miny = min(yksum_i);
+                maxy = max(yksum_i);
+                rmse_list(i) = (running_rmse - miny) / (maxy - miny);
+            else
+                rmse_list(i) = running_rmse;
+            end
         end
     end
     z = sum(rmse_list);

@@ -79,8 +79,8 @@ ub = p0 + 10*p0;
 lb([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 
 % optimization
-options = optimoptions('fmincon', 'MaxFunctionEvaluations',3e+3);
-opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
+options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+5);
+opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, true);
 [sol, ~] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
 
 % visualization calibration result
@@ -117,6 +117,29 @@ axis tight
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
 
+%% plot for each voltage
+clc
+close all
+
+for i = 1:num_volts
+    volt = volts(i);
+    
+    time_space = cell(1,3);
+    time_space{1} = t;
+    time_space{2} = t(1:hold_idx(i));
+    pulse_t = t(hold_idx(i)+1:end);
+    pulse_t_adj = pulse_t - pulse_t(1);
+    time_space{3} = pulse_t_adj;
+    
+    [~, ~, ~, ~, yksum_hat] = reduced_model(sol, hold_volt, volt, time_space, Ek);
+    
+    figure(i)
+    plot(t, yksum(:, i))
+    hold on
+    plot(t, yksum_hat)
+    hold off
+end
+
 %% same routine for Mgat1KO
 % 4.5-sec voltage-dependent data
 clc
@@ -127,8 +150,14 @@ clear variables
 trace_data = table2array(readtable('./4.5s-avg-ko.csv'));
 t = trace_data(:,1);
 
-volts = -50:10:50;
-yksum = trace_data(:, 2:end);
+volt_steps = 1:11;
+min_volt = -50;
+volts = zeros(length(volt_steps), 1);
+for i = 1:length(volt_steps)
+    volts(i) = min_volt + (volt_steps(i)-1)*10;
+end
+
+yksum = trace_data(:, (volt_steps + 1));
 [~, num_volts] = size(yksum);
 
 % visualize experimental data
@@ -192,8 +221,7 @@ ub = p0 + 10*p0;
 lb([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 
 % optimization
-options = optimoptions('fmincon', 'MaxFunctionEvaluations',6e+3);
-
+options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+5);
 opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
 [sol, ~] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
 
@@ -208,9 +236,9 @@ pulse_t = t(hold_idx(volt_idx)+1:end);
 pulse_t_adj = pulse_t - pulse_t(1);
 time_space{3} = pulse_t_adj;
 
-[~, ~, ~, ~, yksum] = reduced_model(sol, hold_volt, volt, time_space, Ek);
+[~, ~, ~, ~, yksum_hat] = reduced_model(sol, hold_volt, volt, time_space, Ek);
 figure(2)
-plot(t, yksum)
+plot(t, yksum_hat)
 hold on
 for i=2:num_volts
     volt_idx = i;
@@ -223,8 +251,8 @@ for i=2:num_volts
     pulse_t_adj = pulse_t - pulse_t(1);
     time_space{3} = pulse_t_adj;
 
-    [~, ~, ~, ~, yksum] = reduced_model(sol, hold_volt, volt, time_space, Ek);
-    plot(t, yksum)
+    [~, ~, ~, ~, yksum_hat] = reduced_model(sol, hold_volt, volt, time_space, Ek);
+    plot(t, yksum_hat)
 end
 hold off
 axis tight
