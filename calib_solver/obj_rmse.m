@@ -1,4 +1,4 @@
-function [z] = obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_select)
+function [z] = obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_select, norm_select)
     num_volts = length(volts);
     rmse_list = zeros(num_volts, 1);
 
@@ -20,6 +20,12 @@ function [z] = obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_selec
             [~, ~, ~, ~, yksum_hat] = full_model(p, hold_volt, volt, time_space, Ek);
         end
 
+        % normalize?
+        if norm_select == true
+            yksum_i = trace_normalize(yksum_i);
+            yksum_hat = trace_normalize(yksum_hat);
+        end
+
         % check validty of trace shape
         [~, peak_idx] = max(yksum_hat);
         check_pt1 = any(isnan(yksum_hat));
@@ -34,4 +40,12 @@ function [z] = obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_selec
         end
     end
     z = sum(rmse_list);
+end
+
+function [normalized] = trace_normalize(current_trace)
+    % min-max normalization
+    miny = min(current_trace);
+    maxy = max(current_trace);
+
+    normalized = (current_trace - miny) ./ (maxy - miny);
 end
