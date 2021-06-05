@@ -35,50 +35,48 @@ function [z] = obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_sele
             rmse = sqrt(mean((yksum_i - yksum_hat).^2));
 
             % MSE of trace statistics
-            stats = trace_stat(t, yksum_i);
-            stats_hat = trace_stat(t, yksum_hat);
-            mse_stat = mean((stats - stats_hat).^2);
+            key_stats = key_points_diff(t, yksum_i, yksum_hat);
+            rms_key_stats = sqrt(mean(key_stats(:, 1) - key_stats(:, 2).^2));
 
-            eval_list(i) = rmse + mse_stat;
+            eval_list(i) = rmse + rms_key_stats;
         end   
     end
     z = sum(eval_list);
 end
 
-function [stats] = trace_stat(t, current_trace)
-    % statistics of current trace
-    % stat 1: peak time
-	% stat 2: peak current value
-	% stat 3: tau, peak reduced by exp(-1) (~63%)
-	% stat 4: current at 1/3 of interval [peak, tau]
-	% stat 5: current at 2/3 of interval [peak, tau]
-	% stat 6: current at last
+function [stats] = key_points_diff(t, yksum, yksum_hat)
+    pts = zeros(4, 1);
+    pts_hat = zeros(4, 1);
     
-    stats = zeros(6, 1);
-
-    % truncate trace
-    [peak, peak_idx] = max(current_trace);
-    current_trace_trunc = current_trace(peak_idx:end);
+    % 1st time stamp from yksum
+    [peak, peak_idx] = max(yksum);
+    
+    % truncate time space and current traces
     t_trunc = t(peak_idx:end);
     t_trunc = t_trunc - t_trunc(1);
+    yksum_trunc  = yksum(peak_idx:end);
+    yksum_hat_trunc = yksum_hat(peak_idx:end);
     
-    % stat 1
-    stats(1) = t(peak_idx);
-    
-    % stat 2
-    stats(2) = peak;
-    
-    % stat 3
-    [~, tau_idx] = min(abs(peak*exp(-1) - current_trace_trunc));
-    stats(3) = t_trunc(tau_idx);
+    % other three time stamps from yksum
+    [~, pt2_idx] = min(abs(peak*0.75) - yksum_trunc);
+    [~, pt3_idx] = min(abs(peak*exp(-1) - yksum_trunc));
+    pt4_idx = length(t_trunc);
 
-    % stat 4
-    [~, stat45_jump_size] = min(abs(t_trunc(tau_idx)/3 - t_trunc));
-    stats(4) = current_trace_trunc(stat45_jump_size);
+    % important current magnitudes in yksum
+    pts(1) = peak;
+    pts(2) = yksum_trunc(pt2_idx);
+    pts(3) = yksum_trunc(pt3_idx);
+    pts(4) = yksum_trunc(pt4_idx);
 
-    % stat 5
-    stats(5) = current_trace_trunc(stat45_jump_size*2);
+    % important current magnitudes in yksum_hat
+    pts_hat(1) = yksum_hat(peak_idx);
+    pts_hat(2) = yksum_hat_trunc(pt2_idx);
+    pts_hat(3) = yksum_hat_trunc(pt3_idx);
+    pts_hat(4) = yksum_hat_trunc(pt4_idx);
 
-    % stat 6
-    stats(6) = current_trace(end);
+    stats = [pts; pts_hat];
 end
+
+% function [normalized] = trace_normalize(current_trace)
+% 
+% end
