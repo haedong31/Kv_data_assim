@@ -168,6 +168,10 @@ for i = 1:num_volts
     hold on
     plot(t, yksum_hat)
     hold off
+    axis tight
+    xlabel('Time (ms)')
+    ylabel('Current (pA/pF)')
+    legend('Experimental','Model Prediction')
 end
 
 %% same routine for Mgat1KO
@@ -340,4 +344,8 @@ for i = 1:num_volts
     hold on
     plot(t, yksum_hat)
     hold off
+    axis tight
+    xlabel('Time (ms)')
+    ylabel('Current (pA/pF)')
+    legend('Experimental','Model Prediction')
 end
