@@ -83,7 +83,8 @@ high = p0 + 2*p0;
 low([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+5);
-opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
+opt_fun = @(p) obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
+% opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
 
 num_iters = 30;
 rmse_list = zeros(num_iters, 1);
