@@ -5,7 +5,7 @@ close all
 clear variables
 
 % load experimental data
-trace_data = table2array(readtable('./4.5s-avg-wt.csv'));
+trace_data = table2array(readtable('./data/wt-preprocessed/15o29009.xlsx'));
 t = trace_data(:,1);
 
 volt_steps = 1:11;
@@ -86,7 +86,7 @@ options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+5);
 opt_fun = @(p) obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
 % opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
 
-num_iters = 30;
+num_iters = 1;
 rmse_list = zeros(num_iters, 1);
 sol_list = cell(num_iters, 1);
 
@@ -182,7 +182,7 @@ close all
 clear variables
 
 % load experimental data
-trace_data = table2array(readtable('./4.5s-avg-ko.csv'));
+trace_data = table2array(readtable('./data/ko-preprocessed/15n24005.xlsx'));
 t = trace_data(:,1);
 
 volt_steps = 1:11;
