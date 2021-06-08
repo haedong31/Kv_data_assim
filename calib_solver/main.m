@@ -8,7 +8,7 @@ clear variables
 trace_data = table2array(readtable('./data/wt-preprocessed/15o29009.xlsx'));
 t = trace_data(:,1);
 
-volt_steps = 5:11;
+volt_steps = 6:11;
 min_volt = -50;
 volts = zeros(length(volt_steps), 1);
 for i = 1:length(volt_steps)
@@ -65,8 +65,6 @@ hold_volt = -70;
 Ek = -91.1;
 
 % optimization constraints 
-goal = [0, 0];
-weight = [1, 1];
 A = [];
 b = [];
 Aeq = [];
@@ -84,19 +82,15 @@ low = p0 - 2*p0;
 high = p0 + 2*p0;
 low([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 
-options = optimoptions('fgoalattain', 'MaxFunctionEvaluations',1e+6);
-% obj_multi2(p0, hold_volt, hold_idx, volts, t, yksum, Ek, true);
-opt_fun = @(p) [obj_ks(p, hold_volt, hold_idx, volts, t, yksum, Ek, true);
-    obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false)];
-% opt_fun = @(p) obj_multi(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
-% opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
+options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+6);
+opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
 
 num_iters = 1;
 rmse_list = zeros(num_iters, 1);
 sol_list = cell(num_iters, 1);
 
 % first run with p0
-[sol, fval] = fgoalattain(opt_fun, p0, goal, weight, A, b, Aeq, beq, lb, ub, nonlcon, options);
+[sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
 sol_list{1} = sol;
 rmse_list(1) = fval;
 
@@ -157,6 +151,7 @@ ylabel('Current (pA/pF)')
 clc
 close all
 
+peak = zeros(num_volts, 1);
 for i = 1:num_volts
     volt = volts(i);
     
@@ -168,6 +163,7 @@ for i = 1:num_volts
     time_space{3} = pulse_t_adj;
     
     [~, ~, ~, ~, yksum_hat] = reduced_model(sol, hold_volt, volt, time_space, Ek);
+    peak(i) = max(yksum_hat);
     
     figure(i)
     plot(t, yksum(:, i))
