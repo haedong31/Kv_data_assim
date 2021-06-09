@@ -83,9 +83,10 @@ high = p0 + 2*p0;
 low([5, 6, 7, 8, 9, 10, 14, 15, 16, 17, 18, 19, 20]) = eps;
 
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+6);
-opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
+opt_fun = @(p) obj_multi2(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, true);
+% opt_fun = @(p) obj_rmse(p, hold_volt, hold_idx, volts, t, yksum, Ek, true, false);
 
-num_iters = 1;
+num_iters = 30;
 rmse_list = zeros(num_iters, 1);
 sol_list = cell(num_iters, 1);
 
@@ -114,7 +115,7 @@ end
 sol = sol_list{best_fit_idx};
 
 % visualization calibration result
-volt_idx = 1;
+volt_idx = 30;
 volt = volts(volt_idx);
 
 time_space = cell(1,3);

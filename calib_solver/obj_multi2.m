@@ -1,6 +1,8 @@
-function [z] = obj_multi2(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_select)
+function [z] = obj_multi2(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_select, norm_select)
+    w = 0.6;
     num_volts = length(volts);
-    pts_diff = zeros(num_volts, 1);
+    trace_diff = zeros(num_volts, 1);
+    early_trace_diff = zeros(num_volts, 1);
 
     for i = 1:num_volts
         volt = volts(i);
@@ -28,31 +30,42 @@ function [z] = obj_multi2(p, hold_volt, hold_idx, volts, t, yksum, Ek, param_sel
         check_pt4 = peak_idx < hold_idx(i); % not stable at hold_volt of too flat at pulse
         
         if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
-            pts_diff(i) = 1e+3; % arbitrary big number
+            % arbitrary big number
+            trace_diff(i) = 1e+3;
+            early_trace_diff(i) = 1e+3;
         else
-            % calculate differences of key points
-            yksum_key_pts = key_points(time_space, yksum_i);
-            yksum_hat_key_pts = key_points(time_space, yksum_hat);
-            pts_diff(i) = sqrt(mean((yksum_key_pts - yksum_hat_key_pts).^2));
+            % calculate similarity for entire domain
+            rmse1 = sqrt(mean((yksum_i - yksum_hat).^2));
+            
+            % calculate similarity for early 20% 
+            yksum_i_trunc = early_phase(time_space, yksum_i);
+            yksum_hat_trunc = early_phase(time_space, yksum_hat);
+            rmse2 = sqrt(mean((yksum_i_trunc - yksum_hat_trunc).^2));
+
+            % normalize?
+            if norm_select == true
+                miny = min(yksum_i);
+                maxy = max(yksum_i);
+                
+                trace_diff(i) = (rmse1 - miny) / (maxy - miny);
+                early_trace_diff(i) = (rmse2 - miny) / (maxy - miny);
+            else
+                trace_diff(i) = rmse1;
+                early_trace_diff(i) = rmse2;
+            end
         end
     end    
-    z = sum(pts_diff);
+    z = (1-w)*sum(trace_diff) + w*sum(early_trace_diff);
 end
 
-function [pts] = key_points(time_space, current_trace)
-    % peak and end point
-    pts = zeros(2, 1);
-    
+function [current_trace_trunc] = early_phase(time_space, current_trace)    
     hold_idx = length(time_space{2});
     pulse_t_adj = time_space{3};
     
     % early 20%
-    early_phase_idx = floor(length(pulse_t_adj)*0.2);
+    early_phase_idx = floor(length(pulse_t_adj)*0.1);
     
     % 1st time stamp from yksum
     current_trace_trunc = current_trace((hold_idx+1):end);
     current_trace_trunc = current_trace_trunc(1:early_phase_idx);
-
-    pts(1) = max(current_trace_trunc);
-    pts(2) = current_trace(end);
 end
