@@ -6,7 +6,7 @@ source("./sensitivity_analysis/outputs.R")
 eps <- .Machine$double.eps
 
 # sensitivity analysis arguments
-nvar <- 11
+nvar <- 7
 N <- 10000
 G <- 30
 grid <- seq(0, 1, length=G)

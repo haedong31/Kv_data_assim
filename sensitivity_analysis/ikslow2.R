@@ -114,8 +114,8 @@ deleteGPsep(gpi)
 
 # output 2 
 out2 <- Y[,2]
-gpi <- newGPsep(X, out2, d=0.05, g=var(out2)/10, dK=TRUE)
-mle <- mleGPsep(gpi, param="both", tmin=c(eps,2), tmax=c(10,var(out2)/10))
+gpi <- newGPsep(X, out2, d=0.1, g=var(out2)/100, dK=TRUE)
+mle <- mleGPsep(gpi, param="both", tmin=c(eps,2), tmax=c(1,var(out2)/10))
 me2 <- main_effect(gpi)
 
 # visualization
@@ -136,3 +136,5 @@ for(j in 1:nvar) {
   lines(grid, m[,j], col=j, lwd=2)
 }
 legend("bottomright", paste0("x",1:nvar), fill=1:nvar, horiz=TRUE, cex=0.75)
+
+save(Y, me2, file = "./sensitivity_analysis/ikslow2_me2.RData")
