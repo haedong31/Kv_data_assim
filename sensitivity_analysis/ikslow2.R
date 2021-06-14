@@ -6,7 +6,7 @@ source("./sensitivity_analysis/outputs.R")
 eps <- .Machine$double.eps
 
 # sensitivity analysis arguments
-nvar <- 17
+nvar <- 11
 N <- 10000
 G <- 30
 grid <- seq(0, 1, length=G)
@@ -31,24 +31,18 @@ time_space[[3]] <- pulse_t_adj
 
 scale_param <- function(unit_param) {
   # parameters ranges
-  p1r <- c(-50, 70)
-  p2r <- c(-50, 50)
-  p3r <- c(-50, 50)
-  p4r <- c(-10, 40)
+  p1r <- c(-70, 70)
+  p2r <- c(-70, 50)
+  p3r <- c(-70, 50)
+  p4r <- c(eps, 10)
   p5r <- c(eps, 50)
-  p6r <- c(eps, 30)
+  p6r <- c(eps, 50)
   p7r <- c(eps, 1)
-  p8r <- c(eps, 1)
-  p9r <- c(eps, 1)
-  p10r <- c(eps, 10)
-  p11r <- c(eps, 0.005)
-  p12r <- c(eps, 0.3)
-  p13r <- c(eps, 0.005)
-  p14r <- c(eps, 0.5)
-  p15r <- c(0, 1)
-  p16r <- c(0, 1)
-  p17r <- c(0, 1)
-  
+  p8r <- c(eps, 100)
+  p9r <- c(5000, 10000)
+  p10r <- c(eps, 10000)
+  p11r <- c(eps, 0.5)
+
   param <- vector(mode="numeric", length=nvar)
   param[1] <- unit_param[1]*diff(p1r) + p1r[1]
   param[2] <- unit_param[2]*diff(p2r) + p2r[1]
@@ -61,12 +55,6 @@ scale_param <- function(unit_param) {
   param[9] <- unit_param[9]*diff(p9r) + p9r[1]
   param[10] <- unit_param[10]*diff(p10r) + p10r[1]
   param[11] <- unit_param[11]*diff(p11r) + p11r[1]
-  param[12] <- unit_param[12]*diff(p12r) + p12r[1]
-  param[13] <- unit_param[13]*diff(p13r) + p13r[1]
-  param[14] <- unit_param[14]*diff(p14r) + p14r[1]
-  param[15] <- unit_param[15]*diff(p15r) + p15r[1]
-  param[16] <- unit_param[16]*diff(p16r) + p16r[1]
-  param[17] <- unit_param[17]*diff(p17r) + p17r[1]
   
   return(param)
 }
@@ -103,11 +91,11 @@ for(i in 1:nrow(X)) {
   # assign parameters
   param <- scale_param(X[i,])
   
-  # generate IKtof trace
-  yktof <- ikto(param, hold_volt, volt, time_space)
+  # generate  current trace
+  ykslow2 <- ikslow2(param, hold_volt, volt, time_space)
   
   # calculate outputs
-  o <- current_output(time_space, yktof)
+  o <- current_output(time_space, ykslow2)
   if(any(is.na(o))) {na_row_idx <- append(na_row_idx, i)}
   
   Y[i,] <- o
@@ -119,14 +107,14 @@ Y <- Y[-na_row_idx, ]
 
 # output 1
 out1 <- Y[,1]
-gpi <- newGPsep(X, out1, d=0.1, g=var(out1)/100, dK=TRUE)
+gpi <- newGPsep(X, out1, d=0.01, g=var(out1)/100, dK=TRUE)
 mle <- mleGPsep(gpi, param="both", tmin=c(eps,2), tmax=c(10,var(out1)/10))
 me1 <- main_effect(gpi)
 deleteGPsep(gpi)
 
 # output 2 
 out2 <- Y[,2]
-gpi <- newGPsep(X, out2, d=0.1, g=var(out2)/100, dK=TRUE)
+gpi <- newGPsep(X, out2, d=0.05, g=var(out2)/10, dK=TRUE)
 mle <- mleGPsep(gpi, param="both", tmin=c(eps,2), tmax=c(10,var(out2)/10))
 me2 <- main_effect(gpi)
 
@@ -148,6 +136,3 @@ for(j in 1:nvar) {
   lines(grid, m[,j], col=j, lwd=2)
 }
 legend("bottomright", paste0("x",1:nvar), fill=1:nvar, horiz=TRUE, cex=0.75)
-
-# save results
-save(Y, me1, me2, file = "ikto_me12.RData")
