@@ -8,6 +8,7 @@
 **.DS_Store
 **.mat
 **.psd
+/Kv_app/*.csv
 
 # History files
 .Rhistory
