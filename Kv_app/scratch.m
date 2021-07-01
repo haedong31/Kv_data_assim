@@ -1,3 +1,20 @@
+%% plot data
+clc
+close all
+clear variables
+
+df = table2array(readtable("./4.5s-avg-ko.csv"));
+t = df(:, 1);
+y = df(:, 2:end);
+
+[~, num_volt] = size(y);
+plot(t, y(:, 1))
+hold on
+for i = 2:num_volt
+    plot(t, y(:, i))
+end
+hold off
+
 %% normalize & downsample 4.5-sec data
 clc
 close all
