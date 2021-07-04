@@ -14,7 +14,7 @@ function [z] = obj_fn(p, hold_volt, volts, time_space, yksum, Ek, norm_select)
         [~, peak_idx] = max(yksum_hat);
         check_pt1 = any(isnan(yksum_hat));
         check_pt2 = any(yksum_hat < 0);
-        check_pt3 = var(yksum_hat(1:hold_idx)) > 0.01; % not stable at hold_volt
+        check_pt3 = var(yksum_hat(1:hold_idx)) > 0.001; % not stable at hold_volt
         check_pt4 = peak_idx < hold_idx; % not stable at hold_volt of too flat at pulse
 
         if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
