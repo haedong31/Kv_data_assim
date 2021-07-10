@@ -1,4 +1,4 @@
-function [current_trc] = Ikslow2(p, hold_volt, volt, time_space, Ek)
+function [current_trc] = ikslow2(p, hold_volt, volt, time_space, Ek)
     % 11 parameters; {p(11): gmax} 
     % see 2020 Bondarenko
 
