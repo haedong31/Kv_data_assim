@@ -7,7 +7,7 @@ function [z] = obj_fn(p, hold_volt, volts, time_space, yksum, Ek, norm_select)
         yksum_i = yksum(:, i);
         
         % generate current
-        [~, ~, ~, ~, yksum_hat] = reduced_model(p, hold_volt, volt, time_space, Ek);
+        [~, ~, ~, ~, yksum_hat] = kcurrent_model(p, hold_volt, volt, time_space, Ek);
 
         % check validty of trace shape
         hold_idx = length(time_space{2});
