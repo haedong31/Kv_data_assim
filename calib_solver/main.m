@@ -59,24 +59,21 @@ p0 = [33, 15.5, 20, 8, 7, 0.3956, 0.00095, 0.051335, 0.14067, 0.387, ...
     22.5, 45.2, 40, 5.7, 2.058, 803, 0.05766, 0.07496, ...
     5334, 0.05766 ...
     13.17, 0.0428];
-lb = p0 - 10*p0;
-ub = p0 + 10*p0;
-lb([5, 6, 7, 8, 9, 10, ... % p5, p6, p7, p8, p9, p10 of ikto
-    14, 15, 16, 17, 18 ... % p5, p8, p9, GKslow1, GKslow1p of ikslow1
-    19, 20 ... % p10, GKslow2 of ikslow2
-    21, 22]) = eps; % p6, GKss for ikss
-
-low = p0 - 2*p0;
-high = p0 + 2*p0;
-low([5, 6, 7, 8, 9, 10, ... 
-    14, 15, 16, 17, 18 ... 
-    19, 20 ... 
-    21, 22]) = eps; 
+lb = [-50, -50, -50, eps, eps, eps, eps, eps, eps, eps, ...
+    -70, -70, -70, eps, eps, eps, eps, eps, ...
+    5000, eps, ...
+    eps, eps
+];
+ub = [70, 50, 50, 50, 30, 10, 0.005, 0.5, 1, 1, ...
+    50, 50, 50, 50, 100, 1000, 0.5, 0.5, ...
+    10000, 0.5, ...
+    100, 0.5
+];
 
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+6);
 opt_fun = @(p) obj_rmse(p, hold_volt, volts, time_space, yksum, Ek, true);
 
-num_iters = 30;
+num_iters = 15;
 rmse_list = zeros(num_iters, 1);
 sol_list = cell(num_iters, 1);
 
@@ -91,7 +88,7 @@ for i = 2:num_iters
     % random intialization
     running_p0 = zeros(length(p0), 1);
     for j = 1:length(p0)
-        unif_dist = makedist('Uniform', 'lower',low(j), 'upper',high(j));
+        unif_dist = makedist('Uniform', 'lower',lb(j), 'upper',ub(j));
         running_p0(j) = random(unif_dist, 1);
     end
     
