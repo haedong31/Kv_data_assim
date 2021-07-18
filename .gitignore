@@ -1,4 +1,4 @@
-# folders
+ # folders
 /literature/
 /calib_solver/data/
 /saved_results/
@@ -9,6 +9,7 @@
 **.mat
 **.psd
 /Kv_app/*.csv
+/Kv_app/*.xlsx
 
 # History files
 .Rhistory

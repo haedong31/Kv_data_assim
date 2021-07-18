@@ -1,3 +1,54 @@
+%% test kcurrent_model
+clc
+close all
+clear variables
+
+% default values
+kto0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+    0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+kslow10 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+kslow20 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
+kss0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428];
+
+% current model arguments
+hold_volt = -70;
+volts = -50:10:50;
+time_space = cell(1,3);
+Ek = -91.1;
+
+% number of voltages
+num_volts = length(volts);
+
+% time space
+hold_pt = 100;
+end_pt = 4.5*1000;
+hold_t = 0:hold_pt;
+pulse_t = (hold_pt + 1):end_pt;
+pulse_t_adj = pulse_t - pulse_t(1);
+t = [hold_t, pulse_t];
+
+time_space{1} = t;
+time_space{2} = hold_t;
+time_space{3} = pulse_t_adj;
+
+% calculate variances of early phases
+var_df = zeros(num_volts, 5);
+for i = 1:num_volts
+    ykto = ikto(kto0, hold_volt, volts(i), time_space, Ek);
+    ykslow1 = ikslow1(kslow10, hold_volt, volts(i), time_space, Ek);
+    ykslow2 = ikslow2(kslow20, hold_volt, volts(i), time_space, Ek);
+    ykss = ikss(kss0, hold_volt, volts(i), time_space, Ek);
+    yksum = ykto + ykslow1 + ykslow2 + ykss;
+
+    var_df(i, 1) = var(ykto(1:hold_pt));
+    var_df(i, 2) = var(ykslow1(1:hold_pt));
+    var_df(i, 3) = var(ykslow2(1:hold_pt));
+    var_df(i, 4) = var(ykss(1:hold_pt));
+    var_df(i, 5) = var(yksum(1:hold_pt));
+end
+
+disp(mean(var_df, 1))
+
 %% initial value for tri-exponential fitting
 clc
 close all
@@ -68,7 +119,6 @@ p = [p1, p2, kslow20(9), kss0(6:7)];
 
 % protocol
 hold_volt = -70;
-
 volt = 50;
 
 time_space = cell(1,3);
