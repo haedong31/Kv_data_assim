@@ -7,7 +7,7 @@ clear variables
 trace_data = table2array(readtable('./data/wt-preprocessed/15o29009.xlsx'));
 t = trace_data(:,1);
 
-volt_steps = 6:11;
+volt_steps = 1:11;
 min_volt = -50;
 volts = zeros(length(volt_steps), 1);
 for i = 1:length(volt_steps)
@@ -32,7 +32,6 @@ ylabel('Current (pA/pF)')
 % estimate holding time
 ideal_hold_time = 124;
 [~, ideal_hold_idx] = min(abs(t-ideal_hold_time));
-init_stable_val = sqrt(var(yksum(ideal_hold_idx,:)));
 
 % generate time space
 time_space = cell(1, 3);
@@ -71,7 +70,7 @@ ub = [70, 50, 50, 50, 30, 10, 0.005, 0.5, 1, 1, ...
 ];
 
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',1e+6);
-opt_fun = @(p) obj_rmse(p, hold_volt, volts, time_space, yksum, Ek, true);
+opt_fun = @(p) obj_rmse(p, hold_volt, volts, time_space, yksum, Ek, false);
 
 num_iters = 15;
 rmse_list = zeros(num_iters, 1);
