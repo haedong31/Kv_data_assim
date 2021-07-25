@@ -1,5 +1,9 @@
 %% data preprocessing
-matching_table = readtable('./data/matching-table-ko.xlsx');
+clc
+close all
+clear variables
+
+matching_table = readtable('./data/matching-table-wt.xlsx');
 file_names = matching_table.trace_file_name_4half;
 
 % exclude row not having 4.5-sec data
@@ -12,8 +16,25 @@ for i = 1:num_files
     loop_idx = [loop_idx, i];
 end
 
+ideal_end_time = 4.6*1000;
 for i = loop_idx
-    save_path = fullfile(pwd, 'ko_', file_names{i});
+    read_path = fullfile(pwd, 'data', 'wt', file_names{i});
+    save_path = fullfile(pwd, 'data', 'wt-preprocessed', file_names{i});
+
+    % read data
+    trace_data = table2array(readtable(read_path));
+
+    % downsample
+    trace_data = downsample(trace_data, 20);
+
+    % estimate time points
+    [~, ideal_end_idx] = min(abs(trace_data(:, 1) - ideal_end_time));
+
+    % cut data
+    trace_data = trace_data(1:ideal_end_idx, :);
+
+    % save data
+    writematrix(trace_data, save_path);
 end
 
 %% transform calibrated solutions to fit into xlsx file
