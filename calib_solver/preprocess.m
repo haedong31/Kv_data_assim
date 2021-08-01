@@ -1,4 +1,59 @@
-%% data preprocessing
+%% data preprocessing: WT remove noise from start and end of current
+clc
+close all
+clear variables
+
+matching_table = readtable('./data/matching-table-wt.xlsx');
+file_names = matching_table.trace_file_name_4half;
+
+% exclude row not having 4.5-sec data
+loop_idx = [];
+[num_files, ~] = size(matching_table);
+for i = 1:num_files
+    if isempty(file_names{i})
+        continue
+    end
+    loop_idx = [loop_idx, i];
+end
+
+% manually trim data inside for loop
+for i = loop_idx
+    read_path = fullfile(pwd, 'data', 'wt-preprocessed', file_names{i});
+    save_path = fullfile(pwd, 'data', 'wt-preprocessed2', file_names{i});
+    
+    trace_data = table2array(readtable(read_path));
+    t = trace_data(:, 1);
+    yksum = trace_data(:, 2:end);
+    [~, num_volts] = size(yksum);
+    
+    figure(1)
+    plot(t, yksum(:, 1))
+    hold on
+    yline(0, 'Color','red', 'LineWidth',2);
+    for j = 2:num_volts
+        plot(t, yksum(:, j))
+    end
+    hold off
+    
+    yksum_copy = yksum;
+    for j = 1:num_volts
+        y = yksum_copy(:, j);
+        [~, early_idx] = min(abs(t - 130));
+        yearly = y(1:early_idx);
+        
+        yearly(yearly > 0.6) = 0;
+        y(1:early_idx) = yearly;
+        yksum_copy(:,j) = y;
+        
+        figure(j+1)
+        plot(t, y)
+    end
+        
+    trace_data(:, 2:end) = yksum_copy;
+    writematrix(trace_data, save_path);
+end
+
+%% data preprocessing: downsample & normalization
 clc
 close all
 clear variables
@@ -19,7 +74,7 @@ end
 
 ideal_end_time = 4.6*1000;
 for i = loop_idx
-    read_path = fullfile(pwd, 'data', 'wt', file_names{i});
+    read_path = fullfile(pwd, 'data', 'wt-preprocessed', file_names{i});
     save_path = fullfile(pwd, 'data', 'wt-preprocessed', file_names{i});
 
     % read data
