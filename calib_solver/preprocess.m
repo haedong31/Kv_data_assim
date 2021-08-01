@@ -1,3 +1,46 @@
+%% data preprocessing
+clc
+close all
+clear variables
+
+matching_table = readtable('./data/matching-table-wt.xlsx');
+file_names = matching_table.trace_file_name_4half;
+caps = matching_table.cap;
+
+% exclude row not having 4.5-sec data
+loop_idx = [];
+[num_files, ~] = size(matching_table);
+for i = 1:num_files
+    if isempty(file_names{i})
+        continue
+    end
+    loop_idx = [loop_idx, i];
+end
+
+ideal_end_time = 4.6*1000;
+for i = loop_idx
+    read_path = fullfile(pwd, 'data', 'wt', file_names{i});
+    save_path = fullfile(pwd, 'data', 'wt-preprocessed', file_names{i});
+
+    % read data
+    trace_data = table2array(readtable(read_path));
+
+    % downsample
+    trace_data = downsample(trace_data, 20);
+
+    % normalize
+    trace_data(:, 2:end) = trace_data(:, 2:end) ./ caps(i); 
+
+    % estimate time points
+    [~, ideal_end_idx] = min(abs(trace_data(:, 1) - ideal_end_time));
+    
+    % cut data
+    trace_data = trace_data(1:ideal_end_idx, :);
+
+    % save data
+    writematrix(trace_data, save_path);
+end
+
 %% preprocessing for wt-4.5 / 12.10 / 10/29/2015 Cell 3 / 15o29009
 clc
 close all
