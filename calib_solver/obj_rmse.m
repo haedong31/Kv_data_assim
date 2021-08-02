@@ -7,6 +7,9 @@ function [z] = obj_rmse(p, hold_volt, volts, time_space, yksum, Ek, norm_select)
         volt = volts(i);
         yksum_i = yksum(:, i);
 
+        % negative noise of yksum_i: convert to 0
+        yksum_i(yksum_i < 0) = 0;
+
         % generate current
         [~, ~, ~, ~, yksum_hat] = kcurrent_model(p, hold_volt, volt, time_space, Ek);
 
