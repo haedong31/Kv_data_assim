@@ -68,6 +68,69 @@ for i = loop_idx
     writematrix(sol_kss', save_path, "Sheet","Parameters", "Range","D2");
 end
 
+%% check calibration result
+num_volts = length(volts);
+
+ykto_cell = cell(num_volts, 1);
+ykslow_cell = cell(num_volts, 1);
+ykss_cell = cell(num_volts, 1);
+yksum_cell = cell(num_volts, 1);
+
+for i = 1:num_volts
+    [ykto_cell{i}, ykslow_cell{i}, ykss_cell{i}, yksum_cell{i}] = kcurrent_model2(sol, hold_volt, volts(i), time_space, Ek);
+end
+
+for i = 1:num_volts
+    figure(i)
+    plot(t, yksum(:, i))
+    hold on
+    plot(t, yksum_cell{i})
+    hold off
+end
+
+%% test kcurrent_model2
+clc
+close all
+clear variables
+
+% default values
+kto0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+    0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+kslow0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+kss0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428];
+
+% current model arguments
+hold_volt = -70;
+volts = -50:10:50;
+time_space = cell(1,3);
+Ek = -91.1;
+
+% number of voltages
+num_volts = length(volts);
+
+% time space
+hold_pt = 100;
+end_pt = 4.5*1000;
+hold_t = 0:hold_pt;
+pulse_t = (hold_pt + 1):end_pt;
+pulse_t_adj = pulse_t - pulse_t(1);
+t = [hold_t, pulse_t];
+
+time_space{1} = t;
+time_space{2} = hold_t;
+time_space{3} = pulse_t_adj;
+
+p0 = [33, 15.5, 20, 8, 7, 0.3956, 0.00095, 0.051335, 0.14067, 0.387, ...
+    22.5, 45.2, 40, 5.7, 2.058, 803, 0.05766, 0.07496, ...
+    13.17, 0.0428];
+
+hold on
+for i = 1:num_volts
+    [ykto, ykslow, ykss, yksum] = kcurrent_model2(p0, hold_volt, volts(i), time_space, Ek);
+    plot(t, ykto)    
+end
+hold off
+
 %% test kcurrent_model
 clc
 close all
