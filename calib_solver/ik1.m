@@ -17,7 +17,7 @@ end
 
 function [alpha_k1, beta_k1] = transition_rates(p, v, Ek)
     % p0 = [59.215, 5.476, 594.31, 4.753]
-    alpha_k1 = 1.02 ./ (1 + exp(0.2385.*(v-Ek-p(1))));
+    alpha_k1 = 1.02 ./ (1.0 + exp(0.2385.*(v-Ek-p(1))));
     beta_k1 = (0.8*exp(0.08032*(v-Ek+p(2))) + exp(0.06175*(v-Ek-p(3)))) ./ ...
-        (1 + exp(-0.5143*(v-Ek+p(4))));
+        (1.0 + exp(-0.5143*(v-Ek+p(4))));
 end

@@ -14,6 +14,7 @@ Ionic currents
         Iktofp state variables 2139 - 2151
             ato_phosphorylated Y(135) diff with Y(25) -13 in exponent
             ito_phosphorylated Y(136) diff with Y(26) 15.5 -> 13.5 and -6.0 in exponent
+    Ik1 current 1457 - 1458
     Ikur current 1467 - 1473
         Ikur1 + Ikur2 + Ikur3 + Ikur4
         Ikur1: typical G*a*i(V-Ek); Iktos
