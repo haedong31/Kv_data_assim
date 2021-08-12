@@ -88,6 +88,42 @@ for i = 1:num_volts
     hold off
 end
 
+%% test ik1.m
+clc
+close all
+clear variables
+
+% default values
+p0 = [59.215, 5.476, 594.31, 4.753];
+
+% current model arguments
+hold_volt = -70;
+volts = -50:10:50;
+time_space = cell(1,3);
+Ek = -91.1;
+
+% number of voltages
+num_volts = length(volts);
+
+% time space
+hold_pt = 100;
+end_pt = 4.5*1000;
+hold_t = 0:hold_pt;
+pulse_t = (hold_pt + 1):end_pt;
+pulse_t_adj = pulse_t - pulse_t(1);
+t = [hold_t, pulse_t];
+
+time_space{1} = t;
+time_space{2} = hold_t;
+time_space{3} = pulse_t_adj;
+
+hold on
+for i = 1:num_volts
+    yk1 = ik1(p0, hold_volt, volts(i), time_space, Ek);
+    plot(t, yk1)    
+end
+hold off
+
 %% test kcurrent_model2
 clc
 close all
