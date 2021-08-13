@@ -68,23 +68,93 @@ for i = loop_idx
     writematrix(sol_kss', save_path, "Sheet","Parameters", "Range","D2");
 end
 
-%% check calibration result
+%% check calibration result for kcurrent3
+clc
+close all
+clear variables
+
+% protocol
+hold_volt = -70;
+volts = -50:10:50;
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
+Ek = -91.1;
+
+% experimental data
+file_group = 'ko';
+file_name = '15o27002.xlsx';
+
+trace_data = table2array(readtable(fullfile( ...
+    pwd, 'data', strcat(file_group, '-preprocessed2'), file_name)));
+t = trace_data(:, 1);
+yksum = trace_data(:, 2:end);
+
+% estimate time points
+[~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
+[~, ideal_end_idx] = min(abs(t - ideal_end_time));
+
+t = t(1:ideal_end_idx);
+yksum = yksum(1:ideal_end_idx, :);
+
+% time space
+time_space = cell(1, 3);
+time_space{1} = t;
+time_space{2} = t(1:ideal_hold_idx);
+pulse_t = t(ideal_hold_idx+1:end);
+pulse_t_adj = pulse_t - pulse_t(1);
+time_space{3} = pulse_t_adj;
+
+% calibrated parameter
+calib_param = readtable(fullfile(pwd, file_group, ...
+    strcat('calib_param_', file_name)));
+
+% default values
+kto0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+    0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+kslow10 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+kslow20 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
+kur0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 270, 1050, 0];
+kss0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428];
+
+param_kto = calib_param.IKto;
+param_kslow1 = calib_param.IKslow1;
+param_kslow1 = param_kslow1(~isnan(param_kslow1));
+param_kslow2 = zeros(11,1);
+param_kur = zeros(11,1);
+param_kss = zeros(7,1);
+param_k1 = calib_param.IK1;
+param_k1 = param_k1(~isnan(param_k1));
+
+% ikslow2
+shared_ikslow2_idx = 1:8;
+param_kslow2(shared_ikslow2_idx) = param_kslow1(shared_ikslow2_idx);
+param_kslow2(9:11) = calib_param.IKslow2(~isnan(calib_param.IKslow2));
+
+% ikur
+shared_ikur_idx = 1:8;
+param_kur(shared_ikur_idx) = param_kslow1(shared_ikur_idx);
+param_kur(9:11) = calib_param.IKur(~isnan(calib_param.IKur));
+
+% ikss
+shared_ikss_idx = 1:3;
+param_kss(shared_ikss_idx) = param_kslow1([1, 3, 4]);
+param_kss(4:7) = calib_param.IKss(~isnan(calib_param.IKss));
+
 num_volts = length(volts);
-
-ykto_cell = cell(num_volts, 1);
-ykslow_cell = cell(num_volts, 1);
-ykss_cell = cell(num_volts, 1);
-yksum_cell = cell(num_volts, 1);
-
 for i = 1:num_volts
-    [ykto_cell{i}, ykslow_cell{i}, ykss_cell{i}, yksum_cell{i}] = kcurrent_model2(sol, hold_volt, volts(i), time_space, Ek);
-end
+    % generate K+ currents
+    ykto = ikto(param_kto, hold_volt, volts(i), time_space, Ek);
+    ykslow1 = ikslow1(param_kslow1, hold_volt, volts(i), time_space, Ek);
+    ykslow2 = ikslow2(param_kslow2, hold_volt, volts(i), time_space, Ek);
+    ykur = ikur(param_kur, hold_volt, volts(i), time_space, Ek);
+    ykss = ikss(param_kss, hold_volt, volts(i), time_space, Ek);
+    yk1 = ik1(param_k1, hold_volt, volts(i), time_space, Ek);
+    yksum_hat = ykto + ykslow1 + ykslow2 + ykur + ykss + yk1;
 
-for i = 1:num_volts
     figure(i)
     plot(t, yksum(:, i))
     hold on
-    plot(t, yksum_cell{i})
+    plot(t, yksum_hat)
     hold off
 end
 

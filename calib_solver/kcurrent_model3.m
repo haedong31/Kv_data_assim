@@ -6,14 +6,14 @@ function [ykto, ykslow1, ykslow2, ykur, ykss, yk1, yksum] = kcurrent_model3(p, h
     kslow20 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
     kur0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 270, 1050, 0];
     kss0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428];
-    k10 = [59.215, 5.476, 594.31, 4.753];
+    % k10 = [59.215, 5.476, 594.31, 4.753];
 
     param_kto = zeros(17,1);
     param_kslow1 = zeros(13,1);
     param_kslow2 = zeros(11,1);
     param_kur = zeros(11,1);
     param_kss = zeros(7,1);
-    param_k1 = zeros(4,1)
+    param_k1 = zeros(4,1);
 
     % ikto
     % fixed parameters for ikto: p4, p7, p8, p9, p11, p12, fkto
@@ -79,7 +79,7 @@ function [ykto, ykslow1, ykslow2, ykur, ykss, yk1, yksum] = kcurrent_model3(p, h
     param_kss(tune_kss_idx) = p(23:24);
 
     % ik1
-    param_k1 = p(25:28);
+    param_k1(1:4) = p(25:28);
 
     % generate K+ currents
     ykto = ikto(param_kto, hold_volt, volt, time_space, Ek);
