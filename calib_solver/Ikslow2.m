@@ -30,7 +30,6 @@ end
 
 function [gv] = gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow1
-    % gv(1) = gv(1) in Ikss
     % gv(4) = p(9) - p(1)*[gv(2) in Ikslow1]
     % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
     % {p(9): p1, p(10): p2}

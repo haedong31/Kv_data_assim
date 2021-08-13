@@ -25,7 +25,7 @@ function [current_trc] = ikss(p, hold_volt, volt, time_space, Ek)
 end
 
 function [gv] = gating_variables(p, V)
-    % gv(1) = gv(1) in Ikslow1 = gv(1) in Ikslow2
+    % gv(1) = gv(1) in Ikslow1
     % p0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428]
 
     gv = zeros(2,1);
