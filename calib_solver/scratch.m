@@ -88,13 +88,14 @@ for i = 1:num_volts
     hold off
 end
 
-%% test ik1.m
+%% test ik1.m & ikur.m
 clc
 close all
 clear variables
 
 % default values
-p0 = [59.215, 5.476, 594.31, 4.753];
+p0_k1 = [59.215, 5.476, 594.31, 4.753];
+p0_kur = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 270, 1050, 0.05766];
 
 % current model arguments
 hold_volt = -70;
@@ -117,10 +118,19 @@ time_space{1} = t;
 time_space{2} = hold_t;
 time_space{3} = pulse_t_adj;
 
+figure(1)
 hold on
 for i = 1:num_volts
-    yk1 = ik1(p0, hold_volt, volts(i), time_space, Ek);
+    yk1 = ik1(p0_k1, hold_volt, volts(i), time_space, Ek);
     plot(t, yk1)    
+end
+hold off
+
+figure(2)
+hold on
+for i = 1:num_volts
+    ykur = ikur(p0_kur, hold_volt, volts(i), time_space, Ek);
+    plot(t, ykur)    
 end
 hold off
 
