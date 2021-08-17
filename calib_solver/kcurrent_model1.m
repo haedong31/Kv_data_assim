@@ -1,4 +1,4 @@
-function [ykto, ykslow1, ykslow2, ykss, yksum] = kcurrent_model(p, hold_volt, volt, time_space, Ek)
+function [ykto, ykslow1, ykslow2, ykss, yksum] = kcurrent_model1(p, hold_volt, volt, time_space, Ek)
     % default values
     kto0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
         0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];

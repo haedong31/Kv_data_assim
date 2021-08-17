@@ -1,4 +1,4 @@
-function [z] = obj_rmse(p, hold_volt, volts, time_space, yksum, Ek, norm_select)
+function [z] = obj_rmse1(p, hold_volt, volts, time_space, yksum, Ek, norm_select)
     hold_idx = length(time_space{2});
     num_volts = length(volts);
 
