@@ -1,3 +1,33 @@
+%% structure (dictionary equivalent)
+model_struct = struct;
+
+% current names as keys (field names)
+currents_list = {"ikto", "ikslow1", "ikss"};
+
+% parameters idx as values
+param_info = {[], [], []};
+
+param_kto = zeros(17,1);
+param_kslow1 = zeros(13,1);
+param_kslow2 = zeros(11,1);
+param_kss = zeros(7,1);
+
+s = struct;
+s.a = 1;
+s.b = {'A','B','C'};
+
+fnames = fieldnames(s);
+
+for i = 1:2
+    fn = fnames{i};
+    % disp(getfield(s, fn))
+    disp(s.(fn))
+end
+
+my_key={'key1', 'key2', 'key3'};
+value = {[1 2], [3 4], [5 6]};
+s=cell2struct(value,my_key,2);
+
 %% transform calibrated solutions to fit into xlsx file
 clc
 close all
