@@ -14,11 +14,15 @@ function [current_trace] = gen_matching_current(current_name, tune_param)
     switch current_name
         case "ikto"
             % generate ikto
-            fixed_kto_idx = setdiff()
+            num_kto_param = 17;
+            fixed_kto_idx = setdiff(1:num_kto_param, tune_param);
+
+            
         case "ikslow1"
             % generate ikslow1
         case "ikslow2"
             % generate ikslow2
+
         case "ikur"
             % generate ikur
         case "ikss"
