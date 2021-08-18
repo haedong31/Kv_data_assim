@@ -4,8 +4,10 @@ model_struct = struct;
 % current names as keys (field names)
 currents_list = {"ikto", "ikslow1", "ikss"};
 
-% parameters idx as values
-param_info = {[], [], []};
+% calibration parameters idx as values
+param_info = {[1, 2, 3, 5, 6, 10, 13, 14, 16, 17], ...
+    [1, 2, 3, 5, 8, 9, 12, 13], ...
+    [6, 7]};
 
 param_kto = zeros(17,1);
 param_kslow1 = zeros(13,1);
