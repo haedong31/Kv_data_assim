@@ -5,7 +5,6 @@ clear variables
 format shortG
 
 % structure with three fields
-
 % field 1: current names
 current_names = {'ikto', 'ikslow1', 'ikss'};
 
@@ -62,6 +61,30 @@ disp(param_kslow1)
 param_kss(fixed_kss_idx) = kss0(fixed_kss_idx);
 param_kss(tune_kss_idx1) = p(tune_kss_idx2);
 disp(param_kss)
+
+% protocol information
+hold_volt = -70;
+volt = 10;
+Ek = -91.1;
+
+time_space = cell(1, 3);
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
+
+t = 1:ideal_end_time;
+[~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
+
+time_space{1} = t;
+time_space{2} = t(1:ideal_hold_idx);
+pulse_t = t(ideal_hold_idx+1:end);
+pulse_t_adj = pulse_t - pulse_t(1);
+time_space{3} = pulse_t_adj;
+
+protocol = cell(4, 1);
+protocol{1} = hold_volt;
+protocol{2} = volt;
+protocol{3} = time_space;
+protocol{4} = Ek;
 
 %% transform calibrated solutions to fit into xlsx file
 clc
