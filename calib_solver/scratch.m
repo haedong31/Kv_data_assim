@@ -1,4 +1,4 @@
-%% structure (dictionary equivalent)
+%% test general kcurrent model
 clc
 close all
 clear variables
@@ -9,62 +9,27 @@ format shortG
 current_names = {'ikto', 'ikslow1', 'ikss'};
 
 % field 2: tunning index in individual parameter list
-param_info1 = {[1, 2], ...
-    [1, 2], ...
+param_info1 = {[1, 2, 3, 5, 6, 10, 13, 14, 16, 17], ...
+    [1, 2, 3, 5, 8, 9, 12, 13], ...
     [6, 7]};
 
 % field 3: tunning index in p
-param_info2 = {[1, 2], ...
-    [3, 4], ...
-    [5, 6]};
+len1 = length(param_info1{1});
+len2 = length(param_info1{2});
+len3 = length(param_info1{3});
+param_info2 = {1:len1, ...
+    (len1+1):(len1+len2), ...
+    (len1+len2+1):(len1+len2+len3)};
+
 model_info = [current_names; param_info1; param_info2];
 
 % create a structure
 row_names = {'name', 'idx1', 'idx2'};
 model_struct = cell2struct(model_info, row_names, 1);
 
-% default values
-kto0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
-    0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
-kslow10 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
-kss0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428];
-
-param_kto = zeros(length(kto0), 1);
-param_kslow1 = zeros(length(kslow10), 1);
-param_kss0 = zeros(length(kss0), 1);
-
-% toy example
-p = [100, 100, 200, 200, 300, 300];
-
-current_names = model_struct.name;
-
-tune_kto_idx1 = model_struct(1).idx1;
-tune_kslow1_idx1 = model_struct(2).idx1;
-tune_kss_idx1 = model_struct(3).idx1;
-
-tune_kto_idx2 = model_struct(1).idx2;
-tune_kslow1_idx2 = model_struct(2).idx2;
-tune_kss_idx2 = model_struct(3).idx2;
-
-fixed_kto_idx = setdiff(1:length(kto0), tune_kto_idx1);
-fixed_kslow1_idx = setdiff(1:length(kslow10), tune_kslow1_idx1);
-fixed_kss_idx = setdiff(1:length(kss0), tune_kss_idx1);
-
-param_kto(fixed_kto_idx) = kto0(fixed_kto_idx);
-param_kto(tune_kto_idx1) = p(tune_kto_idx2);
-disp(param_kto)
-
-param_kslow1(fixed_kslow1_idx) = kslow10(fixed_kslow1_idx);
-param_kslow1(tune_kslow1_idx1) = p(tune_kslow1_idx2);
-disp(param_kslow1)
-
-param_kss(fixed_kss_idx) = kss0(fixed_kss_idx);
-param_kss(tune_kss_idx1) = p(tune_kss_idx2);
-disp(param_kss)
-
 % protocol information
 hold_volt = -70;
-volt = 10;
+volts = -50:10:50;
 Ek = -91.1;
 
 time_space = cell(1, 3);
@@ -82,9 +47,60 @@ time_space{3} = pulse_t_adj;
 
 protocol = cell(4, 1);
 protocol{1} = hold_volt;
-protocol{2} = volt;
+% protocol{2} = volt;
 protocol{3} = time_space;
 protocol{4} = Ek;
+
+p0 = [33, 15.5, 20, 8, 7, 0.3956, 0.00095, 0.051335, 0.14067, 0.387, ...
+    22.5, 45.2, 40, 5.7, 2.058, 803, 0.05766, 0.07496, ...
+    13.17, 0.0428];
+
+hold on
+for i = 1:length(volts)
+    protocol{2} = volts(i);
+    [yksum, ~] = kcurrent_model(p0, model_struct, protocol);
+    
+    plot(t, yksum)
+end
+hold off
+
+% % toy example
+% kto0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+%     0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+% kslow10 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+% kss0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428];
+% 
+% param_kto = zeros(length(kto0), 1);
+% param_kslow1 = zeros(length(kslow10), 1);
+% param_kss0 = zeros(length(kss0), 1);
+% 
+% p = [100, 100, 200, 200, 300, 300];
+% 
+% current_names = model_struct.name;
+% 
+% tune_kto_idx1 = model_struct(1).idx1;
+% tune_kslow1_idx1 = model_struct(2).idx1;
+% tune_kss_idx1 = model_struct(3).idx1;
+% 
+% tune_kto_idx2 = model_struct(1).idx2;
+% tune_kslow1_idx2 = model_struct(2).idx2;
+% tune_kss_idx2 = model_struct(3).idx2;
+% 
+% fixed_kto_idx = setdiff(1:length(kto0), tune_kto_idx1);
+% fixed_kslow1_idx = setdiff(1:length(kslow10), tune_kslow1_idx1);
+% fixed_kss_idx = setdiff(1:length(kss0), tune_kss_idx1);
+% 
+% param_kto(fixed_kto_idx) = kto0(fixed_kto_idx);
+% param_kto(tune_kto_idx1) = p(tune_kto_idx2);
+% disp(param_kto)
+% 
+% param_kslow1(fixed_kslow1_idx) = kslow10(fixed_kslow1_idx);
+% param_kslow1(tune_kslow1_idx1) = p(tune_kslow1_idx2);
+% disp(param_kslow1)
+% 
+% param_kss(fixed_kss_idx) = kss0(fixed_kss_idx);
+% param_kss(tune_kss_idx1) = p(tune_kss_idx2);
+% disp(param_kss)
 
 %% transform calibrated solutions to fit into xlsx file
 clc
