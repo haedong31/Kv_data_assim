@@ -1,4 +1,6 @@
-function [z] = obj_rmse(p, hold_volt, volts, time_space, yksum, Ek)
+function [z] = obj_rmse(p, model_struct, time_space, volt_space)
+    volts = 
+    time_space = protocol{3};
     hold_idx = length(time_space{2});
     num_volts = length(volts);
 
@@ -7,7 +9,7 @@ function [z] = obj_rmse(p, hold_volt, volts, time_space, yksum, Ek)
         volt = volts(i);
         yksum_i = yksum(:, 1);
 
-        [yksum_hat, ~] = kcurrent_model(p, hold_volt, volt, time_space, Ek);
+        [yksum, ~] = kcurrent_model(p0, model_struct, protocol);
 
         running_rmse = sqrt(mean((yksum_i((hold_idx+1):end) - yksum_hat((hold_idx+1):end)).^2));
 

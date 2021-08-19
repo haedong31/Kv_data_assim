@@ -102,6 +102,21 @@ hold off
 % param_kss(tune_kss_idx1) = p(tune_kss_idx2);
 % disp(param_kss)
 
+%% tunnning parameters
+fixed_kto_idx = [4, 7, 8, 9, 11, 12, 15];
+tune_kto_idx = setdiff(1:17, fixed_kto_idx);
+
+fixed_kslow1_idx = [4, 6, 7, 10, 11];
+tune_kslow1_idx = setdiff(1:13, fixed_kslow1_idx);
+
+shared_ikslow2_idx = 1:8;
+fixed_kslow2_idx = 9;
+tune_kslow2_idx = setdiff(1:11, [shared_ikslow2_idx, fixed_kslow2_idx]);
+
+shared_ikss_idx = 1:3;
+fixed_kss_idx = [4, 5];
+tune_kss_idx = setdiff(1:7, [shared_ikss_idx, fixed_kss_idx]);
+
 %% transform calibrated solutions to fit into xlsx file
 clc
 close all
