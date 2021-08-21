@@ -4,13 +4,13 @@ library(FrF2)
 set.seed(821)
 
 # design 1: individually for each current
-target_resol <- 6
+target_resol <- 5
 
-num_param1 <- 17
-num_param2 <- 13
-num_param3 <- 3
-num_param4 <- 3
-num_param5 <- 4
+num_param1 <- 14
+num_param2 <- 10
+num_param3 <- 2
+num_param4 <- 2
+num_param5 <- 3
 num_param6 <- 10
 
 param1 <- str_c("p", seq(1, num_param1))
