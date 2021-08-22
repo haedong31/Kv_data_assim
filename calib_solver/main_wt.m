@@ -23,23 +23,22 @@ end
 
 % regularization
 % field 1: selection of currents
-current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss', 'ik1'};
+current_names = {'ikto', 'ikslow1', 'ikss', 'ik1'};
 num_currents = length(current_names);
 
 % field 2: tunning index in individual current models
-tune_idx1_kto = [1, 2, 3, 5, 6, 10, 13, 14, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 5, 8, 9, 12, 13];
-tune_idx1_kslow2 = [10, 11];
-tune_idx1_kss = [10, 11];
-tune_idx1_k1 = [1, 2, 3, 4];
+tune_idx1_kto = [1, 2, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
+% tune_idx1_kslow2 = [10, 11];
+tune_idx1_kss = [4, 5, 6, 7];
+tune_idx1_k1 = [1, 3, 5, 7];
 idx_info1 = {tune_idx1_kto, ...
     tune_idx1_kslow1, ...
-    tune_idx1_kslow2, ...
     tune_idx1_kss, ...
     tune_idx1_k1};
 
 % field 3: tunning index in decision variable, p
-idx_info2 = cell(num_currents, 1);
+idx_info2 = cell(1, num_currents);
 cul_idx_len = 0;
 
 for i = 1: num_currents
@@ -65,25 +64,19 @@ Aeq = [];
 beq = [];
 nonlcon = [];
 
-p0 = [33, 15.5, 20, 8, 7, 0.3956, 0.00095, 0.051335, 0.14067, 0.387, ...
-    22.5, 45.2, 40, 5.7, 2.058, 803, 0.05766, 0.07496, ...
-    5334, 0.05766, ...
-    1050, 0 ...
-    13.17, 0.0428, ...
-    59.215, 5.476, 594.31, 4.753, 1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
-lb = [-50, -50, -50, eps, eps, eps, eps, eps, eps, eps, ...
-    -70, -70, -70, eps, eps, eps, eps, eps, ...
-    5000, eps, ...
-    300, eps, ...
-    eps, eps, ...
-    eps, -20, eps, -30, eps, eps, eps, eps, eps, eps
+p0 = [33, 15.5, 0.2087704319, 0.14067, 0.387, ...
+    22.5, 45.2, 40.0, 803.0, 0.05766, 0.07496, ...
+    0.0862, 1235.5, 13.17, 0.0428, ...
+    59.215, 594.31, 1.02, 0.8];
+lb = [-50, -50, eps, eps, eps, ...
+    -70, -70, -70, eps, eps, eps, ...
+    eps, eps, eps, eps, ...
+    eps, eps, eps, eps
 ];
-ub = [70, 50, 50, 50, 30, 10, 0.005, 0.5, 1, 1, ...
-    50, 50, 50, 50, 100, 1000, 0.5, 0.5, ...
-    10000, 0.5, ...
-    2500, 0.5, ...
-    100, 0.5, ...
-    120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1
+ub = [70, 50, 1, 1, 1 ...
+    50, 50, 50, 2000, 0.5, 0.5, ...
+    1, 2000, 100, 0.5, ...
+    120, 1000, 3, 2
 ];
 
 % default values
@@ -93,22 +86,7 @@ kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0
 kslow2_default = [5334, 4912, 0.05766];
 kur_default = [270, 1050, 0];
 kss_default = [0.0862, 1235.5, 13.17, 0.0428];
-
-% index for tunning parameters
-fixed_kto_idx = [4, 7, 8, 9, 11, 12, 15];
-tune_kto_idx = setdiff(1:17, fixed_kto_idx);
-
-fixed_kslow1_idx = [4, 6, 7, 10, 11];
-tune_kslow1_idx = setdiff(1:13, fixed_kslow1_idx);
-
-fixed_kslow2_idx = 1;
-tune_kslow2_idx = [2, 3];
-
-fixed_kur_idx = 1;
-tune_kur_idx = [2, 3];
-
-fixed_kss_idx = [1, 2];
-tune_kss_idx = [3, 4];
+k1_default = [59.215, 5.476, 594.31, 4.753, 1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
 
 % protocol
 hold_volt = -70;
@@ -117,10 +95,14 @@ ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
 Ek = -91.1;
 
+volt_space = cell(3, 1);
+volt_space{1} = hold_volt;
+volt_space{2} = volts;
+volt_space{3} = Ek;
+
 % main loop
 num_files = length(loop_idx);
-num_variables = 28;
-sols = zeros(num_files, num_variables);
+sols = zeros(num_files, cul_idx_len);
 for i = loop_idx
     fprintf('[%i/%i] %s \n', i, num_files, file_names{i})
 
@@ -147,7 +129,8 @@ for i = loop_idx
     time_space{3} = pulse_t_adj;
 
     % objective function
-    opt_fun = @(p) obj_rmse3(p, hold_volt, volts, time_space, yksum, Ek, false);
+     % obj_rmse(p0, model_struct, volt_space, time_space, yksum);
+    opt_fun = @(p) obj_rmse(p, model_struct, volt_space, time_space, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
@@ -183,35 +166,22 @@ for i = loop_idx
     sols(i, :) = sol;
 
     % save calibrated solution
-    save_path = fullfile(pwd, 'wt', strcat('calib_param_', file_names{i}));
+    mkdir(fullfile(pwd, group_name));
+    save_path = fullfile(pwd, group_name, strcat('calib_param_', file_names{i}));
 
-    sol_kto = zeros(17, 1);
-    sol_kslow1 = zeros(13, 1);
-    sol_kslow2 = zeros(3, 1);
-    sol_kur = zeros(3, 1);
-    sol_kss = zeros(4, 1);
-    sol_k1 = zeros(4, 1);
-
-    sol_kto(fixed_kto_idx) = kto0(fixed_kto_idx);
-    sol_kslow1(fixed_kslow1_idx) = kslow10(fixed_kslow1_idx);
-    sol_kslow2(fixed_kslow2_idx) = kslow20(fixed_kslow2_idx);
-    sol_kur(fixed_kur_idx) = kur0(fixed_kur_idx);
-    sol_kss(fixed_kss_idx) = kss0(fixed_kss_idx);
+    sol_kto = kto_default;
+    sol_kslow1 = kslow1_default;
+    sol_kss = kss_default;
+    sol_k1 = k1_default;
    
-    sol_kto(tune_kto_idx) = sol(1:10);
-    sol_kslow1(tune_kslow1_idx) = sol(11:18);
-    sol_kslow2(tune_kslow2_idx) = sol(19:20);
-    sol_kur(tune_kur_idx) = sol(21:22);
-    sol_kss(tune_kss_idx) = sol(23:24);
-    sol_k1(1:4) = sol(25:28);
+    sol_kto(idx_info1{1}) = sol(idx_info2{1});
+    sol_kslow1(idx_info1{2}) = sol(idx_info2{2});
+    sol_kss(idx_info1{3}) = sol(idx_info2{3});
+    sol_k1(idx_info1{4}) = sol(idx_info2{4});
     
-    current_names = ["IKto", "IKslow1", "IKslow2", "IKur", "IKss", "IK1"];
-    writematrix(current_names, save_path, "Sheet","Parameters", "Range","A1:F1");            
-
+    writematrix(current_names, save_path, "Sheet","Parameters", "Range","A1:D1");
     writematrix(sol_kto, save_path, "Sheet","Parameters", "Range","A2");
     writematrix(sol_kslow1, save_path, "Sheet","Parameters", "Range","B2");
-    writematrix(sol_kslow2, save_path, "Sheet","Parameters", "Range","C2");
-    writematrix(sol_kur, save_path, "Sheet","Parameters", "Range","D2");
     writematrix(sol_kss, save_path, "Sheet","Parameters", "Range","E2");
     writematrix(sol_k1, save_path, "sheet","Parameters", "Range","F2");
 end
