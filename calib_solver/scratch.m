@@ -117,6 +117,21 @@ shared_ikss_idx = 1:3;
 fixed_kss_idx = [4, 5];
 tune_kss_idx = setdiff(1:7, [shared_ikss_idx, fixed_kss_idx]);
 
+%% fix excel files of exp4 calibration result of wt
+clc
+close all
+clear variables
+
+group = 'wt';
+file_names = dir(fullfile(pwd, 'wt', '*.xlsx'));
+
+for i=1:length(file_names)
+    sol = readtable(fullfile(file_names(i).folder, file_names(i).name));
+    sol = sol(:, [1, 2, 5, 6]);
+    sol.Properties.VariableNames = {'ikto', 'ikslow1', 'ikss', 'ik1'};
+    writetable(sol, 'test.xlsx')
+end
+
 %% transform calibrated solutions to fit into xlsx file
 clc
 close all

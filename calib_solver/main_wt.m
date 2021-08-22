@@ -103,11 +103,12 @@ volt_space{3} = Ek;
 % main loop
 num_files = length(loop_idx);
 sols = zeros(num_files, cul_idx_len);
+% mkdir(fullfile(pwd, group_name));
 for i = loop_idx
     fprintf('[%i/%i] %s \n', i, num_files, file_names{i})
 
     % read data
-    file_path = fullfile(pwd, 'data', 'wt-preprocessed2', file_names{i});
+    file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed2'), file_names{i});
     trace_data = table2array(readtable(file_path));
         
     t = trace_data(:, 1);
@@ -166,7 +167,6 @@ for i = loop_idx
     sols(i, :) = sol;
 
     % save calibrated solution
-    mkdir(fullfile(pwd, group_name));
     save_path = fullfile(pwd, group_name, strcat('calib_param_', file_names{i}));
 
     sol_kto = kto_default;
@@ -179,11 +179,12 @@ for i = loop_idx
     sol_kss(idx_info1{3}) = sol(idx_info2{3});
     sol_k1(idx_info1{4}) = sol(idx_info2{4});
     
-    writematrix(current_names, save_path, "Sheet","Parameters", "Range","A1:D1");
-    writematrix(sol_kto, save_path, "Sheet","Parameters", "Range","A2");
-    writematrix(sol_kslow1, save_path, "Sheet","Parameters", "Range","B2");
-    writematrix(sol_kss, save_path, "Sheet","Parameters", "Range","E2");
-    writematrix(sol_k1, save_path, "sheet","Parameters", "Range","F2");
+    save_current_names = ["IKto", "IKslow1", "IKss", "IK1"];
+    writematrix(save_current_names, save_path, "Sheet","Parameters", "Range","A1:D1");
+    writematrix(sol_kto', save_path, "Sheet","Parameters", "Range","A2");
+    writematrix(sol_kslow1', save_path, "Sheet","Parameters", "Range","B2");
+    writematrix(sol_kss', save_path, "Sheet","Parameters", "Range","C2");
+    writematrix(sol_k1', save_path, "sheet","Parameters", "Range","E2");
 end
 
 %% viz
