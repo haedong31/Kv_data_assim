@@ -5,17 +5,18 @@ clear variables
 format shortG
 
 % specify model structure
-current_names = {'ikto', 'ikslow1', 'ikss', 'ik1'};
+current_names = {'ikto', 'ikslow1', 'ikss'};
 num_currents = length(current_names);
 
 tune_idx1_kto = [1, 2, 15, 16, 17];
 tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
 tune_idx1_kss = [4, 5, 6, 7];
-tune_idx1_k1 = [1, 3, 5, 7];
+% tune_idx1_k1 = [1, 3, 5, 7];
 idx_info1 = {tune_idx1_kto, ...
     tune_idx1_kslow1, ...
-    tune_idx1_kss, ...
-    tune_idx1_k1};
+    tune_idx1_kss};
+    
+%     tune_idx1_k1};
 
 idx_info2 = cell(1, num_currents);
 cul_idx_len = 0;
@@ -31,7 +32,7 @@ model_struct = cell2struct(model_info, field_names, 1);
 
 % specify result file to check
 file_group = 'ko';
-file_name = '15n03002.xlsx';
+file_name = '15o27002.xlsx';
 calib = table2array(readtable(fullfile(pwd, file_group, strcat('calib_param_', file_name))));
 
 sol = zeros(cul_idx_len, 1);
@@ -68,6 +69,7 @@ time_space{2} = t(1:ideal_hold_idx);
 pulse_t = t(ideal_hold_idx+1:end);
 pulse_t_adj = pulse_t - pulse_t(1);
 time_space{3} = pulse_t_adj;
+hold_idx = length(time_space{2});
 
 protocol{1} = hold_volt;
 protocol{3} = time_space;
@@ -76,10 +78,11 @@ protocol{4} = ek;
 % generate yksum_hat
 for i=1:length(volts)
     protocol{2} = volts(i);
+    yksum_i = yksum(:, i);
     [yksum_hat, ~] = kcurrent_model(sol, model_struct, protocol);
 
     figure(i)
-    plot(t, yksum(:, i))
+    plot(t, yksum_i)
     hold on
     plot(t, yksum_hat)
     hold off
@@ -217,7 +220,7 @@ for i=1:length(file_names)
     sol = readtable(fullfile(file_names(i).folder, file_names(i).name));
     sol = sol(:, [1, 2, 5, 6]);
     sol.Properties.VariableNames = {'ikto', 'ikslow1', 'ikss', 'ik1'};
-    writetable(sol, 'test.xlsx')
+    writetable(sol, fullfile(pwd, 'wt-re', file_names(i).name))
 end
 
 %% transform calibrated solutions to fit into xlsx file
