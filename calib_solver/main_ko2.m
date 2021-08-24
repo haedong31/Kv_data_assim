@@ -5,7 +5,7 @@ clear variables
 warning('off', 'all')
 
 % matching table
-group_name = 'wt';
+group_name = 'ko';
 matching_table = readtable(fullfile(pwd, 'data', strcat('matching-table-', group_name, '.xlsx')));
 [num_files, ~] = size(matching_table);
 
@@ -104,7 +104,7 @@ save_current_names = string(current_names);
 
 num_files = length(loop_idx);
 sols = zeros(num_files, cul_idx_len);
-for l = 1:floor(len_loop_idx/2)
+for l = (floor(len_loop_idx/2)+1):len_loop_idx
     i = loop_idx(l);
     fprintf('[%i/%i] %s \n', i, num_files, file_names{i})
 

@@ -8,9 +8,9 @@ format shortG
 current_names = {'ikto', 'ikslow1', 'ikss'};
 num_currents = length(current_names);
 
-tune_idx1_kto = [1, 2, 15, 16, 17];
+tune_idx1_kto = [1, 2, 3, 5, 6, 15, 16, 17];
 tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
-tune_idx1_kss = [4, 5, 6, 7];
+tune_idx1_kss = [6, 7];
 % tune_idx1_k1 = [1, 3, 5, 7];
 idx_info1 = {tune_idx1_kto, ...
     tune_idx1_kslow1, ...
@@ -79,7 +79,7 @@ protocol{4} = ek;
 for i=1:length(volts)
     protocol{2} = volts(i);
     yksum_i = yksum(:, i);
-    [yksum_hat, ~] = kcurrent_model(sol, model_struct, protocol);
+    [yksum_hat, comp] = kcurrent_model(sol, model_struct, protocol);
 
     figure(i)
     plot(t, yksum_i)
@@ -194,16 +194,21 @@ hold off
 % disp(param_kss)
 
 %% tunnning parameters
+clear variables
+
+% [1, 2, 3, 5, 6, 10, 13, 14, 16, 17];
 fixed_kto_idx = [4, 7, 8, 9, 11, 12, 15];
 tune_kto_idx = setdiff(1:17, fixed_kto_idx);
 
+% [1, 2, 3, 5, 8, 9, 12, 13];
 fixed_kslow1_idx = [4, 6, 7, 10, 11];
 tune_kslow1_idx = setdiff(1:13, fixed_kslow1_idx);
 
+% 
 shared_ikslow2_idx = 1:8;
 fixed_kslow2_idx = 9;
 tune_kslow2_idx = setdiff(1:11, [shared_ikslow2_idx, fixed_kslow2_idx]);
-
+    
 shared_ikss_idx = 1:3;
 fixed_kss_idx = [4, 5];
 tune_kss_idx = setdiff(1:7, [shared_ikss_idx, fixed_kss_idx]);

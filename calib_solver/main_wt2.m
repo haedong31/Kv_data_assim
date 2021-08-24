@@ -26,35 +26,39 @@ len_loop_idx = length(loop_idx);
 
 % regularization
 % field 1: selection of currents
-current_names = {'ikto', 'ikslow1', 'ikss'};
+current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
 num_currents = length(current_names);
 
 % field 2: tunning index in individual current models
-tune_idx1_kto = [1, 2, 3, 5, 6, 15, 16, 17];
+tune_idx1_kto = [1, 2, 3, 5, 6, 16, 17];
 tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
+tune_idx1_kslow2 = [9, 11];
 tune_idx1_kss = [6, 7];
 % tune_idx1_k1 = [1, 3, 5, 7];
 idx_info1 = {tune_idx1_kto, ...
     tune_idx1_kslow1, ...
+    tune_idx1_kslow2, ...
     tune_idx1_kss};
 
-p0 = [33, 15.5, 20, 8, 7, 0.2087704319, 0.14067, 0.387, ...
+p0 = [33, 15.5, 20, 8, 7, 0.14067, 0.387, ...
     22.5, 45.2, 40.0, 803.0, 0.05766, 0.07496, ...
+    5334, 0.05766, ...
     13.17, 0.0428];
 %     59.215, 594.31, 1.02, 0.8];
-lb = [-50, -50, -50, eps, eps, eps, eps, eps, ...
+lb = [-50, -50, -50, eps, eps, eps, eps, ...
     -70, -70, -70, eps, eps, eps, ...
+    5000, eps, ...
     eps, eps];
 %     eps, eps, eps, eps
-ub = [70, 50, 50, 50, 30, 1, 1, 1 ...
+ub = [70, 50, 50, 50, 30, 1, 1 ...
     50, 50, 50, 2000, 0.5, 0.5, ...
+    10000, 0.5, ...
     100, 0.5];
 %     120, 1000, 3, 2
 
 % field 3: tunning index in decision variable, p
 idx_info2 = cell(1, num_currents);
 cul_idx_len = 0;
-
 for i = 1: num_currents
     cul_idx_len_old = cul_idx_len;
     cul_idx_len = cul_idx_len + length(idx_info1{i});
@@ -68,7 +72,7 @@ model_struct = cell2struct(model_info, field_names, 1);
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 30;
+num_iters = 3;
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',max_evals, 'Display','off');
 
 % optimization constraints 
@@ -104,7 +108,7 @@ save_current_names = string(current_names);
 
 num_files = length(loop_idx);
 sols = zeros(num_files, cul_idx_len);
-for l = 1:floor(len_loop_idx/2)
+for l = 1:(floor(len_loop_idx/2)+1)
     i = loop_idx(l);
     fprintf('[%i/%i] %s \n', i, num_files, file_names{i})
 
@@ -185,9 +189,18 @@ for l = 1:floor(len_loop_idx/2)
     sol_kss = zeros(1, num_param_kss);
     sol_kss(shared_idx1_kss) = sol_kslow1(shared_idx2_kss);
     sol_kss(uniq_idx_kss) = kss_default;
-    sol_kss(idx_info1{3}) = sol(idx_info2{3});
+    sol_kss(idx_info1{4}) = sol(idx_info2{4});
+
+    num_param_kslow2 = 11;
+    shared_idx_kslow2 = 1:8;
+    uniq_idx_kslow2 = setdiff(1:num_param_kslow2, shared_idx_kslow2);
     
-    sol_mx = padcat(sol_kto', sol_kslow1', sol_kss');    
-    writematrix(save_current_names , save_path, "Sheet","Parameters", "Range","A1:D1");
+    sol_kslow2 = zeros(1, num_param_kslow2);
+    sol_kslow2(shared_idx_kslow2) = sol_kslow1(shared_idx_kslow2);
+    sol_kslow2(uniq_idx_kslow2) = kslow2_default;
+    sol_kslow2(idx_info1{3}) = sol(idx_info2{3});
+
+    sol_mx = padcat(sol_kto', sol_kslow1', sol_kslow2', sol_kss');    
+    writematrix(save_current_names , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end
