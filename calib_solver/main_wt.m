@@ -22,8 +22,12 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 50;
-options = optimoptions('fmincon', 'MaxFunctionEvaluations',max_evals, 'Display','off');
+num_iters = 1;
+options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
+    'MaxFunctionEvaluations',max_evals, 'Display','off');
+global history
+history.x = [];
+history.fval = [];
 
 % protocol
 hold_volt = -70;
@@ -271,4 +275,22 @@ for l = 1:floor(len_loop_idx/2)
     end
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
+end
+
+function [stop] = outfun(x,optimValues,state)
+    global history
+    stop = false;
+ 
+     switch state
+         case 'init'
+             disp('init')
+         case 'iter'
+         % Concatenate current point and objective function
+         % value with history. x must be a row vector.
+           history.fval = [history.fval; optimValues.fval];
+           history.x = [history.x; x];
+         case 'done'
+             disp('done')
+         otherwise
+     end
 end
