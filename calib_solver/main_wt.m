@@ -6,6 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
+save_dir = strcat('calib_result1_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikss'};
@@ -21,7 +22,7 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 1;
+num_iters = 50;
 options = optimoptions('fmincon', 'MaxFunctionEvaluations',max_evals, 'Display','off');
 
 % protocol
@@ -66,7 +67,7 @@ model_struct = cell2struct(model_info, field_names, 1);
 % matching table
 matching_table = readtable(fullfile(pwd, 'data', strcat('matching-table-', group_name, '.xlsx')));
 [num_files, ~] = size(matching_table);
-mkdir(fullfile(pwd, strcat('calib_result_', group_name)));
+mkdir(fullfile(pwd, save_dir));
 
 % file names and capacitance values
 file_names = matching_table.trace_file_name_4half;
@@ -232,8 +233,7 @@ for l = 1:floor(len_loop_idx/2)
     best_sol = sol_list{best_fit_idx};
 
     % save calibrated solution
-    save_path = fullfile(pwd, strcat('calib_result_', group_name), file_names{i});
-    
+    save_path = fullfile(pwd, save_dir, file_names{i});
     sol_mx = zeros(max_param_len, num_currents);
     for j = 1:num_currents
         switch current_names{j}

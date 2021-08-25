@@ -5,24 +5,40 @@ clear variables
 
 % specify result file to check
 file_group = 'wt';
+save_dir = 'calib_result1';
 file_name = '15o26002.xlsx';
-calib = table2array(readtable(fullfile(pwd, file_group, strcat('calib_param_', file_name))));
+calib = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), file_name)));
 
 % specify model structure
 % field 1: selection of currents
-current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
+current_names = {'ikto', 'ikslow1', 'ikss'};
 num_currents = length(current_names);
 
 % field 2: tunning index in individual current models
-tune_idx1_kto = [1, 2, 3, 5, 6, 16, 17];
+tune_idx1_kto = [1, 2, 3, 5, 6, 15, 16, 17];
 tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
-tune_idx1_kslow2 = [9, 11];
-tune_idx1_kss = [6, 7];
-% tune_idx1_k1 = [1, 3, 5, 7];
-idx_info1 = {tune_idx1_kto, ...
-    tune_idx1_kslow1, ...
-    tune_idx1_kslow2, ...
-    tune_idx1_kss};
+tune_idx1_kslow2 = [1, 3];
+tune_idx1_kss = [3, 4];
+tune_idx1_kur = [1, 3];
+tune_idx1_k1 = [1, 3, 5, 7];
+
+idx_info1 = cell(1, num_currents);
+for i = 1:num_currents
+    switch current_names{i}
+    case "ikto"
+        idx_info1{i} = tune_idx1_kto;
+    case "ikslow1"
+        idx_info1{i} = tune_idx1_kslow1;
+    case "ikslow2"
+        idx_info1{i} = tune_idx1_kslow2;
+    case "ikss"
+        idx_info1{i} = tune_idx1_kss;
+    case "ikur"
+        idx_info1{i} = tune_idx1_kur;
+    case "ik1"
+        idx_info1{i} = tune_idx1_k1;
+    end
+end
 
 % field 3: tunning index in decision variable, p
 idx_info2 = cell(1, num_currents);
@@ -43,12 +59,6 @@ for i=1:num_currents
     running_calib = calib(:, i);
     running_calib(~isnan(running_calib));
     sol(idx_info2{i}) = running_calib(idx_info1{i});
-    % for older code
-%     if i==3
-%         sol(idx_info2{i}) = running_calib((idx_info1{i}-3));
-%     else
-%         sol(idx_info2{i}) = running_calib(idx_info1{i});
-%     end
 end
 
 % experimental data to be compared
