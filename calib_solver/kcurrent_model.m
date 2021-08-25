@@ -73,23 +73,12 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
 
             param = zeros(num_param, 1);
             param(shared_idx) = param_kslow1(shared_idx);
-            param(uniq_idx) = kslow2_default;
-            param(tune_idx1) = p(tune_idx2);
+
+            uniq_param = kslow2_default;
+            uniq_param(tune_idx1) = p(tune_idx2);
+            param(uniq_idx) = uniq_param;
 
             current_trace = ikslow2(param, hold_volt, volt, time_space, ek);
-        case "ikur"
-            % generate ikur
-            num_param = 11;
-            kur_default = [270, 1050, 0];
-            shared_idx = 1:8;
-            uniq_idx = setdiff(1:num_param, shared_idx);
-
-            param = zeros(num_param, 1);
-            param(shared_idx) = param_kslow1(shared_idx);
-            param(uniq_idx) = kur_default;
-            param(tune_idx1) = p(tune_idx2);
-
-            current_trace = ikur(param, hold_volt, volt, time_space, ek);
         case "ikss"
             % generate ikss
             num_param = 7;
@@ -100,10 +89,27 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
 
             param = zeros(num_param, 1);
             param(shared_idx1) = param_kslow1(shared_idx2);
-            param(uniq_idx) = kss_default;
-            param(tune_idx1) = p(tune_idx2);
+
+            uniq_param = kss_default;
+            uniq_param(tune_idx1) = p(tune_idx2);
+            param(uniq_idx) = uniq_param;
 
             current_trace = ikss(param, hold_volt, volt, time_space, ek);
+        case "ikur"
+            % generate ikur
+            num_param = 11;
+            kur_default = [270, 1050, 0];
+            shared_idx = 1:8;
+            uniq_idx = setdiff(1:num_param, shared_idx);
+
+            param = zeros(num_param, 1);
+            param(shared_idx) = param_kslow1(shared_idx);
+
+            uniq_param = kur_default;
+            uniq_param(tune_idx1) = p(tune_idx2);
+            param(uniq_idx) = uniq_param;
+
+            current_trace = ikur(param, hold_volt, volt, time_space, ek);            
         case "ik1"
             % generate ik1
             num_param = 10;
