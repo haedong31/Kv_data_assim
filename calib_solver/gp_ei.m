@@ -21,10 +21,12 @@ function xnew = ei_acquisition(x, y, gpmdl, num_multi_start, tol)
     end
 
     % optimization for searching next acquisition point
-
     xnew = NaN(num_multi_start, num_var+1);
+    obj_fun = @(x) obj_ei(x, fmin, gpmdl);
     for i = 1:num_multi_start
-        opt_out = 
+        [opt_out, fval] = fminunc(obj_fun, start_pts(i, :));
+        xnew(i, 1:end-1) = opt_out;
+        xnew(i, end) = fval;
     end
 end
 
