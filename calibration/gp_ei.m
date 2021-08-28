@@ -24,13 +24,13 @@ tune_idx1_k1 = [1, 3, 5, 7];
 hold_volt = -70;
 volts = -50:10:50;
 ideal_hold_time = 120;
-ideal_end_time = 4.6*1000;
+ideal_end_time = 4.6*1e+3;
 ek = -91.1;
 
 % optimization options
-reps = 100;
-ninit = 12;
-out_size = 50;
+reps = 30;
+ninit = length(current_names)*10;
+out_size = 1e+3;
 
 %%%%%
 % main
@@ -54,6 +54,7 @@ num_files = length(loop_idx);
 global model_struct
 model_struct = gen_model_struct(current_names, tune_idx1_kto, tune_idx1_kslow1, ...
     tune_idx1_kslow2, tune_idx1_kss, tune_idx1_kur, tune_idx1_k1);
+num_var = model_struct(end).idx2(end);
 
 global volt_space
 volt_space = cell(3, 1);
@@ -92,7 +93,7 @@ for i = 1:floor(num_files/2)
     % MC-style repetitions
     prog = NaN(reps, out_size);
     for r = 1:reps
-        [sol, fval, maxei] = optim_ei(@obj_rmse, ninit, 2, out_size);
+        [sol, fval, maxei] = optim_ei(@obj_rmse, ninit, num_var, out_size);
         running_prog = bov(fval);
         prog(r, :) = running_prog';
 
@@ -116,6 +117,8 @@ function z = obj_rmse(p)
     global time_space
     global yksum
 
+    p = scale_param(p);
+    
     hold_idx = length(time_space{2});
     volts = volt_space{2};
     num_volts = length(volts);
@@ -148,7 +151,61 @@ function z = obj_rmse(p)
     z = sum(rmse_list);
 end
 
-function scaledp = scale_param(p)
+function scaledp = scale_param(unitp)
+    global model_struct
+
+    lb_kto = [-50, -50, -50, -10, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
+    lb_kslow1 = [-70, -70, -70, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
+    lb_kslow2 = [5000, eps, eps];
+    lb_kss = [eps, eps, eps, eps];
+    lb_kur = [eps, 500, eps];
+    lb_k1 = [eps, -20, eps, -30, eps, eps, eps, eps, eps, eps];
+    
+    ub_kto = [70, 50, 50, 40, 50, 30, 1, 1, 1, 10, 0.005, 0.3, 0.005, 0.5, 1, 1, 1];
+    ub_kslow1 = [50, 50, 50, 10, 50, 50, 1, 100, 1000, 50, 1, 0.5, 0.5];
+    ub_kslow2 = [10000, 5000, 0.5];
+    ub_kss = [1, 2000, 100, 0.5];
+    ub_kur = [500, 2000, 1];
+    ub_k1 = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
+
+    current_names = model_struct.name;
+    num_currents = length(current_names);
+
+    [num_pt, num_var] = size(unitp);
+    scaledp = NaN(num_pt, num_var);
+
+    for i = 1:num_pt
+        row = NaN(1, num_var);
+        for j = 1:num_currents
+            switch current_names{j}
+                case 'ikto'
+                    lb = lb_kto(model_struct(j).idx1);
+                    ub = ub_kto(model_struct(j).idx1);
+                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+                case 'ikslow1'
+                    lb = lb_kslow1(model_struct(j).idx1);
+                    ub = ub_kslow1(model_struct(j).idx1);
+                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+                case 'ikslow2'
+                    lb = lb_kslow2(model_struct(j).idx1);
+                    ub = ub_kslow2(model_struct(j).idx1);
+                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+                case 'ikss'
+                    lb = lb_kss(model_struct(j).idx1);
+                    ub = ub_kss(model_struct(j).idx1);
+                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+                case 'ikur'
+                    lb = lb_kur(model_struct(j).idx1);
+                    ub = ub_kur(model_struct(j).idx1);
+                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+                case 'ik1'
+                    lb = lb_k1(model_struct(j).idx1);
+                    ub = ub_k1(model_struct(j).idx1);
+                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            end
+        end
+        scaledp(i, :) = row;
+    end
 end
 
 function model_struct = gen_model_struct(current_names)
@@ -157,18 +214,18 @@ function model_struct = gen_model_struct(current_names)
     idx_info1 = cell(1, num_currents);
     for i = 1:num_currents
         switch current_names{i}
-        case "ikto"
-            idx_info1{i} = tune_idx1_kto;
-        case "ikslow1"
-            idx_info1{i} = tune_idx1_kslow1;
-        case "ikslow2"
-            idx_info1{i} = tune_idx1_kslow2;
-        case "ikss"
-            idx_info1{i} = tune_idx1_kss;
-        case "ikur"
-            idx_info1{i} = tune_idx1_kur;
-        case "ik1"
-            idx_info1{i} = tune_idx1_k1;
+            case 'ikto'
+                idx_info1{i} = tune_idx1_kto;
+            case 'ikslow1'
+                idx_info1{i} = tune_idx1_kslow1;
+            case 'ikslow2'
+                idx_info1{i} = tune_idx1_kslow2;
+            case 'ikss'
+                idx_info1{i} = tune_idx1_kss;
+            case 'ikur'
+                idx_info1{i} = tune_idx1_kur;
+            case 'ik1'
+                idx_info1{i} = tune_idx1_k1;
         end
     end
 
@@ -241,7 +298,7 @@ function [xnew, fval] = ei_acquisition(x, y, gpmdl, num_multi_start, tol)
     xnew = NaN(num_multi_start, num_var);
     fval = NaN(num_multi_start, 1);
     obj_fun = @(x) obj_ei(x, fmin, gpmdl);
-    optim_opts = optimoptions('fminunc', 'Display','off');
+    optim_opts = optimoptions('fminunc', 'Display','orow()');
 
     for i = 1:num_multi_start
         [opt_out, running_fval] = fminunc(obj_fun, start_pts(i, :), optim_opts);
