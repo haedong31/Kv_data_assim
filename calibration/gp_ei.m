@@ -68,6 +68,13 @@ global time_space
 global yksum
 
 % default values for initial starting point
+global kto_default
+global kslow1_default
+global kslow2_default
+global kss_default
+global kur_default
+global k1_default
+
 kto_default = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
 kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
 kslow2_default = [5334, 4912, 0.05766];
@@ -80,32 +87,32 @@ max_param_len = 0;
 for i = 1:length(current_names)
     switch current_names{i}
     case 'ikto'
-        p0(idx_info2{i}) = kto_default(tune_idx1_kto);
+        p0(model_struct(i).idx2) = kto_default(tune_idx1_kto);
         if max_param_len < length(kto_default)
             max_param_len = length(kto_default);
         end
     case 'ikslow1'
-        p0(idx_info2{i}) = kslow1_default(tune_idx1_kslow1);
+        p0(model_struct(i).idx2) = kslow1_default(tune_idx1_kslow1);
         if max_param_len < length(kslow1_default)
             max_param_len = length(kslow1_default);
         end
     case 'ikslow2'
-        p0(idx_info2{i}) = kslow2_default(tune_idx1_kslow2);
+        p0(model_struct(i).idx2) = kslow2_default(tune_idx1_kslow2);
         if max_param_len < length(kslow2_default)
             max_param_len = length(kslow2_default);
         end    
     case 'ikss'
-        p0(idx_info2{i}) = kss_default(tune_idx1_kss);
+        p0(model_struct(i).idx2) = kss_default(tune_idx1_kss);
         if max_param_len < length(kss_default)
             max_param_len = length(kss_default);
         end    
     case 'ikur'
-        p0(idx_info2{i}) = kur_default(tune_idx1_kur);
+        p0(model_struct(i).idx2) = kur_default(tune_idx1_kur);
         if max_param_len < length(kur_default)
             max_param_len = length(kur_default);
         end
     case 'ik1'
-        p0(idx_info2{i}) = k1_default(tune_idx1_kur);
+        p0(model_struct(i).idx2) = k1_default(tune_idx1_kur);
         if max_param_len < length(k1_default)
             max_param_len = length(k1_default);
         end
@@ -138,7 +145,8 @@ for i = 1:floor(num_files/2)
     time_space{3} = pulse_t_adj;
     
     % initial point
-    initx = lhsdesign(num_init_pt, num_var);
+    initx = lhsdesign(ninit, num_var);
+    initx = scale_param(initx);
     initx(1, :) = p0;
     inity = obj_rmse(initx);
 
@@ -156,14 +164,11 @@ for i = 1:floor(num_files/2)
         [~, min_idx] = min(running_prog);
         bsol = sol(min_idx, :);
         bsol = scale_param(bsol);
+
+        save_path = fullfile(pwd, save_dir, file_names{i});
+        save_sol(bsol, save_path, max_param_len);
     end
 end
-
-% plot bov
-plot(mean(prog, 1))
-hold on
-xline(ninit, '--', 'Color',[0.5,0.5,0.5])
-hold off
 
 %%%%%
 % problem specific functions
@@ -175,7 +180,6 @@ function rmse_list = obj_rmse(p)
     global time_space
     global yksum
 
-    p = scale_param(p);
     [num_pt, ~] = size(p);
 
     hold_idx = length(time_space{2});
@@ -305,13 +309,65 @@ function model_struct = gen_model_struct(current_names, tune_idx1_kto, tune_idx1
     model_struct = cell2struct(model_info, field_names, 1);
 end
 
+function save_sol(sol, save_path, max_param_len)
+    global model_struct
+    global kto_default
+    global kslow1_default
+    global kslow2_default
+    global kss_default
+    global kur_default
+    global k1_default
+
+    num_currents = length(model_struct);
+    current_names = cell(1, num_currents);
+    sol_mx = NaN(max_param_len, num_currents);
+
+    for i = 1:num_currents
+        current_name = model_struct(i).name;
+        current_names{i} = current_name;
+
+        switch current_name
+        case 'ikto'
+            sol_kto = kto_default;
+            sol_kto(model_struct(i).idx1) = sol(model_struct(i).idx2);
+            sol_kto = [sol_kto, NaN(1, (max_param_len-length(sol_kto)))];
+            sol_mx(:, i) = sol_kto;
+        case 'ikslow1'
+            sol_kslow1 = kslow1_default;
+            sol_kslow1(model_struct(i).idx1) = sol(model_struct(i).idx2);
+            sol_kslow1 = [sol_kslow1, NaN(1, (max_param_len-length(sol_kslow1)))];
+            sol_mx(:, i) = sol_kslow1;
+        case 'ikslow2'
+            sol_kslow2 = kslow2_default;
+            sol_kslow2(model_struct(i).idx1) = sol(model_struct(i).idx2);
+            sol_kslow2 = [sol_kslow2, NaN(1, (max_param_len-length(sol_kslow2)))];
+            sol_mx(:, i) = sol_kslow2;
+        case 'ikss'
+            sol_kss = kss_default;
+            sol_kss(model_struct(i).idx1) = sol(model_struct(i).idx2);
+            sol_kss = [sol_kss, NaN(1, (max_param_len-length(sol_kss)))];
+            sol_mx(:, i) = sol_kss;
+        case 'ikur'
+            sol_kur = kur_default;
+            sol_kur(model_struct(i).idx1) = sol(model_struct(i).idx2);
+            sol_kur = [sol_kur, NaN(1, (max_param_len-length(sol_kur)))];
+            sol_mx(:, i) = sol_kur;
+        case 'ik1'
+            sol_k1 = k1_default;
+            sol_k1(model_struct(i).idx1) = sol(model_struct(i).idx2);
+            sol_k1 = [sol_k1, NaN(1, (max_param_len-length(sol_k1)))];
+            sol_mx(:, i) = sol_k1;
+        end        
+    end
+    writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
+    writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
+end
+
 %%%%%
 % surrogate-assisted optimization functions
 %%%%%
-function [sol, fval, maxei] = optim_ei(f, num_init_pt, num_var, out_size)
-    % initialization
-    initx = lhsdesign(num_init_pt, num_var);
-    inity = f(initx);
+function [sol, fval, maxei] = optim_ei(f, initx, inity, out_size)    
+    [num_init_pt, num_var] = size(initx);
     
     % ops = cell(1,2);
     % ops{1} = 'ardsquaredexponential';
