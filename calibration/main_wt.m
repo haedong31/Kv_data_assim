@@ -6,15 +6,15 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp5_', group_name);
+save_dir = strcat('calib_exp6_', group_name);
 
 % selection of currents
-current_names = {'ikto', 'ikslow1', 'ikss'};
+current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
 num_currents = length(current_names);
 
 % tunning index in individual current models
 tune_idx1_kto = [1, 2, 3, 5, 6, 10, 13, 14, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
+tune_idx1_kslow1 = [1, 2, 3, 8, 9, 12, 13];
 tune_idx1_kslow2 = [1, 3];
 tune_idx1_kss = [3, 4];
 tune_idx1_kur = [1, 3];
@@ -22,7 +22,7 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 15;
+num_iters = 30;
 options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
     'MaxFunctionEvaluations',max_evals, 'Display','off');
 global history
@@ -39,17 +39,17 @@ ek = -91.1;
 idx_info1 = cell(1, num_currents);
 for i = 1:num_currents
     switch current_names{i}
-    case "ikto"
+    case 'ikto'
         idx_info1{i} = tune_idx1_kto;
-    case "ikslow1"
+    case 'ikslow1'
         idx_info1{i} = tune_idx1_kslow1;
-    case "ikslow2"
+    case 'ikslow2'
         idx_info1{i} = tune_idx1_kslow2;
-    case "ikss"
+    case 'ikss'
         idx_info1{i} = tune_idx1_kss;
-    case "ikur"
+    case 'ikur'
         idx_info1{i} = tune_idx1_kur;
-    case "ik1"
+    case 'ik1'
         idx_info1{i} = tune_idx1_k1;
     end
 end
@@ -173,7 +173,7 @@ for i = 1:num_currents
 end
 
 % main loop
-for l = 1:floor(len_loop_idx/2)
+for l = 1:len_loop_idx
     i = loop_idx(l);
 
     % read data

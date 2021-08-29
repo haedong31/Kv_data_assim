@@ -6,15 +6,15 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_result2_', group_name);
+save_dir = strcat('calib_exp7_', group_name);
 
 % selection of currents
-current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
+current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss', 'ik1'};
 num_currents = length(current_names);
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 3, 5, 6, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
+tune_idx1_kto = [1, 2, 3, 5, 6, 10, 13, 14, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 3, 8, 9, 12, 13];
 tune_idx1_kslow2 = [1, 3];
 tune_idx1_kss = [3, 4];
 tune_idx1_kur = [1, 3];
@@ -22,8 +22,12 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 50;
-options = optimoptions('fmincon', 'MaxFunctionEvaluations',max_evals, 'Display','off');
+num_iters = 30;
+options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
+    'MaxFunctionEvaluations',max_evals, 'Display','off');
+global history
+history.x = [];
+history.fval = [];
 
 % protocol
 hold_volt = -70;
@@ -35,17 +39,17 @@ ek = -91.1;
 idx_info1 = cell(1, num_currents);
 for i = 1:num_currents
     switch current_names{i}
-    case "ikto"
+    case 'ikto'
         idx_info1{i} = tune_idx1_kto;
-    case "ikslow1"
+    case 'ikslow1'
         idx_info1{i} = tune_idx1_kslow1;
-    case "ikslow2"
+    case 'ikslow2'
         idx_info1{i} = tune_idx1_kslow2;
-    case "ikss"
+    case 'ikss'
         idx_info1{i} = tune_idx1_kss;
-    case "ikur"
+    case 'ikur'
         idx_info1{i} = tune_idx1_kur;
-    case "ik1"
+    case 'ik1'
         idx_info1{i} = tune_idx1_k1;
     end
 end
@@ -123,43 +127,43 @@ lb = zeros(1, cul_idx_len);
 ub = zeros(1, cul_idx_len);
 for i = 1:num_currents
     switch current_names{i}
-    case "ikto"
+    case 'ikto'
         p0(idx_info2{i}) = kto_default(tune_idx1_kto);
         lb(idx_info2{i}) = lb_kto_default(tune_idx1_kto);
         ub(idx_info2{i}) = ub_kto_default(tune_idx1_kto);
         if max_param_len < length(kto_default)
             max_param_len = length(kto_default);
         end
-    case "ikslow1"
+    case 'ikslow1'
         p0(idx_info2{i}) = kslow1_default(tune_idx1_kslow1);
         lb(idx_info2{i}) = lb_kslow1_default(tune_idx1_kslow1);
         ub(idx_info2{i}) = ub_kslow1_default(tune_idx1_kslow1);
         if max_param_len < length(kslow1_default)
             max_param_len = length(kslow1_default);
         end
-    case "ikslow2"
+    case 'ikslow2'
         p0(idx_info2{i}) = kslow2_default(tune_idx1_kslow2);
         lb(idx_info2{i}) = lb_kslow2_default(tune_idx1_kslow2);
         ub(idx_info2{i}) = ub_kslow2_default(tune_idx1_kslow2);
         if max_param_len < length(kslow2_default)
             max_param_len = length(kslow2_default);
         end    
-    case "ikss"
+    case 'ikss'
         p0(idx_info2{i}) = kss_default(tune_idx1_kss);
         lb(idx_info2{i}) = lb_kss_default(tune_idx1_kss);
         ub(idx_info2{i}) = ub_kss_default(tune_idx1_kss);
         if max_param_len < length(kss_default)
             max_param_len = length(kss_default);
         end    
-    case "ikur"
+    case 'ikur'
         p0(idx_info2{i}) = kur_default(tune_idx1_kur);
         lb(idx_info2{i}) = lb_kur_default(tune_idx1_kur);
         ub(idx_info2{i}) = ub_kur_default(tune_idx1_kur);
         if max_param_len < length(kur_default)
             max_param_len = length(kur_default);
         end
-    case "ik1"
-        p0(idx_info2{i}) = k1_default(tune_idx1_kur);
+    case 'ik1'
+        p0(idx_info2{i}) = k1_default(tune_idx1_k1);
         lb(idx_info2{i}) = lb_k1_default(tune_idx1_k1);
         ub(idx_info2{i}) = ub_k1_default(tune_idx1_k1);
         if max_param_len < length(k1_default)
@@ -169,10 +173,8 @@ for i = 1:num_currents
 end
 
 % main loop
-num_files = length(loop_idx);
-for l = 1:floor(len_loop_idx/2)
+for l = 1:len_loop_idx
     i = loop_idx(l);
-    fprintf('[%i/%i] %s \n', i, num_files, file_names{i})
 
     % read data
     file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed2'), file_names{i});
@@ -209,15 +211,15 @@ for l = 1:floor(len_loop_idx/2)
     sol_list{1} = sol;
     rmse_list(1) = fval;
 
+    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', i, len_loop_idx, file_names{i}, 1, num_iters, min(history.fval));
+
     for j = 2:num_iters
-        fprintf('[%i/%i] \n', j, num_iters)
+        history.x = [];
+        history.fval = [];
 
         % random intialization
-        running_p0 = zeros(length(p0), 1);
-        for k = 1:length(p0)
-            unif_dist = makedist('Uniform', 'lower',lb(k), 'upper',ub(k));
-            running_p0(k) = random(unif_dist, 1);
-        end
+        running_p0 = lhsdesign(1, cul_idx_len);
+        running_p0 = scale_param(running_p0, model_struct);
         
         % optimization
         try
@@ -227,6 +229,7 @@ for l = 1:floor(len_loop_idx/2)
         catch
             rmse_list(j) = 1e+3;
         end
+        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', i, len_loop_idx, file_names{i}, j, num_iters, min(history.fval));
     end
 
     [~, best_fit_idx] = min(rmse_list);
@@ -234,7 +237,6 @@ for l = 1:floor(len_loop_idx/2)
 
     % save calibrated solution
     save_path = fullfile(pwd, save_dir, file_names{i});
-    
     sol_mx = zeros(max_param_len, num_currents);
     for j = 1:num_currents
         switch current_names{j}
@@ -272,4 +274,75 @@ for l = 1:floor(len_loop_idx/2)
     end
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
+end
+
+function scaledp = scale_param(unitp, model_struct)
+    lb_kto = [-50, -50, -50, -10, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
+    lb_kslow1 = [-70, -70, -70, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
+    lb_kslow2 = [5000, eps, eps];
+    lb_kss = [eps, eps, eps, eps];
+    lb_kur = [eps, 500, eps];
+    lb_k1 = [eps, -20, eps, -30, eps, eps, eps, eps, eps, eps];
+    
+    ub_kto = [70, 50, 50, 40, 50, 30, 1, 1, 1, 10, 0.005, 0.3, 0.005, 0.5, 1, 1, 1];
+    ub_kslow1 = [50, 50, 50, 10, 50, 50, 1, 100, 1000, 50, 1, 0.5, 0.5];
+    ub_kslow2 = [10000, 5000, 0.5];
+    ub_kss = [1, 2000, 100, 0.5];
+    ub_kur = [500, 2000, 1];
+    ub_k1 = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
+
+    num_currents = length(model_struct);
+    [num_pt, num_var] = size(unitp);
+    scaledp = NaN(num_pt, num_var);
+
+    for i = 1:num_pt
+        row = NaN(1, num_var);
+        for j = 1:num_currents
+            switch model_struct(j).name
+            case 'ikto'
+                lb = lb_kto(model_struct(j).idx1);
+                ub = ub_kto(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikslow1'
+                lb = lb_kslow1(model_struct(j).idx1);
+                ub = ub_kslow1(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikslow2'
+                lb = lb_kslow2(model_struct(j).idx1);
+                ub = ub_kslow2(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikss'
+                lb = lb_kss(model_struct(j).idx1);
+                ub = ub_kss(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikur'
+                lb = lb_kur(model_struct(j).idx1);
+                ub = ub_kur(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ik1'
+                lb = lb_k1(model_struct(j).idx1);
+                ub = ub_k1(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            end
+        end
+        scaledp(i, :) = row;
+    end
+end
+
+function [stop] = outfun(x,optimValues,state)
+    global history
+    stop = false;
+ 
+     switch state
+         case 'init'
+             disp('init')
+         case 'iter'
+         % Concatenate current point and objective function
+         % value with history. x must be a row vector.
+           history.fval = [history.fval; optimValues.fval];
+           history.x = [history.x; x];
+         case 'done'
+             disp('done')
+         otherwise
+     end
 end

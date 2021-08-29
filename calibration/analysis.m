@@ -4,19 +4,19 @@ close all
 clear variables
 
 % specify result file to check
-file_group = 'wt';
-save_dir = 'calib_result1';
-file_name = '15o26002.xlsx';
+file_group = 'ko';
+save_dir = 'calib_exp7';
+file_name = '15o27002.xlsx';
 calib = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), file_name)));
 
 % specify model structure
 % field 1: selection of currents
-current_names = {'ikto', 'ikslow1', 'ikss'};
+current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss', 'ik1'};
 num_currents = length(current_names);
 
 % field 2: tunning index in individual current models
-tune_idx1_kto = [1, 2, 3, 5, 6, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 9, 12, 13];
+tune_idx1_kto = [1, 2, 3, 5, 6, 10, 13, 14, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 3, 8, 9, 12, 13];
 tune_idx1_kslow2 = [1, 3];
 tune_idx1_kss = [3, 4];
 tune_idx1_kur = [1, 3];
