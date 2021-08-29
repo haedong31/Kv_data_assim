@@ -30,7 +30,7 @@ ek = -91.1;
 % optimization options
 reps = 30;
 ninit = length(current_names)*10;
-out_size = 1e+3;
+out_size = 100;
 
 %%%%%
 % main
@@ -51,11 +51,13 @@ for i = 1:num_files
 end
 num_files = length(loop_idx);
 
+% current model
 global model_struct
 model_struct = gen_model_struct(current_names, tune_idx1_kto, tune_idx1_kslow1, ...
     tune_idx1_kslow2, tune_idx1_kss, tune_idx1_kur, tune_idx1_k1);
 num_var = model_struct(end).idx2(end);
 
+% voltage
 global volt_space
 volt_space = cell(3, 1);
 volt_space{1} = hold_volt;
@@ -65,8 +67,53 @@ volt_space{3} = ek;
 global time_space
 global yksum
 
+% default values for initial starting point
+kto_default = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+kslow2_default = [5334, 4912, 0.05766];
+kss_default = [0.0862, 1235.5, 13.17, 0.0428];
+kur_default = [270, 1050, 0];
+k1_default = [59.215, 5.476, 594.31, 4.753, 1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
+
+p0 = NaN(1, num_var);
+max_param_len = 0;
+for i = 1:length(current_names)
+    switch current_names{i}
+    case 'ikto'
+        p0(idx_info2{i}) = kto_default(tune_idx1_kto);
+        if max_param_len < length(kto_default)
+            max_param_len = length(kto_default);
+        end
+    case 'ikslow1'
+        p0(idx_info2{i}) = kslow1_default(tune_idx1_kslow1);
+        if max_param_len < length(kslow1_default)
+            max_param_len = length(kslow1_default);
+        end
+    case 'ikslow2'
+        p0(idx_info2{i}) = kslow2_default(tune_idx1_kslow2);
+        if max_param_len < length(kslow2_default)
+            max_param_len = length(kslow2_default);
+        end    
+    case 'ikss'
+        p0(idx_info2{i}) = kss_default(tune_idx1_kss);
+        if max_param_len < length(kss_default)
+            max_param_len = length(kss_default);
+        end    
+    case 'ikur'
+        p0(idx_info2{i}) = kur_default(tune_idx1_kur);
+        if max_param_len < length(kur_default)
+            max_param_len = length(kur_default);
+        end
+    case 'ik1'
+        p0(idx_info2{i}) = k1_default(tune_idx1_kur);
+        if max_param_len < length(k1_default)
+            max_param_len = length(k1_default);
+        end
+    end        
+end
+
 for i = 1:floor(num_files/2)
-    fprintf('##### RUN')
+    disp('##### RUN')
 
     % read data
     file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed2'), file_names{loop_idx(i)});
@@ -90,14 +137,25 @@ for i = 1:floor(num_files/2)
     pulse_t_adj = pulse_t - pulse_t(1);
     time_space{3} = pulse_t_adj;
     
+    % initial point
+    initx = lhsdesign(num_init_pt, num_var);
+    initx(1, :) = p0;
+    inity = obj_rmse(initx);
+
     % MC-style repetitions
     prog = NaN(reps, out_size);
     for r = 1:reps
-        [sol, fval, maxei] = optim_ei(@obj_rmse, ninit, num_var, out_size);
+        tic
+        [sol, fval, maxei] = optim_ei(@obj_rmse, initx, inity, out_size);
+        toc
+        
         running_prog = bov(fval);
         prog(r, :) = running_prog';
 
-        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', i, file_names{loop_idx(i)}, r, reps, min(running_prog));
+        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', i, num_files, file_names{loop_idx(i)}, r, reps, min(running_prog));
+        [~, min_idx] = min(running_prog);
+        bsol = sol(min_idx, :);
+        bsol = scale_param(bsol);
     end
 end
 
@@ -110,7 +168,7 @@ hold off
 %%%%%
 % problem specific functions
 %%%%%
-function z = obj_rmse(p)
+function rmse_list = obj_rmse(p)
     % RMSE objective function; main optimization objective
     global model_struct
     global volt_space
@@ -118,7 +176,8 @@ function z = obj_rmse(p)
     global yksum
 
     p = scale_param(p);
-    
+    [num_pt, ~] = size(p);
+
     hold_idx = length(time_space{2});
     volts = volt_space{2};
     num_volts = length(volts);
@@ -128,27 +187,30 @@ function z = obj_rmse(p)
     protocol{3} = time_space;
     protocol{4} = volt_space{3};
 
-    rmse_list = zeros(num_volts, 1);    
-    for i = 1:num_volts
-        yksum_i = yksum(:, i);
-        protocol{2} = volts(i);
-
-        [yksum_hat, ~] = kcurrent_model(p, model_struct, protocol);
-        
-        % check validity
-        [~, peak_idx] = max(yksum_hat);
-        check_pt1 = any(isnan(yksum_hat));
-        check_pt2 = any(yksum_hat < 0);
-        check_pt3 = var(yksum_hat(1:hold_idx)) > 0.4812e-4; % not stable at hold_volt
-        check_pt4 = peak_idx < hold_idx; % not stable at hold_volt of too flat at pulse
-
-        if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
-            rmse_list(i) = 1e+3; % arbitrary big number
-        else
-            rmse_list(i) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
+    rmse_list = NaN(num_pt, 1);
+    for i = 1:num_pt
+        running_rmse = NaN(num_volts, 1);
+        for j = 1:num_volts
+            yksum_i = yksum(:, j);
+            protocol{2} = volts(j);
+    
+            [yksum_hat, ~] = kcurrent_model(p(i, :), model_struct, protocol);
+            
+            % check validity
+            [~, peak_idx] = max(yksum_hat);
+            check_pt1 = any(isnan(yksum_hat));
+            check_pt2 = any(yksum_hat < 0);
+            check_pt3 = var(yksum_hat(1:hold_idx)) > 0.4812e-4; % not stable at hold_volt
+            check_pt4 = peak_idx < hold_idx; % not stable at hold_volt of too flat at pulse
+    
+            if(check_pt1 || check_pt2 || check_pt3 || check_pt4)
+                running_rmse(j) = 1e+3; % arbitrary big number
+            else
+                running_rmse(j) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
+            end
         end
+        rmse_list(i) = sum(running_rmse);
     end
-    z = sum(rmse_list);
 end
 
 function scaledp = scale_param(unitp)
@@ -168,64 +230,63 @@ function scaledp = scale_param(unitp)
     ub_kur = [500, 2000, 1];
     ub_k1 = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
 
-    current_names = model_struct.name;
-    num_currents = length(current_names);
-
+    num_currents = length(model_struct);
     [num_pt, num_var] = size(unitp);
     scaledp = NaN(num_pt, num_var);
 
     for i = 1:num_pt
         row = NaN(1, num_var);
         for j = 1:num_currents
-            switch current_names{j}
-                case 'ikto'
-                    lb = lb_kto(model_struct(j).idx1);
-                    ub = ub_kto(model_struct(j).idx1);
-                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
-                case 'ikslow1'
-                    lb = lb_kslow1(model_struct(j).idx1);
-                    ub = ub_kslow1(model_struct(j).idx1);
-                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
-                case 'ikslow2'
-                    lb = lb_kslow2(model_struct(j).idx1);
-                    ub = ub_kslow2(model_struct(j).idx1);
-                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
-                case 'ikss'
-                    lb = lb_kss(model_struct(j).idx1);
-                    ub = ub_kss(model_struct(j).idx1);
-                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
-                case 'ikur'
-                    lb = lb_kur(model_struct(j).idx1);
-                    ub = ub_kur(model_struct(j).idx1);
-                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
-                case 'ik1'
-                    lb = lb_k1(model_struct(j).idx1);
-                    ub = ub_k1(model_struct(j).idx1);
-                    row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            switch model_struct(j).name
+            case 'ikto'
+                lb = lb_kto(model_struct(j).idx1);
+                ub = ub_kto(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikslow1'
+                lb = lb_kslow1(model_struct(j).idx1);
+                ub = ub_kslow1(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikslow2'
+                lb = lb_kslow2(model_struct(j).idx1);
+                ub = ub_kslow2(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikss'
+                lb = lb_kss(model_struct(j).idx1);
+                ub = ub_kss(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikur'
+                lb = lb_kur(model_struct(j).idx1);
+                ub = ub_kur(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ik1'
+                lb = lb_k1(model_struct(j).idx1);
+                ub = ub_k1(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
             end
         end
         scaledp(i, :) = row;
     end
 end
 
-function model_struct = gen_model_struct(current_names)
+function model_struct = gen_model_struct(current_names, tune_idx1_kto, tune_idx1_kslow1, ...
+    tune_idx1_kslow2, tune_idx1_kss, tune_idx1_kur, tune_idx1_k1)
     num_currents = length(current_names);
     
     idx_info1 = cell(1, num_currents);
     for i = 1:num_currents
         switch current_names{i}
-            case 'ikto'
-                idx_info1{i} = tune_idx1_kto;
-            case 'ikslow1'
-                idx_info1{i} = tune_idx1_kslow1;
-            case 'ikslow2'
-                idx_info1{i} = tune_idx1_kslow2;
-            case 'ikss'
-                idx_info1{i} = tune_idx1_kss;
-            case 'ikur'
-                idx_info1{i} = tune_idx1_kur;
-            case 'ik1'
-                idx_info1{i} = tune_idx1_k1;
+        case 'ikto'
+            idx_info1{i} = tune_idx1_kto;
+        case 'ikslow1'
+            idx_info1{i} = tune_idx1_kslow1;
+        case 'ikslow2'
+            idx_info1{i} = tune_idx1_kslow2;
+        case 'ikss'
+            idx_info1{i} = tune_idx1_kss;
+        case 'ikur'
+            idx_info1{i} = tune_idx1_kur;
+        case 'ik1'
+            idx_info1{i} = tune_idx1_k1;
         end
     end
 
@@ -252,10 +313,10 @@ function [sol, fval, maxei] = optim_ei(f, num_init_pt, num_var, out_size)
     initx = lhsdesign(num_init_pt, num_var);
     inity = f(initx);
     
-    ops = cell(1,2);
-    ops{1} = 'ardsquaredexponential';
-    ops{2} = 'fic';
-    gpmdl = fitrgp(initx, inity, 'KernelFunction',ops{1}, 'FitMethod',ops{2});
+    % ops = cell(1,2);
+    % ops{1} = 'ardsquaredexponential';
+    % ops{2} = 'fic';
+    gpmdl = fitrgp(initx, inity, 'KernelFunction','ardsquaredexponential', 'FitMethod','fic');
 
     % sequential acquisition
     sol = NaN(out_size, num_var);
@@ -276,7 +337,7 @@ function [sol, fval, maxei] = optim_ei(f, num_init_pt, num_var, out_size)
         sol(i, :) = xnew;
         fval(i) = f(xnew);
 
-        gpmdl = fitrgp(sol(1:i, :), fval(1:i), 'KernelFunction','ardsquaredexponential');
+        gpmdl = fitrgp(sol(1:i, :), fval(1:i), 'KernelFunction','ardsquaredexponential', 'FitMethod','fic');
     end
 end
 
@@ -298,7 +359,7 @@ function [xnew, fval] = ei_acquisition(x, y, gpmdl, num_multi_start, tol)
     xnew = NaN(num_multi_start, num_var);
     fval = NaN(num_multi_start, 1);
     obj_fun = @(x) obj_ei(x, fmin, gpmdl);
-    optim_opts = optimoptions('fminunc', 'Display','orow()');
+    optim_opts = optimoptions('fminunc', 'Display','off');
 
     for i = 1:num_multi_start
         [opt_out, running_fval] = fminunc(obj_fun, start_pts(i, :), optim_opts);
