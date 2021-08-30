@@ -6,10 +6,10 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp7_', group_name);
+save_dir = strcat('calib_exp5_', group_name);
 
 % selection of currents
-current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss', 'ik1'};
+current_names = {'ikto', 'ikslow1', 'ikss'};
 num_currents = length(current_names);
 
 % tunning index in individual current models
