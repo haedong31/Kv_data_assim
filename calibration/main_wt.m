@@ -6,11 +6,14 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp6_', group_name);
+save_dir = strcat('calib_exp9_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
 num_currents = length(current_names);
+
+% voltages
+volt_range = 3:11;
 
 % tunning index in individual current models
 tune_idx1_kto = [1, 2, 3, 5, 6, 10, 13, 14, 15, 16, 17];
@@ -31,10 +34,15 @@ history.fval = [];
 
 % protocol
 hold_volt = -70;
-volts = -50:10:50;
+min_volt = -50;
 ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
 ek = -91.1;
+
+volts = NaN(length(volt_range), 1);
+for i = 1:length(volt_range)
+    volts(i) = min_volt + (volt_range(i)-1)*10;
+end
 
 idx_info1 = cell(1, num_currents);
 for i = 1:num_currents
@@ -181,7 +189,7 @@ for l = 1:len_loop_idx
     trace_data = table2array(readtable(file_path));
 
     t = trace_data(:, 1);
-    yksum = trace_data(:, 2:end);
+    yksum = trace_data(:, (volt_range+1));
 
     % estimate time points
     [~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
@@ -199,7 +207,7 @@ for l = 1:len_loop_idx
     time_space{3} = pulse_t_adj;
 
     % objective function
-%     disp(obj_rmse(p0, model_struct, volt_space, time_space, yksum))
+%     obj_rmse(p0, model_struct, volt_space, time_space, yksum)
     opt_fun = @(p) obj_rmse(p, model_struct, volt_space, time_space, yksum);
 
     % run optimization
@@ -211,7 +219,7 @@ for l = 1:len_loop_idx
     sol_list{1} = sol;
     rmse_list(1) = fval;
 
-    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', i, len_loop_idx, file_names{i}, 1, num_iters, min(history.fval));
+    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, min(history.fval));
 
     for j = 2:num_iters
         history.x = [];
@@ -229,7 +237,7 @@ for l = 1:len_loop_idx
         catch
             rmse_list(j) = 1e+3;
         end
-        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', i, len_loop_idx, file_names{i}, j, num_iters, min(history.fval));
+        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, j, num_iters, min(history.fval));
     end
 
     [~, best_fit_idx] = min(rmse_list);
