@@ -208,7 +208,7 @@ for l = 1:len_loop_idx
 
     % objective function
 %     obj_rmse(p0, model_struct, volt_space, time_space, yksum)
-    opt_fun = @(p) obj_rmse(p, model_struct, volt_space, time_space, yksum);
+    opt_fun = @(p) obj_rmse(p, @kcurrent_model, model_struct, volt_space, time_space, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);

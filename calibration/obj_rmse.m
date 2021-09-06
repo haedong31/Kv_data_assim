@@ -1,4 +1,4 @@
-function [z] = obj_rmse(p, model_struct, volt_space, time_space, yksum)
+function [z] = obj_rmse(p, kcurrent_model, model_struct, volt_space, time_space, yksum)
     hold_idx = length(time_space{2});
     volts = volt_space{2};
     num_volts = length(volts);
