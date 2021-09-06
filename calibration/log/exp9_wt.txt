@@ -1,0 +1,3057 @@
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 1/30] Min RMSE: 2.651304 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 3/30] Min RMSE: 2.626816 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 4/30] Min RMSE: 4.858952 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 6/30] Min RMSE: 2.717383 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 7/30] Min RMSE: 2.639236 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 8/30] Min RMSE: 2.652049 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 9/30] Min RMSE: 8.810351 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 10/30] Min RMSE: 8.805597 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 11/30] Min RMSE: 2.472907 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 12/30] Min RMSE: 2.625326 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 14/30] Min RMSE: 2.556967 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 15/30] Min RMSE: 2.428662 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 17/30] Min RMSE: 2.651299 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 18/30] Min RMSE: 2.651304 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 19/30] Min RMSE: 2.556855 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 20/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 22/30] Min RMSE: 2.618722 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 23/30] Min RMSE: 2.466213 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 24/30] Min RMSE: 2.556858 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 25/30] Min RMSE: 2.627449 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 26/30] Min RMSE: 2.355365 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 28/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 1/34] 15o26002.xlsx [Reps 30/30] Min RMSE: 2.556858 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 1/30] Min RMSE: 2.556858 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 2/30] Min RMSE: 10.404171 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 3/30] Min RMSE: 7.926184 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 4/30] Min RMSE: 7.814163 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 5/30] Min RMSE: 7.722465 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 6/30] Min RMSE: 7.009221 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 7/30] Min RMSE: 6.925934 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 9/30] Min RMSE: 7.381342 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 10/30] Min RMSE: 7.834739 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 11/30] Min RMSE: 6.882692 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 12/30] Min RMSE: 6.965194 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 15/30] Min RMSE: 9000.000000 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 16/30] Min RMSE: 6.882854 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 17/30] Min RMSE: 7.392041 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 18/30] Min RMSE: 7.701479 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 19/30] Min RMSE: 7.771970 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 20/30] Min RMSE: 7.321533 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 23/30] Min RMSE: 7.932621 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 24/30] Min RMSE: 6.701585 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 25/30] Min RMSE: 6.704730 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 26/30] Min RMSE: 7.018018 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 27/30] Min RMSE: 6.882686 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 28/30] Min RMSE: 6.922727 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 29/30] Min RMSE: 7.841395 
+init
+done
+[File 2/34] 15o26005.xlsx [Reps 30/30] Min RMSE: 7.379780 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 1/30] Min RMSE: 7.379780 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 2/30] Min RMSE: 11.938604 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 3/30] Min RMSE: 6.892673 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 4/30] Min RMSE: 6.860506 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 5/30] Min RMSE: 6.546166 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 6/30] Min RMSE: 6.860507 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 7/30] Min RMSE: 6.840075 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 8/30] Min RMSE: 6.803854 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 9/30] Min RMSE: 6.760977 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 10/30] Min RMSE: 6.892648 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 11/30] Min RMSE: 7.482264 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 12/30] Min RMSE: 6.892673 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 13/30] Min RMSE: 6.525312 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 14/30] Min RMSE: 6.892648 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 15/30] Min RMSE: 7.482300 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 16/30] Min RMSE: 7.848276 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 17/30] Min RMSE: 7.275674 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 18/30] Min RMSE: 6.892649 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 19/30] Min RMSE: 6.599743 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 20/30] Min RMSE: 6.857523 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 21/30] Min RMSE: 6.892648 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 22/30] Min RMSE: 6.803862 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 24/30] Min RMSE: 8.311369 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 25/30] Min RMSE: 9000.000000 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 26/30] Min RMSE: 6.840114 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 27/30] Min RMSE: 7.458849 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 28/30] Min RMSE: 10.166755 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 29/30] Min RMSE: 6.586882 
+init
+done
+[File 3/34] 15o26008.xlsx [Reps 30/30] Min RMSE: 9.911771 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 1/30] Min RMSE: 9.911771 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 2/30] Min RMSE: 7.602638 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 3/30] Min RMSE: 8.250614 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 4/30] Min RMSE: 9000.000000 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 5/30] Min RMSE: 7.113275 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 6/30] Min RMSE: 7.081098 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 7/30] Min RMSE: 7.145595 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 8/30] Min RMSE: 7.602638 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 9/30] Min RMSE: 7.602638 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 10/30] Min RMSE: 9000.000000 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 12/30] Min RMSE: 9000.000000 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 13/30] Min RMSE: 24.847805 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 15/30] Min RMSE: 8.293823 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 17/30] Min RMSE: 7.139485 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 18/30] Min RMSE: 7.602741 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 19/30] Min RMSE: 9.033755 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 20/30] Min RMSE: 13.011962 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 21/30] Min RMSE: 7.120604 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 22/30] Min RMSE: 9.109504 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 24/30] Min RMSE: 13.035610 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 25/30] Min RMSE: 7.070008 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 26/30] Min RMSE: 8.140681 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 27/30] Min RMSE: 7.602739 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 28/30] Min RMSE: 12.913987 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 29/30] Min RMSE: 8.131705 
+init
+done
+[File 4/34] 15o26014.xlsx [Reps 30/30] Min RMSE: 13.480651 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 1/30] Min RMSE: 10.878207 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 4/30] Min RMSE: 6.468617 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 5/30] Min RMSE: 5.375182 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 6/30] Min RMSE: 6.469373 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 7/30] Min RMSE: 5.894710 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 8/30] Min RMSE: 5.281169 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 9/30] Min RMSE: 9000.000000 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 10/30] Min RMSE: 9000.000000 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 11/30] Min RMSE: 9.630213 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 12/30] Min RMSE: 6.512944 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 13/30] Min RMSE: 6.344068 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 14/30] Min RMSE: 6.489933 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 15/30] Min RMSE: 6.489933 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 16/30] Min RMSE: 6.543490 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 17/30] Min RMSE: 5.300287 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 18/30] Min RMSE: 6.437008 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 19/30] Min RMSE: 5.318596 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 20/30] Min RMSE: 9.543779 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 21/30] Min RMSE: 5.338529 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 22/30] Min RMSE: 6.584686 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 24/30] Min RMSE: 6.468625 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 25/30] Min RMSE: 5.307257 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 26/30] Min RMSE: 6.423773 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 27/30] Min RMSE: 6.666659 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 28/30] Min RMSE: 5.682811 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 29/30] Min RMSE: 5.503025 
+init
+done
+[File 5/34] 15o26017.xlsx [Reps 30/30] Min RMSE: 5.289001 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 1/30] Min RMSE: 5.289001 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 4/30] Min RMSE: 9.133954 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 5/30] Min RMSE: 6.856411 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 6/30] Min RMSE: 7.230335 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 7/30] Min RMSE: 6.856387 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 8/30] Min RMSE: 8.895275 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 9/30] Min RMSE: 9.025794 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 10/30] Min RMSE: 6.738901 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 12/30] Min RMSE: 7.688056 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 14/30] Min RMSE: 6.857296 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 15/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 17/30] Min RMSE: 6.812879 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 18/30] Min RMSE: 6.812721 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 19/30] Min RMSE: 6.917170 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 20/30] Min RMSE: 6.857322 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 21/30] Min RMSE: 6.857296 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 22/30] Min RMSE: 6.812721 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 23/30] Min RMSE: 6.857296 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 24/30] Min RMSE: 6.856385 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 25/30] Min RMSE: 6.856411 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 26/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 28/30] Min RMSE: 6.856387 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 29/30] Min RMSE: 6.857296 
+init
+done
+[File 6/34] 15o26020.xlsx [Reps 30/30] Min RMSE: 6.857166 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 1/30] Min RMSE: 6.857166 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 2/30] Min RMSE: 6.443176 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 3/30] Min RMSE: 8.540135 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 4/30] Min RMSE: 6.032626 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 5/30] Min RMSE: 8.531547 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 6/30] Min RMSE: 6.029475 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 7/30] Min RMSE: 6.518685 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 8/30] Min RMSE: 6.029482 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 9/30] Min RMSE: 6.812846 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 10/30] Min RMSE: 8.564077 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 11/30] Min RMSE: 6.029578 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 12/30] Min RMSE: 8.765348 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 15/30] Min RMSE: 6.502790 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 16/30] Min RMSE: 6.298452 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 17/30] Min RMSE: 6.029475 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 18/30] Min RMSE: 6.029455 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 19/30] Min RMSE: 8.752952 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 20/30] Min RMSE: 9000.000000 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 21/30] Min RMSE: 8.666249 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 23/30] Min RMSE: 5.849799 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 24/30] Min RMSE: 6.503826 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 25/30] Min RMSE: 6.029475 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 26/30] Min RMSE: 8.383926 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 28/30] Min RMSE: 6.353731 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 7/34] 15o26023.xlsx [Reps 30/30] Min RMSE: 6.029482 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 1/30] Min RMSE: 4.830175 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 2/30] Min RMSE: 5.667920 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 3/30] Min RMSE: 4.802459 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 4/30] Min RMSE: 4.728803 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 5/30] Min RMSE: 5.213920 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 6/30] Min RMSE: 9000.000000 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 7/30] Min RMSE: 5.516670 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 8/30] Min RMSE: 4.859331 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 9/30] Min RMSE: 4.747593 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 10/30] Min RMSE: 4.846235 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 12/30] Min RMSE: 4.732269 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 14/30] Min RMSE: 6.282060 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 15/30] Min RMSE: 4.756063 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 16/30] Min RMSE: 4.846208 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 17/30] Min RMSE: 5.296684 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 18/30] Min RMSE: 6.138607 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 19/30] Min RMSE: 5.622030 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 20/30] Min RMSE: 4.429183 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 22/30] Min RMSE: 4.757928 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 23/30] Min RMSE: 4.752570 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 24/30] Min RMSE: 6.008204 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 25/30] Min RMSE: 4.755031 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 26/30] Min RMSE: 4.747563 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 27/30] Min RMSE: 16.298720 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 28/30] Min RMSE: 9000.000000 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 29/30] Min RMSE: 4.759923 
+init
+done
+[File 8/34] 15o26031.xlsx [Reps 30/30] Min RMSE: 5.860209 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 1/30] Min RMSE: 5.860209 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 2/30] Min RMSE: 4.904153 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 4/30] Min RMSE: 5.893696 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 5/30] Min RMSE: 6.609184 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 6/30] Min RMSE: 6.073126 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 7/30] Min RMSE: 5.220732 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 8/30] Min RMSE: 5.220732 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 9/30] Min RMSE: 5.806693 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 10/30] Min RMSE: 5.220758 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 11/30] Min RMSE: 5.751903 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 12/30] Min RMSE: 5.221529 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 13/30] Min RMSE: 5.751903 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 15/30] Min RMSE: 5.700807 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 16/30] Min RMSE: 5.220767 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 17/30] Min RMSE: 9000.000000 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 18/30] Min RMSE: 4.921100 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 19/30] Min RMSE: 4.892223 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 20/30] Min RMSE: 9000.000000 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 21/30] Min RMSE: 4.904544 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 22/30] Min RMSE: 5.220758 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 23/30] Min RMSE: 5.334519 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 24/30] Min RMSE: 5.220732 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 25/30] Min RMSE: 5.988758 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 26/30] Min RMSE: 9000.000000 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 28/30] Min RMSE: 6.647075 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 29/30] Min RMSE: 5.273654 
+init
+done
+[File 9/34] 15o29002.xlsx [Reps 30/30] Min RMSE: 5.220758 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 1/30] Min RMSE: 5.220758 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 2/30] Min RMSE: 7.197823 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 3/30] Min RMSE: 6.715309 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 4/30] Min RMSE: 7.212822 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 5/30] Min RMSE: 7.925106 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 6/30] Min RMSE: 7.822635 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 7/30] Min RMSE: 9.530785 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 8/30] Min RMSE: 6.791550 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 9/30] Min RMSE: 9000.000000 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 10/30] Min RMSE: 9000.000000 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 11/30] Min RMSE: 7.140051 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 12/30] Min RMSE: 7.212858 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 14/30] Min RMSE: 9.615957 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 15/30] Min RMSE: 17.492146 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 16/30] Min RMSE: 6.567255 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 17/30] Min RMSE: 9000.000000 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 18/30] Min RMSE: 9.250806 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 19/30] Min RMSE: 7.250067 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 20/30] Min RMSE: 7.253141 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 22/30] Min RMSE: 7.250067 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 23/30] Min RMSE: 7.254496 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 24/30] Min RMSE: 7.250041 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 25/30] Min RMSE: 7.139922 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 26/30] Min RMSE: 9.595278 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 27/30] Min RMSE: 7.429513 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 28/30] Min RMSE: 9000.000000 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 10/34] 15o29009.xlsx [Reps 30/30] Min RMSE: 6.579442 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 1/30] Min RMSE: 6.579442 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 4/30] Min RMSE: 7.273563 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 5/30] Min RMSE: 7.290563 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 6/30] Min RMSE: 7.577172 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 7/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 9/30] Min RMSE: 7.274521 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 10/30] Min RMSE: 7.872715 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 11/30] Min RMSE: 7.842143 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 12/30] Min RMSE: 7.608022 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 13/30] Min RMSE: 7.579913 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 14/30] Min RMSE: 7.577172 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 15/30] Min RMSE: 7.577166 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 16/30] Min RMSE: 7.608058 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 17/30] Min RMSE: 7.605412 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 19/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 20/30] Min RMSE: 12.782139 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 21/30] Min RMSE: 7.577191 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 22/30] Min RMSE: 7.577771 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 23/30] Min RMSE: 7.605417 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 24/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 25/30] Min RMSE: 11.157438 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 26/30] Min RMSE: 10.575444 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 27/30] Min RMSE: 7.273562 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 28/30] Min RMSE: 13.518820 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 11/34] 15o29012.xlsx [Reps 30/30] Min RMSE: 7.269100 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 1/30] Min RMSE: 5.999659 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 2/30] Min RMSE: 5.999659 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 3/30] Min RMSE: 5.999659 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 4/30] Min RMSE: 6.218420 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 6/30] Min RMSE: 6.218402 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 7/30] Min RMSE: 5.873063 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 8/30] Min RMSE: 6.275663 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 9/30] Min RMSE: 6.060999 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 10/30] Min RMSE: 6.227057 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 12/30] Min RMSE: 6.218398 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 13/30] Min RMSE: 5.873064 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 15/30] Min RMSE: 6.238303 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 16/30] Min RMSE: 6.057069 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 17/30] Min RMSE: 6.227177 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 18/30] Min RMSE: 5.876128 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 19/30] Min RMSE: 5.999659 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 20/30] Min RMSE: 6.223344 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 23/30] Min RMSE: 5.873064 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 24/30] Min RMSE: 6.022584 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 25/30] Min RMSE: 6.231696 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 26/30] Min RMSE: 6.248769 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 27/30] Min RMSE: 5.999659 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 28/30] Min RMSE: 6.222812 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 29/30] Min RMSE: 6.250730 
+init
+done
+[File 12/34] 15o29015.xlsx [Reps 30/30] Min RMSE: 6.218402 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 1/30] Min RMSE: 6.065224 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 3/30] Min RMSE: 5.135099 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 4/30] Min RMSE: 5.141622 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 6/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 7/30] Min RMSE: 4.879210 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 9/30] Min RMSE: 5.140157 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 10/30] Min RMSE: 5.462367 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 11/30] Min RMSE: 14.234964 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 12/30] Min RMSE: 5.057931 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 13/30] Min RMSE: 5.141537 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 14/30] Min RMSE: 4.877679 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 15/30] Min RMSE: 5.913671 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 17/30] Min RMSE: 5.138293 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 18/30] Min RMSE: 5.462369 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 19/30] Min RMSE: 5.462369 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 20/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 21/30] Min RMSE: 14.909653 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 23/30] Min RMSE: 5.143581 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 24/30] Min RMSE: 5.252892 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 25/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 26/30] Min RMSE: 5.141069 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 28/30] Min RMSE: 4.902938 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 29/30] Min RMSE: 5.154912 
+init
+done
+[File 13/34] 15o29021.xlsx [Reps 30/30] Min RMSE: 9000.000000 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 1/30] Min RMSE: 2.715299 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 3/30] Min RMSE: 3.832848 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 4/30] Min RMSE: 2.628649 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 5/30] Min RMSE: 2.634040 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 6/30] Min RMSE: 2.629026 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 7/30] Min RMSE: 9000.000000 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 8/30] Min RMSE: 2.628646 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 9/30] Min RMSE: 3.050371 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 10/30] Min RMSE: 2.634104 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 12/30] Min RMSE: 2.726452 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 13/30] Min RMSE: 2.563115 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 14/30] Min RMSE: 2.628629 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 15/30] Min RMSE: 2.628647 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 16/30] Min RMSE: 2.628654 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 17/30] Min RMSE: 9000.000000 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 18/30] Min RMSE: 2.630300 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 19/30] Min RMSE: 3.068409 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 20/30] Min RMSE: 3.748575 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 21/30] Min RMSE: 2.628652 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 22/30] Min RMSE: 2.550874 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 23/30] Min RMSE: 2.634914 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 24/30] Min RMSE: 9000.000000 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 25/30] Min RMSE: 2.634931 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 26/30] Min RMSE: 9000.000000 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 27/30] Min RMSE: 2.543467 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 28/30] Min RMSE: 2.628653 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 29/30] Min RMSE: 2.637552 
+init
+done
+[File 14/34] 15o29024.xlsx [Reps 30/30] Min RMSE: 2.641853 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 1/30] Min RMSE: 2.641853 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 2/30] Min RMSE: 4.474115 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 3/30] Min RMSE: 4.285722 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 4/30] Min RMSE: 4.144396 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 5/30] Min RMSE: 3.947729 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 6/30] Min RMSE: 5.833786 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 7/30] Min RMSE: 4.129043 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 8/30] Min RMSE: 4.145395 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 9/30] Min RMSE: 3.953220 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 10/30] Min RMSE: 9000.000000 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 11/30] Min RMSE: 4.129166 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 12/30] Min RMSE: 9000.000000 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 13/30] Min RMSE: 4.506236 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 15/30] Min RMSE: 4.129042 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 16/30] Min RMSE: 4.228720 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 17/30] Min RMSE: 4.129043 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 19/30] Min RMSE: 4.506236 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 20/30] Min RMSE: 4.135587 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 21/30] Min RMSE: 4.474115 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 22/30] Min RMSE: 4.253955 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 23/30] Min RMSE: 4.031768 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 24/30] Min RMSE: 4.506236 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 25/30] Min RMSE: 9000.000000 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 26/30] Min RMSE: 4.129073 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 28/30] Min RMSE: 4.213012 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 29/30] Min RMSE: 3.928338 
+init
+done
+[File 15/34] 15o29027.xlsx [Reps 30/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 1/30] Min RMSE: 8.997540 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 3/30] Min RMSE: 6.729180 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 4/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 5/30] Min RMSE: 6.729178 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 6/30] Min RMSE: 6.892429 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 7/30] Min RMSE: 6.841432 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 9/30] Min RMSE: 6.865747 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 10/30] Min RMSE: 6.310733 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 12/30] Min RMSE: 6.782826 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 13/30] Min RMSE: 6.766754 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 14/30] Min RMSE: 6.809939 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 15/30] Min RMSE: 6.286582 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 16/30] Min RMSE: 6.729052 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 17/30] Min RMSE: 6.745694 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 18/30] Min RMSE: 6.305056 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 19/30] Min RMSE: 8.286559 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 20/30] Min RMSE: 8.518024 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 21/30] Min RMSE: 6.729840 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 23/30] Min RMSE: 6.308034 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 24/30] Min RMSE: 6.364463 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 25/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 26/30] Min RMSE: 6.279191 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 27/30] Min RMSE: 6.764239 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 28/30] Min RMSE: 6.729054 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 16/34] 15o20002.xlsx [Reps 30/30] Min RMSE: 6.729181 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 1/30] Min RMSE: 6.729181 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 2/30] Min RMSE: 6.994139 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 3/30] Min RMSE: 7.136842 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 4/30] Min RMSE: 9000.000000 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 5/30] Min RMSE: 6.994178 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 6/30] Min RMSE: 9000.000000 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 7/30] Min RMSE: 6.994168 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 8/30] Min RMSE: 6.994168 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 9/30] Min RMSE: 7.274246 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 10/30] Min RMSE: 6.535217 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 11/30] Min RMSE: 6.994137 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 12/30] Min RMSE: 6.994168 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 13/30] Min RMSE: 6.994168 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 14/30] Min RMSE: 7.119799 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 15/30] Min RMSE: 6.988400 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 17/30] Min RMSE: 20.579229 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 19/30] Min RMSE: 9000.000000 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 20/30] Min RMSE: 6.994137 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 21/30] Min RMSE: 6.993701 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 22/30] Min RMSE: 6.964177 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 24/30] Min RMSE: 7.110077 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 25/30] Min RMSE: 7.151697 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 26/30] Min RMSE: 6.994137 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 27/30] Min RMSE: 6.992613 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 28/30] Min RMSE: 6.994168 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 29/30] Min RMSE: 7.118897 
+init
+done
+[File 17/34] 15o20005.xlsx [Reps 30/30] Min RMSE: 9000.000000 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 1/30] Min RMSE: 10.376882 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 2/30] Min RMSE: 9.264542 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 3/30] Min RMSE: 8.495946 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 4/30] Min RMSE: 9.333005 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 6/30] Min RMSE: 8.738148 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 7/30] Min RMSE: 8.503923 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 8/30] Min RMSE: 9.264635 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 9/30] Min RMSE: 8.738151 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 10/30] Min RMSE: 9.287949 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 11/30] Min RMSE: 9.040772 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 12/30] Min RMSE: 9.172133 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 13/30] Min RMSE: 8.474906 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 14/30] Min RMSE: 9.355534 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 15/30] Min RMSE: 9.287821 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 16/30] Min RMSE: 9.264927 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 17/30] Min RMSE: 8.507265 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 18/30] Min RMSE: 8.489413 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 19/30] Min RMSE: 9.266463 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 20/30] Min RMSE: 9.730770 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 21/30] Min RMSE: 8.491164 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 22/30] Min RMSE: 9.266211 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 24/30] Min RMSE: 9000.000000 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 25/30] Min RMSE: 9.147630 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 26/30] Min RMSE: 9000.000000 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 28/30] Min RMSE: 8.550640 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 18/34] 15o20010.xlsx [Reps 30/30] Min RMSE: 8.610293 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 1/30] Min RMSE: 8.610293 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 4/30] Min RMSE: 9.289058 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 6/30] Min RMSE: 8.456355 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 7/30] Min RMSE: 9000.000000 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 8/30] Min RMSE: 8.455619 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 9/30] Min RMSE: 8.444878 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 10/30] Min RMSE: 9.356295 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 11/30] Min RMSE: 8.406389 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 12/30] Min RMSE: 9.178571 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 13/30] Min RMSE: 8.359264 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 14/30] Min RMSE: 9.077193 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 15/30] Min RMSE: 10.006141 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 16/30] Min RMSE: 7.984170 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 17/30] Min RMSE: 8.406421 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 19/30] Min RMSE: 8.623476 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 20/30] Min RMSE: 8.455587 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 21/30] Min RMSE: 8.314760 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 22/30] Min RMSE: 9.149059 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 24/30] Min RMSE: 8.514720 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 25/30] Min RMSE: 9.165815 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 26/30] Min RMSE: 9.166064 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 27/30] Min RMSE: 7.984167 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 28/30] Min RMSE: 10.131307 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 29/30] Min RMSE: 10.009126 
+init
+done
+[File 19/34] 15o20015.xlsx [Reps 30/30] Min RMSE: 8.330710 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 1/30] Min RMSE: 7.285760 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 2/30] Min RMSE: 5.463932 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 3/30] Min RMSE: 4.726964 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 4/30] Min RMSE: 5.126876 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 5/30] Min RMSE: 6.600519 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 6/30] Min RMSE: 5.152423 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 7/30] Min RMSE: 5.154575 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 9/30] Min RMSE: 4.729050 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 10/30] Min RMSE: 9000.000000 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 12/30] Min RMSE: 7.053698 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 13/30] Min RMSE: 6.594923 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 14/30] Min RMSE: 6.635426 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 15/30] Min RMSE: 5.023387 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 16/30] Min RMSE: 5.143787 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 17/30] Min RMSE: 5.127552 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 18/30] Min RMSE: 5.023546 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 19/30] Min RMSE: 9000.000000 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 20/30] Min RMSE: 6.661458 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 21/30] Min RMSE: 5.090993 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 22/30] Min RMSE: 5.023390 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 23/30] Min RMSE: 5.152423 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 24/30] Min RMSE: 9000.000000 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 25/30] Min RMSE: 4.724658 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 26/30] Min RMSE: 4.728601 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 27/30] Min RMSE: 6.595564 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 28/30] Min RMSE: 5.140543 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 29/30] Min RMSE: 5.023513 
+init
+done
+[File 20/34] 15o21003.xlsx [Reps 30/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 1/30] Min RMSE: 7.910959 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 3/30] Min RMSE: 7.910948 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 4/30] Min RMSE: 7.649087 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 6/30] Min RMSE: 7.709153 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 7/30] Min RMSE: 7.399301 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 8/30] Min RMSE: 10.411722 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 9/30] Min RMSE: 7.947027 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 10/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 11/30] Min RMSE: 7.387985 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 12/30] Min RMSE: 7.931010 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 13/30] Min RMSE: 7.648712 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 14/30] Min RMSE: 7.910929 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 15/30] Min RMSE: 7.378197 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 16/30] Min RMSE: 9.354554 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 17/30] Min RMSE: 7.371094 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 19/30] Min RMSE: 7.611675 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 20/30] Min RMSE: 8.127068 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 23/30] Min RMSE: 7.461674 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 24/30] Min RMSE: 7.641883 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 25/30] Min RMSE: 7.641883 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 26/30] Min RMSE: 9000.000000 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 27/30] Min RMSE: 7.861742 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 28/30] Min RMSE: 7.861746 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 29/30] Min RMSE: 9.449023 
+init
+done
+[File 21/34] 15o21008.xlsx [Reps 30/30] Min RMSE: 7.652528 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 1/30] Min RMSE: 3.585236 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 2/30] Min RMSE: 3.585243 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 3/30] Min RMSE: 4.819086 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 4/30] Min RMSE: 4.128876 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 5/30] Min RMSE: 4.560944 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 6/30] Min RMSE: 9000.000000 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 7/30] Min RMSE: 3.585244 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 8/30] Min RMSE: 3.721961 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 9/30] Min RMSE: 3.585236 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 10/30] Min RMSE: 3.585236 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 11/30] Min RMSE: 3.585244 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 12/30] Min RMSE: 4.143230 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 13/30] Min RMSE: 3.585243 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 14/30] Min RMSE: 3.585236 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 15/30] Min RMSE: 3.585210 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 16/30] Min RMSE: 6.535250 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 17/30] Min RMSE: 9000.000000 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 19/30] Min RMSE: 3.585244 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 20/30] Min RMSE: 3.692660 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 22/30] Min RMSE: 4.418730 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 24/30] Min RMSE: 3.411569 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 25/30] Min RMSE: 5.035102 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 26/30] Min RMSE: 4.134691 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 27/30] Min RMSE: 3.585236 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 28/30] Min RMSE: 4.698710 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 29/30] Min RMSE: 3.593436 
+init
+done
+[File 22/34] 15o22002.xlsx [Reps 30/30] Min RMSE: 3.585210 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 1/30] Min RMSE: 2.810438 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 2/30] Min RMSE: 2.809219 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 3/30] Min RMSE: 4.564529 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 4/30] Min RMSE: 2.806406 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 6/30] Min RMSE: 2.935177 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 7/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 8/30] Min RMSE: 2.816302 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 9/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 10/30] Min RMSE: 2.816419 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 11/30] Min RMSE: 2.807854 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 12/30] Min RMSE: 3.225005 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 13/30] Min RMSE: 2.808692 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 15/30] Min RMSE: 3.149497 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 17/30] Min RMSE: 2.789708 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 18/30] Min RMSE: 3.461822 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 19/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 20/30] Min RMSE: 3.168516 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 22/30] Min RMSE: 2.809847 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 23/30] Min RMSE: 2.740888 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 24/30] Min RMSE: 2.769156 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 25/30] Min RMSE: 3.468826 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 26/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 27/30] Min RMSE: 2.807118 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 28/30] Min RMSE: 9000.000000 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 29/30] Min RMSE: 2.833709 
+init
+done
+[File 23/34] 15o22008.xlsx [Reps 30/30] Min RMSE: 2.807154 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 1/30] Min RMSE: 2.807154 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 2/30] Min RMSE: 5.138432 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 3/30] Min RMSE: 5.167684 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 4/30] Min RMSE: 5.158964 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 5/30] Min RMSE: 5.138433 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 6/30] Min RMSE: 5.091793 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 7/30] Min RMSE: 5.167916 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 8/30] Min RMSE: 5.138433 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 9/30] Min RMSE: 5.171501 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 10/30] Min RMSE: 5.349805 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 11/30] Min RMSE: 5.146789 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 12/30] Min RMSE: 9000.000000 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 13/30] Min RMSE: 6.704314 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 14/30] Min RMSE: 5.165995 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 15/30] Min RMSE: 9000.000000 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 16/30] Min RMSE: 5.358224 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 17/30] Min RMSE: 5.353073 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 18/30] Min RMSE: 8.149980 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 19/30] Min RMSE: 5.160355 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 20/30] Min RMSE: 5.605596 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 21/30] Min RMSE: 5.142526 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 23/30] Min RMSE: 5.126500 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 24/30] Min RMSE: 5.140334 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 25/30] Min RMSE: 5.173523 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 26/30] Min RMSE: 5.174881 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 27/30] Min RMSE: 5.138429 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 28/30] Min RMSE: 6.173818 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 24/34] 15n10002.xlsx [Reps 30/30] Min RMSE: 9000.000000 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 1/30] Min RMSE: 11.393446 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 2/30] Min RMSE: 14.157952 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 3/30] Min RMSE: 10.512930 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 4/30] Min RMSE: 10.516311 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 6/30] Min RMSE: 9000.000000 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 7/30] Min RMSE: 11.192875 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 8/30] Min RMSE: 12.063679 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 9/30] Min RMSE: 13.124576 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 10/30] Min RMSE: 14.052177 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 11/30] Min RMSE: 11.205892 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 12/30] Min RMSE: 9000.000000 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 13/30] Min RMSE: 11.142416 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 14/30] Min RMSE: 11.190085 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 15/30] Min RMSE: 12.041142 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 16/30] Min RMSE: 10.699994 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 17/30] Min RMSE: 11.314676 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 18/30] Min RMSE: 13.754221 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 19/30] Min RMSE: 11.634197 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 20/30] Min RMSE: 9000.000000 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 21/30] Min RMSE: 14.050526 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 22/30] Min RMSE: 11.176018 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 23/30] Min RMSE: 11.141777 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 24/30] Min RMSE: 10.476969 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 25/30] Min RMSE: 9000.000000 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 26/30] Min RMSE: 11.608474 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 27/30] Min RMSE: 10.865844 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 28/30] Min RMSE: 10.699995 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 25/34] 15n10006.xlsx [Reps 30/30] Min RMSE: 11.805438 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 1/30] Min RMSE: 5.641557 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 4/30] Min RMSE: 5.553760 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 5/30] Min RMSE: 5.553862 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 6/30] Min RMSE: 5.553760 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 7/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 8/30] Min RMSE: 5.553739 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 9/30] Min RMSE: 5.579928 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 10/30] Min RMSE: 5.911649 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 12/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 15/30] Min RMSE: 5.659893 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 16/30] Min RMSE: 5.553739 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 17/30] Min RMSE: 5.553741 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 18/30] Min RMSE: 5.590455 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 19/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 20/30] Min RMSE: 5.553741 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 21/30] Min RMSE: 5.554360 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 22/30] Min RMSE: 5.747822 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 23/30] Min RMSE: 5.658866 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 24/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 25/30] Min RMSE: 5.584442 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 26/30] Min RMSE: 5.601410 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 27/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 28/30] Min RMSE: 9000.000000 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 29/30] Min RMSE: 5.553760 
+init
+done
+[File 26/34] 15n10009.xlsx [Reps 30/30] Min RMSE: 9000.000000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 1/30] Min RMSE: 4.432233 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 2/30] Min RMSE: 4.438626 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 3/30] Min RMSE: 4.454762 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 4/30] Min RMSE: 4.455319 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 6/30] Min RMSE: 4.444550 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 7/30] Min RMSE: 4.432253 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 8/30] Min RMSE: 4.432245 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 9/30] Min RMSE: 9000.000000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 10/30] Min RMSE: 4.432201 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 11/30] Min RMSE: 4.432334 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 12/30] Min RMSE: 4.916221 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 15/30] Min RMSE: 4.455541 
+[File 27/34] 15n10012.xlsx [Reps 16/30] Min RMSE:  
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 17/30] Min RMSE: 4.435364 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 18/30] Min RMSE: 4.454900 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 19/30] Min RMSE: 4.438001 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 20/30] Min RMSE: 4.783850 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 21/30] Min RMSE: 9000.000000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 22/30] Min RMSE: 4.432298 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 23/30] Min RMSE: 5.271487 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 24/30] Min RMSE: 4.453960 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 25/30] Min RMSE: 4.521000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 26/30] Min RMSE: 4.432276 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 27/30] Min RMSE: 4.272021 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 28/30] Min RMSE: 4.432589 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 27/34] 15n10012.xlsx [Reps 30/30] Min RMSE: 4.479691 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 1/30] Min RMSE: 4.479691 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 2/30] Min RMSE: 7.040668 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 3/30] Min RMSE: 6.338389 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 4/30] Min RMSE: 9000.000000 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 5/30] Min RMSE: 9000.000000 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 6/30] Min RMSE: 6.970388 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 7/30] Min RMSE: 6.498688 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 9/30] Min RMSE: 6.356020 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 10/30] Min RMSE: 6.846969 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 12/30] Min RMSE: 6.397003 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 13/30] Min RMSE: 6.397379 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 14/30] Min RMSE: 6.363363 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 15/30] Min RMSE: 6.508900 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 16/30] Min RMSE: 6.357688 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 17/30] Min RMSE: 6.527348 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 18/30] Min RMSE: 7.332097 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 19/30] Min RMSE: 6.846969 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 20/30] Min RMSE: 9.417839 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 21/30] Min RMSE: 6.363308 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 22/30] Min RMSE: 6.495001 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 23/30] Min RMSE: 6.560543 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 24/30] Min RMSE: 6.359077 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 25/30] Min RMSE: 6.435578 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 26/30] Min RMSE: 7.183512 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 27/30] Min RMSE: 6.523098 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 28/30] Min RMSE: 7.860237 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 29/30] Min RMSE: 9000.000000 
+init
+done
+[File 28/34] 15n23002.xlsx [Reps 30/30] Min RMSE: 6.363308 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 1/30] Min RMSE: 6.363308 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 4/30] Min RMSE: 6.685125 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 5/30] Min RMSE: 6.945915 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 6/30] Min RMSE: 6.555329 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 7/30] Min RMSE: 6.610931 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 8/30] Min RMSE: 6.685127 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 9/30] Min RMSE: 8.811512 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 10/30] Min RMSE: 9.198002 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 11/30] Min RMSE: 6.154188 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 12/30] Min RMSE: 7.552316 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 13/30] Min RMSE: 9000.000000 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 14/30] Min RMSE: 6.685125 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 15/30] Min RMSE: 6.611639 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 16/30] Min RMSE: 7.097417 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 17/30] Min RMSE: 9000.000000 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 19/30] Min RMSE: 7.456446 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 20/30] Min RMSE: 6.713918 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 21/30] Min RMSE: 6.121597 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 22/30] Min RMSE: 6.685125 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 23/30] Min RMSE: 7.133229 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 24/30] Min RMSE: 6.610957 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 25/30] Min RMSE: 7.883945 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 26/30] Min RMSE: 6.607907 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 27/30] Min RMSE: 6.598338 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 28/30] Min RMSE: 9.228417 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 29/30] Min RMSE: 6.117085 
+init
+done
+[File 29/34] 15n23005.xlsx [Reps 30/30] Min RMSE: 6.685146 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 1/30] Min RMSE: 6.685146 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 2/30] Min RMSE: 5.377610 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 4/30] Min RMSE: 9000.000000 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 5/30] Min RMSE: 5.697697 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 6/30] Min RMSE: 6.659472 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 7/30] Min RMSE: 5.391743 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 8/30] Min RMSE: 6.756289 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 9/30] Min RMSE: 5.114206 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 10/30] Min RMSE: 6.800178 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 11/30] Min RMSE: 5.428700 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 12/30] Min RMSE: 5.135325 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 13/30] Min RMSE: 5.377634 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 14/30] Min RMSE: 9000.000000 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 15/30] Min RMSE: 5.388189 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 16/30] Min RMSE: 5.650704 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 17/30] Min RMSE: 5.395571 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 19/30] Min RMSE: 7.748377 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 20/30] Min RMSE: 5.602786 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 21/30] Min RMSE: 5.377634 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 22/30] Min RMSE: 5.377608 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 23/30] Min RMSE: 6.685361 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 24/30] Min RMSE: 5.391932 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 25/30] Min RMSE: 5.377762 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 26/30] Min RMSE: 5.380480 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 27/30] Min RMSE: 5.109917 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 28/30] Min RMSE: 5.491795 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 29/30] Min RMSE: 6.143614 
+init
+done
+[File 30/34] 15n23008.xlsx [Reps 30/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 1/30] Min RMSE: 11.275428 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 4/30] Min RMSE: 11.244134 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 5/30] Min RMSE: 9.778114 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 6/30] Min RMSE: 11.676819 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 7/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 8/30] Min RMSE: 11.239488 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 9/30] Min RMSE: 11.341768 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 10/30] Min RMSE: 10.844163 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 12/30] Min RMSE: 10.725900 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 13/30] Min RMSE: 11.299571 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 14/30] Min RMSE: 11.310629 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 15/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 17/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 18/30] Min RMSE: 15.138891 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 19/30] Min RMSE: 11.353785 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 20/30] Min RMSE: 11.314702 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 21/30] Min RMSE: 10.865512 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 22/30] Min RMSE: 9000.000000 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 23/30] Min RMSE: 9.778114 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 24/30] Min RMSE: 10.786437 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 25/30] Min RMSE: 10.805567 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 26/30] Min RMSE: 11.283480 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 27/30] Min RMSE: 8.854322 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 28/30] Min RMSE: 28.670453 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 29/30] Min RMSE: 10.539637 
+init
+done
+[File 31/34] 15n23011.xlsx [Reps 30/30] Min RMSE: 58.243488 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 1/30] Min RMSE: 9.827013 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 2/30] Min RMSE: 9000.000000 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 4/30] Min RMSE: 9.609636 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 5/30] Min RMSE: 9.492273 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 6/30] Min RMSE: 8.249289 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 7/30] Min RMSE: 8.227127 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 9/30] Min RMSE: 8.320859 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 10/30] Min RMSE: 7.058367 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 11/30] Min RMSE: 9000.000000 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 12/30] Min RMSE: 9000.000000 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 13/30] Min RMSE: 7.027650 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 14/30] Min RMSE: 7.021081 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 15/30] Min RMSE: 7.018545 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 17/30] Min RMSE: 8.299722 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 18/30] Min RMSE: 10.124607 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 19/30] Min RMSE: 8.243577 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 20/30] Min RMSE: 10.301955 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 21/30] Min RMSE: 10.863612 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 22/30] Min RMSE: 10.140628 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 23/30] Min RMSE: 8.078958 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 24/30] Min RMSE: 7.605569 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 25/30] Min RMSE: 28.218861 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 26/30] Min RMSE: 7.060199 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 27/30] Min RMSE: 9.908595 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 28/30] Min RMSE: 9000.000000 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 29/30] Min RMSE: 8.078948 
+init
+done
+[File 32/34] 15n23014.xlsx [Reps 30/30] Min RMSE: 7.019311 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 1/30] Min RMSE: 6.254056 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 2/30] Min RMSE: 5.880691 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 3/30] Min RMSE: 6.417014 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 4/30] Min RMSE: 9000.000000 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 5/30] Min RMSE: 5.867199 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 6/30] Min RMSE: 9000.000000 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 7/30] Min RMSE: 9000.000000 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 9/30] Min RMSE: 14.583324 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 10/30] Min RMSE: 6.056640 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 11/30] Min RMSE: 6.245912 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 12/30] Min RMSE: 6.834352 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 13/30] Min RMSE: 6.936815 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 14/30] Min RMSE: 6.396579 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 15/30] Min RMSE: 9000.000000 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 16/30] Min RMSE: 9000.000000 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 17/30] Min RMSE: 6.836166 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 18/30] Min RMSE: 9000.000000 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 19/30] Min RMSE: 7.008131 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 20/30] Min RMSE: 6.640491 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 21/30] Min RMSE: 14.706907 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 22/30] Min RMSE: 5.639638 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 23/30] Min RMSE: 6.418238 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 24/30] Min RMSE: 6.246105 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 25/30] Min RMSE: 5.769665 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 26/30] Min RMSE: 6.930118 
+[File 33/34] 15n23019.xlsx [Reps 27/30] Min RMSE:  
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 28/30] Min RMSE: 6.246057 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 29/30] Min RMSE: 7.962001 
+init
+done
+[File 33/34] 15n23019.xlsx [Reps 30/30] Min RMSE: 6.246097 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 1/30] Min RMSE: 6.246097 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 2/30] Min RMSE: 9.823108 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 3/30] Min RMSE: 9000.000000 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 4/30] Min RMSE: 9.683148 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 5/30] Min RMSE: 10.581685 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 6/30] Min RMSE: 10.023219 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 7/30] Min RMSE: 9.886248 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 8/30] Min RMSE: 9000.000000 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 9/30] Min RMSE: 9000.000000 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 10/30] Min RMSE: 9000.000000 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 11/30] Min RMSE: 9.491697 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 12/30] Min RMSE: 9.682910 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 13/30] Min RMSE: 10.024178 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 14/30] Min RMSE: 14.206304 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 15/30] Min RMSE: 9.682790 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 16/30] Min RMSE: 9.683774 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 17/30] Min RMSE: 9.932582 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 18/30] Min RMSE: 9.668318 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 19/30] Min RMSE: 9.932551 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 20/30] Min RMSE: 10.064779 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 21/30] Min RMSE: 9.491689 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 22/30] Min RMSE: 10.504216 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 23/30] Min RMSE: 9000.000000 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 24/30] Min RMSE: 9000.000000 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 25/30] Min RMSE: 9.933328 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 26/30] Min RMSE: 10.008375 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 27/30] Min RMSE: 9.932584 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 28/30] Min RMSE: 9.491697 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 29/30] Min RMSE: 9.816951 
+init
+done
+[File 34/34] 15n23022.xlsx [Reps 30/30] Min RMSE: 9.485711 
+>> 
