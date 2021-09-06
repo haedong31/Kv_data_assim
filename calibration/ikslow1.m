@@ -3,9 +3,7 @@ function [current_trc] = ikslow1(p, hold_volt, volt, time_space, Ek)
     % see 2020 Bondarenko
 
     % constants & initial values
-    f_eacv = p(11); % 0.9214774521 Ikslow1 fraction of nonphospholatedl
-    gmax = p(12); % 0.05766
-    gmaxp = p(13); % 0.07496
+    gmax = p(11); % 0.05766
     act0 = 0.5091689794e-03;
     inact0 = 0.9980927689;
     
@@ -21,20 +19,20 @@ function [current_trc] = ikslow1(p, hold_volt, volt, time_space, Ek)
     gv_hold = gating_variables(p, hold_volt);
     act_hold = hh_model(hold_t, act0, gv_hold(1), gv_hold(3));
     inact_hold = hh_model(hold_t, inact0, gv_hold(2), gv_hold(4));        
-    current_trc(1:hold_idx) = (gmax*f_eacv + gmaxp*(1-f_eacv)).*(act_hold).*(inact_hold).*(hold_volt - Ek);
+    current_trc(1:hold_idx) = gmax.*(act_hold).*(inact_hold).*(hold_volt - Ek);
 
     % current equation at pulse voltage
     gv_pulse = gating_variables(p, volt);
     act_pulse = hh_model(pulse_t, act0, gv_pulse(1), gv_pulse(3));
     inact_pulse = hh_model(pulse_t, inact0, gv_pulse(2), gv_pulse(4));
-    current_trc((hold_idx + 1):end) = (gmax*f_eacv + gmaxp*(1-f_eacv)).*(act_pulse).*(inact_pulse).*(volt - Ek);
+    current_trc((hold_idx + 1):end) = gmax.*(act_pulse).*(inact_pulse).*(volt - Ek);
 end
 
 function [gv] = gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow2
     % gv(1:3) = gv(1:3) in Ikur
     % gv(1) = gv(1) in Ikss
-    % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+    % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.05766];
 
     gv = zeros(4, 1);
     gv(1) = 1.0./(1.0+exp(-(p(1)+V)./p(4))); % ass
