@@ -29,12 +29,12 @@ min_rmse <- function(log_list) {
   }
   return(mins)
 }
-  
-  
+
 log_dir <- "./calibration/log/"
 
-exp5_wt <- process_log(str_c(log_dir, "exp5-wt.txt"), 34, 30)
-exp5_ko <- process_log(str_c(log_dir, "exp5-ko.txt"), 33, 30)
+log_wt <- process_log(str_c(log_dir, "exp9_wt.txt"), 34, 30)
+log_ko <- process_log(str_c(log_dir, "exp9_ko.txt"), 33, 30)
 
-min5wt <- min_rmse(exp5_wt)
-qplot(seq(1, length(min5wt)), min5wt)
+rmse_val_wt <- min_rmse(log_wt)
+rmse_val_ko <- min_rmse(log_ko)
+
