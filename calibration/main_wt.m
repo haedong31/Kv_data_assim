@@ -207,7 +207,7 @@ for l = 1:len_loop_idx
     time_space{3} = pulse_t_adj;
 
     % objective function
-%     obj_rmse(p0, model_struct, volt_space, time_space, yksum)
+%     obj_rmse(p0, @kcurrent_model, model_struct, volt_space, time_space, yksum)
     opt_fun = @(p) obj_rmse(p, @kcurrent_model, model_struct, volt_space, time_space, yksum);
 
     % run optimization
@@ -280,6 +280,7 @@ for l = 1:len_loop_idx
             sol_mx(:, j) = sol_k1;
         end
     end
+    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end
