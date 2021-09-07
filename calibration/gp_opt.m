@@ -166,6 +166,11 @@ p16 = optimizableVariable('p16', [lb(16), ub(16)]);
 p17 = optimizableVariable('p17', [lb(17), ub(17)]);
 opt_vars = [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17];
 
+random_p0 = gensg(cul_idx_len+3, cul_idx_len);
+random_p0 = random_p0.design;
+random_p0 = scale_param(random_p0, model_struct);
+
+p0 = [p0; random_p0];
 p0 = array2table(p0);
 p0.Properties.VariableNames = {'p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14','p15','p16','p17'};
 
@@ -213,10 +218,64 @@ for l = 1:len_loop_idx
     pulse_t_adj = pulse_t - pulse_t(1);
     time_space{3} = pulse_t_adj;
 
-    opt_fun = @(p) obj_rmse(p, @kcurrent_model, model_struct, volt_space, time_space, yksum);
-    result = bayesopt(opt_fun, opt_vars, ... 
+    opt_fun = @(p) obj_rmse_bayesopt(p, @kcurrent_model, model_struct, volt_space, time_space, yksum);
+    result = bayesopt(opt_fun, opt_vars, ...
+        'InitialX', p0, ...
         'IsObjectiveDeterministic',true, ...
         'AcquisitionFunctionName','expected-improvement', ...
         'Verbose',1);
     disp(obj_rmse(result.bestPoint, @kcurrent_model, model_struct, volt_space, time_space, yksum))
+end
+
+function scaledp = scale_param(unitp, model_struct)
+    lb_kto = [-70, -70, -70, -50, -20, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
+    lb_kslow1 = [-70, -70, -70, eps, eps, eps, eps, eps, eps, eps, eps];
+    lb_kslow2 = [5000, eps, eps];
+    lb_kss = [eps, eps, eps, eps];
+    lb_kur = [eps, 500, eps];
+    lb_k1 = [eps, -20, eps, -30, eps, eps, eps, eps, eps, eps];
+    
+    ub_kto = [70, 70, 70, 50, 20, 20, 20, 1, 1, 20, 1, 1, 1, 1, 1, 1];
+    ub_kslow1 = [70, 70, 70, 10, 70, 70, 1, 100, 1000, 70, 0.5];
+    ub_kslow2 = [10000, 5000, 0.5];
+    ub_kss = [1, 2000, 100, 0.5];
+    ub_kur = [500, 2000, 1];
+    ub_k1 = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
+
+    num_currents = length(model_struct);
+    [num_pt, num_var] = size(unitp);
+    scaledp = NaN(num_pt, num_var);
+
+    for i = 1:num_pt
+        row = NaN(1, num_var);
+        for j = 1:num_currents
+            switch model_struct(j).name
+            case 'ikto'
+                lb = lb_kto(model_struct(j).idx1);
+                ub = ub_kto(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikslow1'
+                lb = lb_kslow1(model_struct(j).idx1);
+                ub = ub_kslow1(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikslow2'
+                lb = lb_kslow2(model_struct(j).idx1);
+                ub = ub_kslow2(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikss'
+                lb = lb_kss(model_struct(j).idx1);
+                ub = ub_kss(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ikur'
+                lb = lb_kur(model_struct(j).idx1);
+                ub = ub_kur(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            case 'ik1'
+                lb = lb_k1(model_struct(j).idx1);
+                ub = ub_k1(model_struct(j).idx1);
+                row(model_struct(j).idx2) = unitp(i, model_struct(j).idx2).*(ub-lb) + lb;
+            end
+        end
+        scaledp(i, :) = row;
+    end
 end
