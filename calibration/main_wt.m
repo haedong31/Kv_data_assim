@@ -341,17 +341,13 @@ end
 function [stop] = outfun(x,optimValues,state)
     global history
     stop = false;
- 
-     switch state
-         case 'init'
-             disp('init')
-         case 'iter'
-         % Concatenate current point and objective function
-         % value with history. x must be a row vector.
-           history.fval = [history.fval; optimValues.fval];
-           history.x = [history.x; x];
-         case 'done'
-             disp('done')
-         otherwise
+    
+    switch state
+        case 'iter'
+        % Concatenate current point and objective function
+        % value with history. x must be a row vector.
+        history.fval = [history.fval; optimValues.fval];
+        history.x = [history.x; x];
+        otherwise
      end
 end
