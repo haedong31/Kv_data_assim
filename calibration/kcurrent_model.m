@@ -1,6 +1,7 @@
 function [yksum, comp_currents] = kcurrent_model(p, model_struct, protocol_info)
     global param_kslow1
     
+    p = table2array(p);
     num_currents = length(model_struct);
     current_names = cell(num_currents, 1);
     
