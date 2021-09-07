@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp9_', group_name);
+save_dir = strcat('calib_exp11_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -280,7 +280,7 @@ for l = 1:len_loop_idx
             sol_mx(:, j) = sol_k1;
         end
     end
-    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)
+%    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end

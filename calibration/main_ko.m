@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp9_', group_name);
+save_dir = strcat('calib_exp11_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -207,8 +207,8 @@ for l = 1:len_loop_idx
     time_space{3} = pulse_t_adj;
 
     % objective function
-%     obj_rmse(p0, model_struct, volt_space, time_space, yksum)
-    opt_fun = @(p) obj_rmse(p, model_struct, volt_space, time_space, yksum);
+%     obj_rmse(p0, @kcurrent_model, model_struct, volt_space, time_space, yksum)
+    opt_fun = @(p) obj_rmse(p, @kcurrent_model, model_struct, volt_space, time_space, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
@@ -280,6 +280,7 @@ for l = 1:len_loop_idx
             sol_mx(:, j) = sol_k1;
         end
     end
+%    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end
@@ -340,17 +341,13 @@ end
 function [stop] = outfun(x,optimValues,state)
     global history
     stop = false;
- 
-     switch state
-         case 'init'
-             disp('init')
-         case 'iter'
-         % Concatenate current point and objective function
-         % value with history. x must be a row vector.
-           history.fval = [history.fval; optimValues.fval];
-           history.x = [history.x; x];
-         case 'done'
-             disp('done')
-         otherwise
+    
+    switch state
+        case 'iter'
+        % Concatenate current point and objective function
+        % value with history. x must be a row vector.
+        history.fval = [history.fval; optimValues.fval];
+        history.x = [history.x; x];
+        otherwise
      end
 end
