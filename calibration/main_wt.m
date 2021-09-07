@@ -16,8 +16,8 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 3, 5, 6, 10, 13, 14, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 8, 9, 12, 13];
+tune_idx1_kto = [1, 2, 6, 10, 13, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 3, 4, 5 , 8, 9, 11, 12, 13];
 tune_idx1_kslow2 = [1, 3];
 tune_idx1_kss = [3, 4];
 tune_idx1_kur = [1, 3];
@@ -25,7 +25,7 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 30;
+num_iters = 1;
 options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
     'MaxFunctionEvaluations',max_evals, 'Display','off');
 global history
@@ -280,7 +280,7 @@ for l = 1:len_loop_idx
             sol_mx(:, j) = sol_k1;
         end
     end
-%    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)
+    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end
