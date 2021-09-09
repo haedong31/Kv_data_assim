@@ -199,16 +199,17 @@ for l = 1:len_loop_idx
     yksum = yksum(1:ideal_end_idx, :);
 
     % time space
-    time_space = cell(1, 3);
+    time_space = cell(1, 4);
     time_space{1} = t;
     time_space{2} = t(1:ideal_hold_idx);
     pulse_t = t(ideal_hold_idx+1:end);
     pulse_t_adj = pulse_t - pulse_t(1);
     time_space{3} = pulse_t_adj;
-
+    time_space{4} = ideal_hold_idx;
+    
     % objective function
 %     obj_rmse(p0, @kcurrent_model, model_struct, volt_space, time_space, yksum)
-    opt_fun = @(p) obj_rmse(p, @kcurrent_model, model_struct, volt_space, time_space, yksum);
+    opt_fun = @(p) obj_rmse(p, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);

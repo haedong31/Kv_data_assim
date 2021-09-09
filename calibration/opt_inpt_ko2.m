@@ -5,7 +5,7 @@ clear variables
 warning('off', 'all')
 
 % code arguments for calibration
-group_name = 'wt';
+group_name = 'ko';
 save_dir = strcat('calib_exp12', group_name);
 
 % selection of currents
@@ -205,6 +205,7 @@ for l = 1:len_loop_idx
     pulse_t = t(ideal_hold_idx+1:end);
     pulse_t_adj = pulse_t - pulse_t(1);
     time_space{3} = pulse_t_adj;
+    time_space{4} = ideal_hold_idx;
 
     % objective function
 %     obj_rmse2(p0, model_struct, volt_space, time_space, yksum)
