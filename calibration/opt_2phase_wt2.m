@@ -218,7 +218,7 @@ for l = 1:len_loop_idx
     %
     % phase 1
     %
-%     obj_biomarkers(p0, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
+    obj_biomarkers(p0, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
     opt_fun1 = @(p) obj_biomarkers(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
     [sol1, fval] = fmincon(opt_fun1, p0, A, b, Aeq, beq, lb, ub, nonlcon, options1);
 
