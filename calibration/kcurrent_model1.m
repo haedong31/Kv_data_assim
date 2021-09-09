@@ -1,4 +1,4 @@
-function [yksum, comp_currents] = kcurrent_model(p, model_struct, protocol_info)
+function [yksum, comp_currents] = kcurrent_model1(p, model_struct, protocol_info)
     global param_kslow1
     
     num_currents = length(model_struct);
