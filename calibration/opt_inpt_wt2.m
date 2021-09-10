@@ -25,7 +25,7 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 30;
+num_iters = 1;
 options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
     'MaxFunctionEvaluations',max_evals, 'Display','off');
 global history
@@ -281,7 +281,7 @@ for l = 1:len_loop_idx
             sol_mx(:, j) = sol_k1;
         end
     end
-%    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)    
+    obj_rmse(best_sol, @kcurrent_model2, model_struct, volt_space, time_space, yksum)    
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end
