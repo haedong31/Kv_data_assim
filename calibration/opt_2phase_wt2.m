@@ -153,13 +153,8 @@ end
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 30;
-options1 = optimoptions(@fmincon, 'Display','off');
-options2 = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
-    'MaxFunctionEvaluations',max_evals, 'Display','off');
-global history
-history.x = [];
-history.fval = [];
+options = optimoptions(@fmincon, 'MaxFunctionEvaluations',max_evals, ...
+    'Display','off');
 
 % optimization constraints 
 A = [];
@@ -218,13 +213,17 @@ for l = 1:len_loop_idx
     %
     % phase 1
     %
-    obj_biomarkers(p0, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
-    opt_fun1 = @(p) obj_biomarkers(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
-    [sol1, fval] = fmincon(opt_fun1, p0, A, b, Aeq, beq, lb, ub, nonlcon, options1);
-
-    fprintf('[File %i/%i] %s Phase 1: %f \n', l, len_loop_idx, file_names{i}, fval);
-    obj_rmse(sol1, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
-    for j = 1:num_iters
-        disp(j)
-    end
+%     obj_biomarkers(p0, @kcurrent_model2, model_struct, volt_space, time_space, yksum)
+    opt_fun1 = @(p) obj_rmse(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
+    [sol1, fval] = fmincon(opt_fun1, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
+    fprintf('[File %i/%i] %s Phase 1: %f \n', l, len_loop_idx, file_names{i}, fval)
+    
+    % 
+    % phase 2
+    %
+    opt_fun2 = @(p) obj_biomarkers(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
+    [sol2, fval] = fmincon(opt_fun2, sol1, A, b, Aeq, beq, lb, ub, nonlcon, options);
+    fprintf('[File %i/%i] %s Phase 2: %f \n', l, len_loop_idx, file_names{i}, fval)
+    
+    obj_rmse(sol2, @kcurrent_model2, model_struct, volt_space, time_space, yksum)
 end
