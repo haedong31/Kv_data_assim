@@ -1,4 +1,4 @@
-function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info)
+function [yksum, comp_currents] = kcurrent_model3(p, model_struct, protocol_info, pretrn_mdl)
     global param_kslow1
     
     num_currents = length(model_struct);
@@ -12,8 +12,10 @@ function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info
     matching_idx = strcmp(current_names, 'ikslow1');
     if any(matching_idx)    
         num_kslow1_param = 11;
+
         kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, ...
             6.1, 0.0629, 2.058, 803.0, 18.0, 0.05766];
+        kslow1_default(pretrn_mdl(matching_idx).idx1) = pretrn_mdl(matching_idx).sol;
         
         tune_idx1 = model_struct(matching_idx).idx1;
         tune_idx2 = model_struct(matching_idx).idx2;
@@ -28,12 +30,12 @@ function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info
     yksum = zeros(length(time_space{1}), 1);
     comp_currents = cell(num_currents, 1);
     for i = 1:num_currents
-        comp_currents{i} = gen_matching_current(p, model_struct(i), protocol_info);
+        comp_currents{i} = gen_matching_current(p, model_struct(i), i, protocol_info, pretrn_mdl);
         yksum = yksum + comp_currents{i};
     end
 end
 
-function [current_trace] = gen_matching_current(p, model_info, protocol_info)
+function [current_trace] = gen_matching_current(p, model_info, idx, protocol_info, pretrn_mdl)
     global param_kslow1
 
     % current model info
@@ -54,6 +56,8 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
             num_param = 16;
             kto_default = [33.0, 40.0, 33.0, 15.5, 20.0, 7.7, 5.7, ... 
                 0.03577, 0.06237, 7.0, 0.18064, 0.3956, 0.0226585, 0.00095, 0.051335, 0.14067];
+            kto_default(pretrn_mdl(idx).idx1) = pretrn_mdl(idx).sol;
+
             fixed_idx = setdiff(1:num_param, tune_idx1);
             
             param = zeros(num_param, 1);
@@ -68,6 +72,8 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
             % generate ikslow2
             num_param = 11;
             kslow2_default = [5334, 4912, 0.05766];
+            kslow2_default(pretrn_mdl(idx).idx1) = pretrn_mdl(idx).sol;
+
             shared_idx = 1:8;
             uniq_idx = setdiff(1:num_param, shared_idx);
 
@@ -83,6 +89,8 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
             % generate ikss
             num_param = 7;
             kss_default = [0.0862, 1235.5, 13.17, 0.0428];
+            kss_default(pretrn_mdl(idx).idx1) = pretrn_mdl(idx).sol;
+
             shared_idx1 = 1:3;
             shared_idx2 = [1, 3, 4];
             uniq_idx = setdiff(1:num_param, shared_idx1);
@@ -99,6 +107,8 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
             % generate ikur
             num_param = 11;
             kur_default = [270, 1050, 0];
+            kur_default(pretrn_mdl(idx).idx1) = pretrn_mdl(idx).sol;
+
             shared_idx = 1:8;
             uniq_idx = setdiff(1:num_param, shared_idx);
 
@@ -115,6 +125,8 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
             num_param = 10;
             k1_default = [59.215, 5.476, 594.31, 4.753, ...
                 1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
+            k1_default(pretrn_mdl(idx).idx1) = pretrn_mdl(idx).sol;
+
             fixed_idx = setdiff(1:num_param, tune_idx1);
 
             param = zeros(num_param, 1);
@@ -213,7 +225,7 @@ function [gv] = ikslow1_gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow2
     % gv(1:3) = gv(1:3) in Ikur
     % gv(1) = gv(1) in Ikss
-    % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.05766];
+    % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
 
     gv = zeros(4, 1);
     gv(1) = 1.0./(1.0+exp(-(p(1)+V)./p(4))); % ass

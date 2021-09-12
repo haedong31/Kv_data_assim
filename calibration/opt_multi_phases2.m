@@ -7,7 +7,7 @@ warning('off', 'all')
 %
 % input arguments for calibration
 % 
-group_name = 'wt';
+group_name = 'ko';
 save_dir = strcat('calib_exp13_', group_name);
 
 % selection of currents
