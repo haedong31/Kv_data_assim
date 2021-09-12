@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp11_', group_name);
+save_dir = strcat('calib_exp15_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -16,8 +16,8 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 3, 5, 6, 10, 13, 14, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 8, 9, 12, 13];
+tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
 tune_idx1_kslow2 = [1, 3];
 tune_idx1_kss = [3, 4];
 tune_idx1_kur = [1, 3];
@@ -102,19 +102,33 @@ kss_default = [0.0862, 1235.5, 13.17, 0.0428];
 kur_default = [270, 1050, 0];
 k1_default = [59.215, 5.476, 594.31, 4.753, 1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
 
-lb_kto_default = [-50, -50, -50, -10, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
-lb_kslow1_default = [-70, -70, -70, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
-lb_kslow2_default = [5000, eps, eps];
-lb_kss_default = [eps, eps, eps, eps];
-lb_kur_default = [eps, 500, eps];
-lb_k1_default = [eps, -20, eps, -30, eps, eps, eps, eps, eps, eps];
+global lb_kto
+global lb_kslow1
+global lb_kslow2
+global lb_kss
+global lb_kur
+global lb_k1
 
-ub_kto_default = [70, 50, 50, 40, 50, 30, 1, 1, 1, 10, 0.005, 0.3, 0.005, 0.5, 1, 1, 1];
-ub_kslow1_default = [50, 50, 50, 10, 50, 50, 1, 100, 1000, 50, 1, 0.5, 0.5];
-ub_kslow2_default = [10000, 5000, 0.5];
-ub_kss_default = [1, 2000, 100, 0.5];
-ub_kur_default = [500, 2000, 1];
-ub_k1_default = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
+lb_kto = [-70, -70, -70, -10, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
+lb_kslow1 = [-70, -70, -70, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
+lb_kslow2 = [5000, eps, eps];
+lb_kss = [eps, eps, eps, eps];
+lb_kur = [eps, 500, eps];
+lb_k1 = [eps, -20, eps, -30, eps, eps, eps, eps, eps, eps];
+
+global ub_kto
+global ub_kslow1
+global ub_kslow2
+global ub_kss
+global ub_kur
+global ub_k1
+
+ub_kto = [70, 70, 70, 50, 50, 30, 1, 1, 1, 10, 0.005, 0.3, 0.005, 0.5, 1, 1, 1];
+ub_kslow1 = [50, 50, 50, 10, 50, 50, 1, 100, 1000, 50, 1, 1, 1];
+ub_kslow2 = [10000, 5000, 1];
+ub_kss = [1, 2000, 100, 1];
+ub_kur = [500, 2000, 1];
+ub_k1 = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
 
 % voltage info
 volt_space = cell(3, 1);
@@ -137,43 +151,43 @@ for i = 1:num_currents
     switch current_names{i}
     case 'ikto'
         p0(idx_info2{i}) = kto_default(tune_idx1_kto);
-        lb(idx_info2{i}) = lb_kto_default(tune_idx1_kto);
-        ub(idx_info2{i}) = ub_kto_default(tune_idx1_kto);
+        lb(idx_info2{i}) = lb_kto(tune_idx1_kto);
+        ub(idx_info2{i}) = ub_kto(tune_idx1_kto);
         if max_param_len < length(kto_default)
             max_param_len = length(kto_default);
         end
     case 'ikslow1'
         p0(idx_info2{i}) = kslow1_default(tune_idx1_kslow1);
-        lb(idx_info2{i}) = lb_kslow1_default(tune_idx1_kslow1);
-        ub(idx_info2{i}) = ub_kslow1_default(tune_idx1_kslow1);
+        lb(idx_info2{i}) = lb_kslow1(tune_idx1_kslow1);
+        ub(idx_info2{i}) = ub_kslow1(tune_idx1_kslow1);
         if max_param_len < length(kslow1_default)
             max_param_len = length(kslow1_default);
         end
     case 'ikslow2'
         p0(idx_info2{i}) = kslow2_default(tune_idx1_kslow2);
-        lb(idx_info2{i}) = lb_kslow2_default(tune_idx1_kslow2);
-        ub(idx_info2{i}) = ub_kslow2_default(tune_idx1_kslow2);
+        lb(idx_info2{i}) = lb_kslow2(tune_idx1_kslow2);
+        ub(idx_info2{i}) = ub_kslow2(tune_idx1_kslow2);
         if max_param_len < length(kslow2_default)
             max_param_len = length(kslow2_default);
         end    
     case 'ikss'
         p0(idx_info2{i}) = kss_default(tune_idx1_kss);
-        lb(idx_info2{i}) = lb_kss_default(tune_idx1_kss);
-        ub(idx_info2{i}) = ub_kss_default(tune_idx1_kss);
+        lb(idx_info2{i}) = lb_kss(tune_idx1_kss);
+        ub(idx_info2{i}) = ub_kss(tune_idx1_kss);
         if max_param_len < length(kss_default)
             max_param_len = length(kss_default);
         end    
     case 'ikur'
         p0(idx_info2{i}) = kur_default(tune_idx1_kur);
-        lb(idx_info2{i}) = lb_kur_default(tune_idx1_kur);
-        ub(idx_info2{i}) = ub_kur_default(tune_idx1_kur);
+        lb(idx_info2{i}) = lb_kur(tune_idx1_kur);
+        ub(idx_info2{i}) = ub_kur(tune_idx1_kur);
         if max_param_len < length(kur_default)
             max_param_len = length(kur_default);
         end
     case 'ik1'
         p0(idx_info2{i}) = k1_default(tune_idx1_kur);
-        lb(idx_info2{i}) = lb_k1_default(tune_idx1_k1);
-        ub(idx_info2{i}) = ub_k1_default(tune_idx1_k1);
+        lb(idx_info2{i}) = lb_k1(tune_idx1_k1);
+        ub(idx_info2{i}) = ub_k1(tune_idx1_k1);
         if max_param_len < length(k1_default)
             max_param_len = length(k1_default);
         end
@@ -206,10 +220,11 @@ for l = 1:len_loop_idx
     pulse_t_adj = pulse_t - pulse_t(1);
     time_space{3} = pulse_t_adj;
     time_space{4} = ideal_hold_idx;
+    time_space{5} = ideal_end_idx;
     
     % objective function
-%     obj_rmse(p0, @kcurrent_model, model_struct, volt_space, time_space, yksum)
-    opt_fun = @(p) obj_rmse(p, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+%    obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+    opt_fun = @(p) obj_rmse(p, 'all', @kcurrent_model1, model_struct, volt_space, time_space, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
@@ -221,18 +236,18 @@ for l = 1:len_loop_idx
     rmse_list(1) = fval;
 
     fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, min(history.fval));
-
+    
+    % random intialization
+    running_p0 = lhsdesign(num_iters, cul_idx_len);
+    running_p0 = scale_param(running_p0, model_struct);
     for j = 2:num_iters
         history.x = [];
         history.fval = [];
 
-        % random intialization
-        running_p0 = lhsdesign(1, cul_idx_len);
-        running_p0 = scale_param(running_p0, model_struct);
         
         % optimization
         try
-            [sol, fval] = fmincon(opt_fun, running_p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
+            [sol, fval] = fmincon(opt_fun, running_p0(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
             sol_list{j} = sol;
             rmse_list(j) = fval;
         catch
@@ -281,25 +296,25 @@ for l = 1:len_loop_idx
             sol_mx(:, j) = sol_k1;
         end
     end
-%    obj_rmse(best_sol, @kcurrent_model, model_struct, volt_space, time_space, yksum)
+    obj_rmse(best_sol, 'all', @kcurrent_model, model_struct, volt_space, time_space, yksum)
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end
 
 function scaledp = scale_param(unitp, model_struct)
-    lb_kto = [-50, -50, -50, -10, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
-    lb_kslow1 = [-70, -70, -70, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
-    lb_kslow2 = [5000, eps, eps];
-    lb_kss = [eps, eps, eps, eps];
-    lb_kur = [eps, 500, eps];
-    lb_k1 = [eps, -20, eps, -30, eps, eps, eps, eps, eps, eps];
+    global lb_kto
+    global lb_kslow1
+    global lb_kslow2
+    global lb_kss
+    global lb_kur
+    global lb_k1
     
-    ub_kto = [70, 50, 50, 40, 50, 30, 1, 1, 1, 10, 0.005, 0.3, 0.005, 0.5, 1, 1, 1];
-    ub_kslow1 = [50, 50, 50, 10, 50, 50, 1, 100, 1000, 50, 1, 0.5, 0.5];
-    ub_kslow2 = [10000, 5000, 0.5];
-    ub_kss = [1, 2000, 100, 0.5];
-    ub_kur = [500, 2000, 1];
-    ub_k1 = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
+    global ub_kto
+    global ub_kslow1
+    global ub_kslow2
+    global ub_kss
+    global ub_kur
+    global ub_k1
 
     num_currents = length(model_struct);
     [num_pt, num_var] = size(unitp);
