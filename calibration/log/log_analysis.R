@@ -15,7 +15,7 @@ process_log <- function(log_path, num_file, num_iter) {
   return(log_list)
 }
 
-min_rmse <- function(log_list) {
+find_min_rmse <- function(log_list) {
   mins <- vector(mode = "numeric", length(log_list))
   for (i in seq_along(log_list)) {
     log_lines <- log_list[[i]]
@@ -32,7 +32,7 @@ min_rmse <- function(log_list) {
 
 log_dir <- "./calibration/log/"
 
-log_wt <- process_log(str_c(log_dir, "exp9_wt.txt"), 34, 30)
+log_wt <- process_log(str_c(log_dir, "exp11_wt.txt"), 34, 30)
 log_ko <- process_log(str_c(log_dir, "exp9_ko.txt"), 33, 30)
 
 rmse_val_wt <- min_rmse(log_wt)
