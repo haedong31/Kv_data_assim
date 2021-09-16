@@ -1,3 +1,129 @@
+%% calculate RMSEs from calibration results (current model 2)
+clc
+close all
+clear variables
+
+group_name = 'ko';
+exp_name = strcat('calib_exp10_', group_name);
+
+% selection of currents
+current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
+num_currents = length(current_names);
+
+% voltages
+volt_range = 3:11;
+
+% tunning index in individual current models
+tune_idx1_kto = [1, 2, 4, 6, 7, 10, 16];
+tune_idx1_kslow1 = [1, 2, 3, 8, 9, 11];
+tune_idx1_kslow2 = [1, 3];
+tune_idx1_kss = [3, 4];
+tune_idx1_kur = [1, 3];
+tune_idx1_k1 = [1, 3, 5, 7];
+
+% protocol
+hold_volt = -70;
+min_volt = -50;
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
+ek = -91.1;
+
+% voltage info
+volts = NaN(length(volt_range), 1);
+for i = 1:length(volt_range)
+    volts(i) = min_volt + (volt_range(i)-1)*10;
+end
+
+volt_space = cell(3, 1);
+volt_space{1} = hold_volt;
+volt_space{2} = volts;
+volt_space{3} = ek;
+
+% create model structure
+idx_info1 = cell(1, num_currents);
+for i = 1:num_currents
+    switch current_names{i}
+    case 'ikto'
+        idx_info1{i} = tune_idx1_kto;
+    case 'ikslow1'
+        idx_info1{i} = tune_idx1_kslow1;
+    case 'ikslow2'
+        idx_info1{i} = tune_idx1_kslow2;
+    case 'ikss'
+        idx_info1{i} = tune_idx1_kss;
+    case 'ikur'
+        idx_info1{i} = tune_idx1_kur;
+    case 'ik1'
+        idx_info1{i} = tune_idx1_k1;
+    end
+end
+
+% tunning index in decision variable, p
+idx_info2 = cell(1, num_currents);
+cul_idx_len = 0;
+for i = 1: num_currents
+    cul_idx_len_old = cul_idx_len;
+    cul_idx_len = cul_idx_len + length(idx_info1{i});
+    idx_info2{i} = (1+cul_idx_len_old):(cul_idx_len);
+end
+
+% create model structure
+model_info = [current_names; idx_info1; idx_info2];
+field_names = {'name', 'idx1', 'idx2'};
+model_struct = cell2struct(model_info, field_names, 1);
+
+% matching table
+matching_table = readtable(fullfile(pwd, 'data', strcat('matching-table-', group_name, '.xlsx')));
+[num_files, ~] = size(matching_table);
+
+% file names and capacitance values
+file_names = matching_table.trace_file_name_4half;
+
+% exclude row not having 4.5-sec data
+loop_idx = [];
+for i = 1:num_files
+    if isempty(file_names{i})
+        continue
+    end
+    loop_idx = [loop_idx, i];
+end
+
+for i = loop_idx
+    trace_data = table2array(readtable(fullfile(pwd, 'data', strcat(group_name, '-preprocessed2'), file_names{i})));
+    sol_mx = table2array(readtable(fullfile(pwd, exp_name, file_names{i})));
+
+    t = trace_data(:, 1);
+    yksum = trace_data(:, (volt_range+1));
+
+    % estimate time points
+    [~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
+    [~, ideal_end_idx] = min(abs(t - ideal_end_time));
+
+    t = t(1:ideal_end_idx);
+    yksum = yksum(1:ideal_end_idx, :);
+
+    % time space
+    time_space = cell(1, 4);
+    time_space{1} = t;
+    time_space{2} = t(1:ideal_hold_idx);
+    pulse_t = t(ideal_hold_idx+1:end);
+    pulse_t_adj = pulse_t - pulse_t(1);
+    time_space{3} = pulse_t_adj;
+    time_space{4} = ideal_hold_idx;
+    time_space{5} = ideal_end_idx;
+    
+    % solution vector
+    sol = NaN(1, cul_idx_len);
+    for j = 1:length(model_struct)
+        running_sol = sol_mx(:, j);
+        running_sol = running_sol(~isnan(running_sol));
+        sol(model_struct(j).idx2) = running_sol(model_struct(j).idx1);
+    end
+    
+    r = obj_rmse(sol, 'all', @kcurrent_model2, model_struct, volt_space, time_space, yksum);
+    fprintf('File %s Min RMSE: %f \n', file_names{i}, r)
+end
+
 %% check calibration result for general kcurrent model
 clc
 close all 

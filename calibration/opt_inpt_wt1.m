@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp15_', group_name);
+save_dir = strcat('calib_exp16_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -199,7 +199,7 @@ for l = 1:len_loop_idx
     i = loop_idx(l);
 
     % read data
-    file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed2'), file_names{i});
+    file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed'), file_names{i});
     trace_data = table2array(readtable(file_path));
 
     t = trace_data(:, 1);

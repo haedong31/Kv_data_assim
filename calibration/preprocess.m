@@ -1,3 +1,44 @@
+%% data preprocessing: remove upward spikes in preprocess2
+clc
+close all
+clear variables
+
+group = 'ko';
+
+matching_table = readtable(fullfile(pwd, 'data', strcat('matching-table-', group, '.xlsx')));
+file_names = matching_table.trace_file_name_4half;
+
+% exclude row not having 4.5-sec data
+loop_idx = [];
+[num_files, ~] = size(matching_table);
+for i = 1:num_files
+    if isempty(file_names{i})
+        continue
+    end
+    loop_idx = [loop_idx, i];
+end
+
+% manually trim data inside for loop
+for l = 1:length(loop_idx)
+    i = loop_idx(l);
+    fprintf('[File %i/%i] %s \n', l, length(loop_idx), file_names{i})
+    read_path = fullfile(pwd, 'data', strcat(group, '-preprocessed2'), file_names{i});
+    save_path = fullfile(pwd, 'data', strcat(group, '-preprocessed'), file_names{i});
+    
+    trace_data = table2array(readtable(read_path));
+    yksum = trace_data(:, 2:end);
+    [~, num_volts] = size(yksum);
+    
+    yksum_copy = yksum;
+    for j = 1:num_volts
+        y = yksum_copy(:, j);
+        y(y <0 ) = 0;
+        yksum_copy(:, j) = y;
+    end
+    trace_data(:, 2:end) = yksum_copy;
+    writematrix(trace_data, save_path)
+end
+
 %% data preprocessing: Mgat1KO remove noise from start and end of current
 clc
 close all
