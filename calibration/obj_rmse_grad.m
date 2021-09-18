@@ -435,9 +435,6 @@ function tr = ikur_trans_rates(V)
 end
 
 function [current_trc, state_vars, trans_rates] = ik1(hold_volt, volt, time_space, Ek)
-    global param_k1
-    p = param_k1;
-    
     % time space information
     t = time_space{1};
     hold_t = time_space{2};
@@ -477,10 +474,8 @@ function g = kcurrent_grad(p, model_struct, protocol, mserr, err, state_vars_lis
     global param_kss
     global param_kur
     global param_k1
-    
-    df1 = 1/(2*sqrt(mserr));
-    df2 = 2*mean(err);
-    df3 = -1;
+
+    dfdm = 1/(2*sqrt(mserr));
 
     g = NaN(length(p), 1);
     for i = 1:length(model_struct)
@@ -491,41 +486,106 @@ function g = kcurrent_grad(p, model_struct, protocol, mserr, err, state_vars_lis
 
         switch current_name
         case 'ikto'
-            g(tune_idx2) = grad_ikto(p, df1, df2, df3, state_vars, trans_rates);
+            g(tune_idx2) = grad_ikto(p, protocol, dfdm, err, state_vars, trans_rates);
         case 'ikslow1'
-            g(tune_idx2) = grad_ikslow1(p, df1, df2, df3, state_vars, trans_rates);
+            g(tune_idx2) = grad_ikslow1(p, protocol, dfdm, err, state_vars, trans_rates);
         case 'ikslow2'
-            g(tune_idx2) = grad_ikslow2(p, df1, df2, df3, state_vars, trans_rates);
+            g(tune_idx2) = grad_ikslow2(p, protocol, dfdm, err, state_vars, trans_rates);
         case 'ikss'
-            g(tune_idx2) = grad_ikss(p, df1, df2, df3, state_vars, trans_rates);
+            g(tune_idx2) = grad_ikss(p, protocol, dfdm, err, state_vars, trans_rates);
         otherwise
             g(tune_idx2) = [];
         end
     end
 end
 
-function g = grad_ikto(p, df1, df2, df3, state_vars, trans_rates)
+function g = grad_ikto(p, protocol, dfdm, err, state_vars, trans_rates)
     % tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
     
     global param_kto
     g = NaN(9, 1);
 
-    % a
+    act0 = 0.4139033547E-02;
+    inact0 = 0.9999623535E+00;
+    actp0 = 0.8637307739E-03;
+    inactp0 = 0.9999881755E+00;
 
-    % i
+    f_eacv = param_kto(15);
+    gmax = param_kto(16);
+    gmaxp = param_kto(16)*(1.0-param_kto(17));0
+    
+    time_space = protocol{3};
+    t = time_space{3};
+    n = length(t);
+    volt = protocol{2};
+    ek = protocol{4};
+
+    alpha1 = trans_rates(1);
+    beta1 = trans_rates(2);
+    alpha2 = trans_rates(3);
+    beta2 = trans_rates(4);
+    
+    alpha1p = trans_rates(5);
+    beta1p = trans_rates(6);
+    alpha2p = trans_rates(7);
+    beta2p = trans_rates(8);
+
+    ass = alpha1/(alpha1+beta1);
+    atau = 1/(alpha1+beta1);
+    iss = alpha2/(alpha2+beta2);
+    itau = 1/(alpha2+beta2);
+
+    assp = alpha1p/(alpha1p+beta1p);
+    ataup = 1/(alpha1p+beta1p);
+    issp = alpha2p/(alpha2p+beta2p);
+    itaup = 1/(alpha2p+beta2p);
+
+    % derivatives
+    dmde = 2*err;
+    dedy = -1;
+    
+    dyda = 3*gmax*(state_vars(:, 1).^2).*(state_vars(:, 2))*(1-f_eacv)*(volt-ek);
+    dydi = gmax*state_vars(:, 1).^3*(1-f_eacv)*(volt-ek);
+    dydap = 3*gmaxp*(state_vars(:, 3).^2).*(state_vars(:, 4))*f_ecav*(volt-ek);
+    dydip = gmaxp*state_vars(:, 4).^3*f_ecav*(volt-ek);
+    
+    dadss = 1 - exp(-t./atau);
+    dadtau = -(ass - act0)*(t.*exp(-t./atau))/(atau^2);
+    didss = 1- exp(-t./itau);
+    didtau = -(iss - inact0)*(t.*exp(-t./itau))/(itau^2);
+
+    dapdss = 1 - exp(-t./ataup);
+    dapdtau = -(assp - act0)*(t.*exp(-t./ataup))/(ataup^2);
+    dipdss = 1- exp(-t./itaup);
+    dipdtau = -(issp - inact0)*(t.*exp(-t./itaup))/(itaup^2);
+    
+    dssdalpha1
+    dssdbeta1
+    dtaudalpha1
+    dtaudbeta1
+    dssdalpha2
+    dssdbeta2
+    dtaudalpha2
+    dtaudbeta2
+
+    % p1
+
+    % p2
+
+    % p6
 
 end
 
-function g = grad_ikslow1(p, df1, df2, df3, state_vars, trans_rates)
+function g = grad_ikslow1(p, protocol, dfdm, err, state_vars, trans_rates)
     global param_kslow1
     g = [];
 end
 
-function g = grad_ikslow2(p, df1, df2, df3, state_vars, trans_rates)
+function g = grad_ikslow2(p, protocol, dfdm, err, state_vars, trans_rates)
     global param_kslow2
     g = [];
 end
-function g = grad_ikss(p, df1, df2, df3, state_vars, trans_rates)
+function g = grad_ikss(p, protocol, dfdm, err, state_vars, trans_rates)
     global param_kss
     g = [];
 end
