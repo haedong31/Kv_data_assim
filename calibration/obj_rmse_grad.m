@@ -11,23 +11,22 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
     protocol{4} = volt_space{3};
 
     rmse_list = NaN(num_volts, 1);
-    grad_list = NaN(num_volts, 1);
+    grad_list = NaN(model_struct(end).idx2(end), num_volts);
     for i = 1:num_volts
         yksum_i = yksum(:, i);
         protocol{2} = volts(i);
 
-        [yksum_hat, ~] = kcurrent_model(p, model_struct, protocol);
-        
+        [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, model_struct, protocol);
         err = yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end);
         mserr = mean(err.^2);
-        rmse_list(i) = sqrt(mserr);
 
-        grad_list(i) = 0;
+        rmse_list(i) = sqrt(mserr);
+        grad_list(:, i) = kcurrent_grad(p, model_struct, protocol, mserr, err, state_vars_list, trans_rates_list);
     end
     f = sum(rmse_list);
 end
 
-function [yksum_hat, state_vars, tran_rates] = kcurrent_model(p, model_struct, protocol_info)
+function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, model_struct, protocol_info)
     global param_kto
     global param_kslow1
     global param_kslow2
@@ -53,8 +52,8 @@ function [yksum_hat, state_vars, tran_rates] = kcurrent_model(p, model_struct, p
     
     num_currents = length(model_struct);
     yksum_hat = zeros(length(time_space{1}), 1);
-    state_vars = cell(num_currents, 1);
-    tran_rates = cell(num_currents, 1);
+    state_vars_list = cell(num_currents, 1);
+    trans_rates_list = cell(num_currents, 1);
     
     % current model info
     for i = 1:num_currents
@@ -139,6 +138,8 @@ function [yksum_hat, state_vars, tran_rates] = kcurrent_model(p, model_struct, p
             [current_trace, state_vars, trans_rates] = ik1(hold_volt, volt, time_space, ek);
         end
         yksum_hat = yksum_hat + current_trace;
+        state_vars_list{i} = state_vars;
+        trans_rates_list{i} = trans_rates;
     end
 end
 
@@ -470,12 +471,61 @@ function [y] = hh_model(t, ss0, ss, tau)
     y = ss - (ss - ss0).*exp(-t./tau);
 end
 
-function g = grad_ikto(df1, df2, df3)
+function g = kcurrent_grad(p, model_struct, protocol, mserr, err, state_vars_list, trans_rates_list)
+    global param_kslow1
+    global param_kslow2
+    global param_kss
+    global param_kur
+    global param_k1
+    
+    df1 = 1/(2*sqrt(mserr));
+    df2 = 2*mean(err);
+    df3 = -1;
+
+    g = NaN(length(p), 1);
+    for i = 1:length(model_struct)
+        current_name = model_struct(i).name;
+        tune_idx2 = model_struct(i).idx2;
+        state_vars = state_vars_list{i};
+        trans_rates = trans_rates_list{i};
+
+        switch current_name
+        case 'ikto'
+            g(tune_idx2) = grad_ikto(p, df1, df2, df3, state_vars, trans_rates);
+        case 'ikslow1'
+            g(tune_idx2) = grad_ikslow1(p, df1, df2, df3, state_vars, trans_rates);
+        case 'ikslow2'
+            g(tune_idx2) = grad_ikslow2(p, df1, df2, df3, state_vars, trans_rates);
+        case 'ikss'
+            g(tune_idx2) = grad_ikss(p, df1, df2, df3, state_vars, trans_rates);
+        otherwise
+            g(tune_idx2) = [];
+        end
+    end
+end
+
+function g = grad_ikto(p, df1, df2, df3, state_vars, trans_rates)
     % tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
+    
+    global param_kto
     g = NaN(9, 1);
 
     % a
 
-
     % i
+
+end
+
+function g = grad_ikslow1(p, df1, df2, df3, state_vars, trans_rates)
+    global param_kslow1
+    g = [];
+end
+
+function g = grad_ikslow2(p, df1, df2, df3, state_vars, trans_rates)
+    global param_kslow2
+    g = [];
+end
+function g = grad_ikss(p, df1, df2, df3, state_vars, trans_rates)
+    global param_kss
+    g = [];
 end
