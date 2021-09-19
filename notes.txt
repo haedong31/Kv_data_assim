@@ -15,3 +15,7 @@ numbering in the app
     4: IKur
     5: IKss
     6: IKr
+
+beta2; (ae^((v+b+d)/x))/(ce^((v+b+d)/x)+1)
+
+beta2p
