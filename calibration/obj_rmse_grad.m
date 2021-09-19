@@ -469,12 +469,6 @@ function [y] = hh_model(t, ss0, ss, tau)
 end
 
 function g = kcurrent_grad(p, model_struct, protocol, mserr, err, state_vars_list, trans_rates_list)
-    global param_kslow1
-    global param_kslow2
-    global param_kss
-    global param_kur
-    global param_k1
-
     dfdm = 1/(2*sqrt(mserr));
 
     g = NaN(length(p), 1);
@@ -503,6 +497,7 @@ function g = grad_ikto(p, protocol, dfdm, err, state_vars, trans_rates)
     % tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
     
     global param_kto
+    p = param_kto;
     g = NaN(9, 1);
 
     act0 = 0.4139033547E-02;
@@ -512,7 +507,7 @@ function g = grad_ikto(p, protocol, dfdm, err, state_vars, trans_rates)
 
     f_eacv = param_kto(15);
     gmax = param_kto(16);
-    gmaxp = param_kto(16)*(1.0-param_kto(17));0
+    gmaxp = param_kto(16)*(1.0-param_kto(17));
     
     time_space = protocol{3};
     t = time_space{3};
@@ -543,6 +538,7 @@ function g = grad_ikto(p, protocol, dfdm, err, state_vars, trans_rates)
     % derivatives
     dmde = 2*err;
     dedy = -1;
+    dfdy = dfdm*dmde*dedy;
     
     dyda = 3*gmax*(state_vars(:, 1).^2).*(state_vars(:, 2))*(1-f_eacv)*(volt-ek);
     dydi = gmax*state_vars(:, 1).^3*(1-f_eacv)*(volt-ek);
@@ -555,25 +551,78 @@ function g = grad_ikto(p, protocol, dfdm, err, state_vars, trans_rates)
     didtau = -(iss - inact0)*(t.*exp(-t./itau))/(itau^2);
 
     dapdss = 1 - exp(-t./ataup);
-    dapdtau = -(assp - act0)*(t.*exp(-t./ataup))/(ataup^2);
+    dapdtau = -(assp - actp0)*(t.*exp(-t./ataup))/(ataup^2);
     dipdss = 1- exp(-t./itaup);
-    dipdtau = -(issp - inact0)*(t.*exp(-t./itaup))/(itaup^2);
+    dipdtau = -(issp - inactp0)*(t.*exp(-t./itaup))/(itaup^2);
     
-    dssdalpha1
-    dssdbeta1
-    dtaudalpha1
-    dtaudbeta1
-    dssdalpha2
-    dssdbeta2
-    dtaudalpha2
-    dtaudbeta2
+    dssdalpha1 = beta1/(alpha1+beta1)^2;
+    dssdbeta1 = -alpha1/(alpha1+beta1)^2;
+    dtaudalpha1 = -1/(alpha1+beta1)^2;
+    dtaudbeta1 = -1/(alpha1+beta1)^2;
+    dssdalpha2 = beta2/(alpha2+beta2)^2;
+    dssdbeta2 = -alpha2/(alpha2+beta2)^2;
+    dtaudalpha2 = -1/(alpha2+beta2)^2;
+    dtaudbeta2 = -1/(alpha2+beta2)^2;
 
+    dssdalpha1p = beta1p/(alpha1p+beta1p)^2;
+    dssdbeta1p = -alpha1p/(alpha1p+beta1p)^2;
+    dtaudalpha1p = -1/(alpha1p+beta1p)^2;
+    dtaudbeta1p = -1/(alpha1p+beta1p)^2;
+    dssdalpha2p = beta2p/(alpha2p+beta2p)^2;
+    dssdbeta2p = -alpha2p/(alpha2p+beta2p)^2;
+    dtaudalpha2p = -1/(alpha2p+beta2p)^2;
+    dtaudbeta2p = -1/(alpha2p+beta2p)^2;
+    
     % p1
+    dalpha1dp1 = p(7)*p(9)*exp(p(7)*(volt+p(1)));
+    dbeta1dp1 = -p(8)*p(10)*exp(-p(8)*(volt+p(1)));
+    dalpha1pdp1 = p(7)*p(9)*exp(p(7)*(volt+p(1)-p(4)));
+    dbeta1pdp1 = -p(8)*p(10)*exp(-p(8)*(volt+p(1)-p(4)));
+    g(1) = dfdy*(dyda*dadss*dssdalpha1*dalpha1dp1 + ...
+        dyda*dadss*dssdbeta1*dbeta1dp1 + ...
+        dyda*dadtau*dtaudalpha1*dalpha1dp1 + ...
+        dyda*dadtau*dtaudbeta1*dbeta1dp1 + ...
+        dydap*dapdss*dssdalpha1p*dalpha1pdp1 + ...
+        dydap*dapdss*dssdbeta1p*dbeta1pdp1 + ...
+        dydap*dapdtau*dtaudalpha1p*dalpha1pdp1 + ...
+        dydap*dapdtau*dtaudbeta1p*dbeta1pdp1);
+    g(1) = (1/n)*sum(g(1));
 
     % p2
+    dalpha2dp2_temp1 = p(11)*exp(2*(volt+p(2)+p(3))/p(6)-(volt+p(2))/p(6));
+    dalpha2dp2_temp2 = p(6)*(exp((volt+p(2)+p(3))/p(6))+p(12))^2;
+    dalpha2dp2 = -dalpha2dp2_temp1/dalpha2dp2_temp2;
+    dbeta2dp2 = 
+    dalpha2pdp2 = 
+    dbeta2pdp2 = 
+    g(2)
 
     % p6
+    dalpha2dp6
+    dbeta2dp6
+    dalpha2pdp6
+    dbeta2pdp6  
 
+    % p10
+    dbeta1dp10
+    dbeta1pdp10
+
+    % p13
+    dbeta2dp13
+    dbeta2pdp13
+
+    % p14
+    dbeta2dp14
+    dbeta2pdp14
+
+    % p15
+    dydfeacv
+
+    % p16
+    dydgmax
+
+    % p17
+    dydgmaxp
 end
 
 function g = grad_ikslow1(p, protocol, dfdm, err, state_vars, trans_rates)
