@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp16_', group_name);
+save_dir = strcat('calib_exp17_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -27,7 +27,8 @@ tune_idx1_k1 = [1, 3, 5, 7];
 max_evals = 1e+6;
 num_iters = 30;
 options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
-    'MaxFunctionEvaluations',max_evals, 'Display','off');
+    'Algorithm','sqp', 'Display','off', ...
+    'MaxFunctionEvaluations',max_evals);
 global history
 history.x = [];
 history.fval = [];
