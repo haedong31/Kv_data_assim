@@ -220,8 +220,8 @@ clc
 close all
 clear variables
 
-group_name = 'ko';
-exp_name = strcat('calib_exp10_', group_name);
+group_name = 'wt';
+exp_name = strcat('calib_exp18_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -231,8 +231,8 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 4, 6, 7, 10, 16];
-tune_idx1_kslow1 = [1, 2, 3, 8, 9, 11];
+tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
 tune_idx1_kslow2 = [1, 3];
 tune_idx1_kss = [3, 4];
 tune_idx1_kur = [1, 3];
@@ -305,8 +305,9 @@ for i = 1:num_files
     loop_idx = [loop_idx, i];
 end
 
-for i = loop_idx
-    trace_data = table2array(readtable(fullfile(pwd, 'data', strcat(group_name, '-preprocessed2'), file_names{i})));
+for l = 1:length(loop_idx)
+    i = loop_idx(l);
+    trace_data = table2array(readtable(fullfile(pwd, 'data', strcat(group_name, '-preprocessed'), file_names{i})));
     sol_mx = table2array(readtable(fullfile(pwd, exp_name, file_names{i})));
 
     t = trace_data(:, 1);
@@ -337,8 +338,8 @@ for i = loop_idx
         sol(model_struct(j).idx2) = running_sol(model_struct(j).idx1);
     end
     
-    r = obj_rmse(sol, 'all', @kcurrent_model2, model_struct, volt_space, time_space, yksum);
-    fprintf('File %s Min RMSE: %f \n', file_names{i}, r)
+    r = obj_rmse(sol, 'all', @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+    fprintf('[File %i/%i] %s Min RMSE: %f \n', l, length(loop_idx), file_names{i}, r)
 end
 
 %% check calibration result for general kcurrent model
