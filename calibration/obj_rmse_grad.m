@@ -1,32 +1,4 @@
 function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
-    hold_idx = time_space{4};
-    end_idx = time_space{5};
-    
-    volts = volt_space{2};
-    num_volts = length(volts);
-
-    protocol = cell(4, 1);
-    protocol{1} = volt_space{1};
-    protocol{3} = time_space;
-    protocol{4} = volt_space{3};
-
-    rmse_list = NaN(num_volts, 1);
-    grad_list = NaN(model_struct(end).idx2(end), num_volts);
-    for i = 1:num_volts
-        yksum_i = yksum(:, i);
-        protocol{2} = volts(i);
-
-        [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, model_struct, protocol);
-        err = yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end);
-        mserr = mean(err.^2);
-
-        rmse_list(i) = sqrt(mserr);
-        grad_list(:, i) = kcurrent_grad(p, model_struct, protocol, mserr, err, state_vars_list, trans_rates_list);
-    end
-    f = sum(rmse_list);
-end
-
-function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, model_struct, protocol_info)
     global param_kto
     global param_kslow1
     global param_kslow2
@@ -44,19 +16,8 @@ function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, mode
     k1_default = [59.215, 5.476, 594.31, 4.753, ...
         1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
 
-    % protocol info
-    hold_volt = protocol_info{1};
-    volt = protocol_info{2};
-    time_space = protocol_info{3};
-    ek = protocol_info{4};
-    
-    num_currents = length(model_struct);
-    yksum_hat = zeros(length(time_space{1}), 1);
-    state_vars_list = cell(num_currents, 1);
-    trans_rates_list = cell(num_currents, 1);
-    
-    % current model info
-    for i = 1:num_currents
+    % calibration parameters
+    for i = 1:length(model_struct)
         % current model info
         current_name = model_struct(i).name;
         tune_idx1 = model_struct(i).idx1;
@@ -71,8 +32,6 @@ function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, mode
             fixed_idx = setdiff(1:num_param, tune_idx1);
             param_kto(tune_idx1) = p(tune_idx2);
             param_kto(fixed_idx) = kto_default(fixed_idx);
-            
-            [current_trace, state_vars, trans_rates] = ikto(hold_volt, volt, time_space, ek);
         case 'ikslow1'
             % generate ikslow1
             num_kslow1_param = 13;
@@ -81,8 +40,6 @@ function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, mode
             fixed_idx = setdiff(1:num_kslow1_param, tune_idx1);
             param_kslow1(tune_idx1) = p(tune_idx2);
             param_kslow1(fixed_idx) = kslow1_default(fixed_idx);
-    
-            [current_trace, state_vars, trans_rates] = ikslow1(hold_volt, volt, time_space, ek);
         case 'ikslow2'
             % generate ikslow2
             num_param = 11;
@@ -95,8 +52,6 @@ function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, mode
             uniq_param = kslow2_default;
             uniq_param(tune_idx1) = p(tune_idx2);
             param_kslow2(uniq_idx) = uniq_param;
-
-            [current_trace, state_vars, trans_rates] = ikslow2(hold_volt, volt, time_space, ek);
         case 'ikss'
             % generate ikss
             num_param = 7;
@@ -110,8 +65,6 @@ function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, mode
             uniq_param = kss_default;
             uniq_param(tune_idx1) = p(tune_idx2);
             param_kss(uniq_idx) = uniq_param;
-
-            [current_trace, state_vars, trans_rates] = ikss(hold_volt, volt, time_space, ek);
         case 'ikur'
             % generate ikur
             num_param = 11;
@@ -124,8 +77,6 @@ function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, mode
             uniq_param = kur_default;
             uniq_param(tune_idx1) = p(tune_idx2);
             param_kur(uniq_idx) = uniq_param;
-
-            [current_trace, state_vars, trans_rates] = ikur(hold_volt, volt, time_space, ek);            
         case 'ik1'
             % generate ik1
             num_param = 10;
@@ -134,7 +85,67 @@ function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(p, mode
             fixed_idx = setdiff(1:num_param, tune_idx1);
             param_k1(tune_idx1) = p(tune_idx2);
             param_k1(fixed_idx) = k1_default(fixed_idx);
+        end
+    end
 
+    hold_idx = time_space{4};    
+    volts = volt_space{2};
+    num_volts = length(volts);
+
+    protocol = cell(4, 1);
+    protocol{1} = volt_space{1};
+    protocol{3} = time_space;
+    protocol{4} = volt_space{3};
+
+    rmse_list = NaN(num_volts, 1);
+    grad_list = NaN(model_struct(end).idx2(end), num_volts);
+    for i = 1:num_volts
+        yksum_i = yksum(:, i);
+        protocol{2} = volts(i);
+
+        [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(model_struct, protocol);
+        err = yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end);
+        mserr = mean(err.^2);
+
+        rmse_list(i) = sqrt(mserr);
+        grad_list(:, i) = kcurrent_grad(model_struct, protocol, mserr, err, state_vars_list, trans_rates_list);
+    end
+    f = sum(rmse_list);
+end
+
+function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(model_struct, protocol_info)
+    % protocol info
+    hold_volt = protocol_info{1};
+    volt = protocol_info{2};
+    time_space = protocol_info{3};
+    ek = protocol_info{4};
+    
+    num_currents = length(model_struct);
+    yksum_hat = zeros(length(time_space{1}), 1);
+    state_vars_list = cell(num_currents, 1);
+    trans_rates_list = cell(num_currents, 1);
+    
+    % current model info
+    for i = 1:num_currents
+        % current model info
+        switch model_struct(i).name
+        case 'ikto'
+            % generate ikto
+            [current_trace, state_vars, trans_rates] = ikto(hold_volt, volt, time_space, ek);
+        case 'ikslow1'
+            % generate ikslow1
+            [current_trace, state_vars, trans_rates] = ikslow1(hold_volt, volt, time_space, ek);
+        case 'ikslow2'
+            % generate ikslow2
+            [current_trace, state_vars, trans_rates] = ikslow2(hold_volt, volt, time_space, ek);
+        case 'ikss'
+            % generate ikss
+            [current_trace, state_vars, trans_rates] = ikss(hold_volt, volt, time_space, ek);
+        case 'ikur'
+            % generate ikur
+            [current_trace, state_vars, trans_rates] = ikur(hold_volt, volt, time_space, ek);            
+        case 'ik1'
+            % generate ik1
             [current_trace, state_vars, trans_rates] = ik1(hold_volt, volt, time_space, ek);
         end
         yksum_hat = yksum_hat + current_trace;
@@ -471,7 +482,7 @@ end
 function g = kcurrent_grad(model_struct, protocol, mserr, err, state_vars_list, trans_rates_list)
     dfdm = 1/(2*sqrt(mserr));
 
-    g = NaN(length(p), 1);
+    g = NaN(model_struct(end).idx2(end), 1);
     for i = 1:length(model_struct)
         current_name = model_struct(i).name;
         tune_idx2 = model_struct(i).idx2;
@@ -542,8 +553,8 @@ function g = grad_ikto(protocol, dfdm, err, state_vars, trans_rates)
     
     dyda = 3*gmax*(state_vars(:, 1).^2).*(state_vars(:, 2))*(1-f_eacv)*(volt-ek);
     dydi = gmax*state_vars(:, 1).^3*(1-f_eacv)*(volt-ek);
-    dydap = 3*gmaxp*(state_vars(:, 3).^2).*(state_vars(:, 4))*f_ecav*(volt-ek);
-    dydip = gmaxp*state_vars(:, 4).^3*f_ecav*(volt-ek);
+    dydap = 3*gmaxp*(state_vars(:, 3).^2).*(state_vars(:, 4))*f_eacv*(volt-ek);
+    dydip = gmaxp*state_vars(:, 4).^3*f_eacv*(volt-ek);
     
     dadss = 1 - exp(-t./atau);
     dadtau = -(ass - act0)*(t.*exp(-t./atau))/(atau^2);
@@ -578,116 +589,164 @@ function g = grad_ikto(protocol, dfdm, err, state_vars, trans_rates)
     dbeta1dp1 = -p(8)*p(10)*exp(-p(8)*(volt+p(1)));
     dalpha1pdp1 = p(7)*p(9)*exp(p(7)*(volt+p(1)-p(4)));
     dbeta1pdp1 = -p(8)*p(10)*exp(-p(8)*(volt+p(1)-p(4)));
-    g(1) = dfdy*(dyda*dadss*dssdalpha1*dalpha1dp1 + ...
-        dyda*dadss*dssdbeta1*dbeta1dp1 + ...
-        dyda*dadtau*dtaudalpha1*dalpha1dp1 + ...
-        dyda*dadtau*dtaudbeta1*dbeta1dp1 + ...
-        dydap*dapdss*dssdalpha1p*dalpha1pdp1 + ...
-        dydap*dapdss*dssdbeta1p*dbeta1pdp1 + ...
-        dydap*dapdtau*dtaudalpha1p*dalpha1pdp1 + ...
-        dydap*dapdtau*dtaudbeta1p*dbeta1pdp1);
-    g(1) = (1/n)*sum(g(1));
+    g(1) = (1/n)*sum(dfdy.*(dyda.*dadss*dssdalpha1*dalpha1dp1 + ...
+        dyda.*dadss*dssdbeta1*dbeta1dp1 + ...
+        dyda.*dadtau*dtaudalpha1*dalpha1dp1 + ...
+        dyda.*dadtau*dtaudbeta1*dbeta1dp1 + ...
+        dydap.*dapdss*dssdalpha1p*dalpha1pdp1 + ...
+        dydap.*dapdss*dssdbeta1p*dbeta1pdp1 + ...
+        dydap.*dapdtau*dtaudalpha1p*dalpha1pdp1 + ...
+        dydap.*dapdtau*dtaudbeta1p*dbeta1pdp1));
 
     % p2
     dalpha2dp2_temp1 = p(11)*exp(2*(volt+p(2)+p(3))/p(6)-(volt+p(2))/p(6));
     dalpha2dp2_temp2 = p(6)*(exp((volt+p(2)+p(3))/p(6))+p(12))^2;
     dalpha2dp2 = -dalpha2dp2_temp1/dalpha2dp2_temp2;
     dbeta2dp2_temp1 = p(13)*exp((volt+p(2)+p(3))/p(6));
-    dbeta2dp2_temp2 = p(6)*(p(14)*exp((volt+p(2)+p(3))/p(6))+1)^2;
+    dbeta2dp2_temp2 = p(6)*(p(14)*exp((volt+p(2)+p(3))/p(6))+1.0)^2;
     dbeta2dp2 = dbeta2dp2_temp1/dbeta2dp2_temp2;
     dalpha2pdp2_temp1 = p(11)*exp(2*(volt+p(2)+p(3)-p(5))/p(6)-(volt+p(2)-p(5))/p(6));
     dalpha2pdp2_temp2 = p(6)*(exp((volt+p(2)+p(3)-p(5))/p(6))+p(12))^2;
     dalpha2pdp2 = - dalpha2pdp2_temp1/dalpha2pdp2_temp2;
     dbeta2pdp2_temp1 = p(13)*exp((volt+p(2)+p(3)-p(5))/p(6));
-    dbeta2pdp2_temp2 = p(6)*(p(14)*exp((volt+p(2)+p(3)-p(5))/p(6))+1)^2;
+    dbeta2pdp2_temp2 = p(6)*(p(14)*exp((volt+p(2)+p(3)-p(5))/p(6))+1.0)^2;
     dbeta2pdp2 = dbeta2pdp2_temp1/dbeta2pdp2_temp2;
-    g(2) = dfdy*(dydi*didss*dssdalpha2*dalpha2dp2 + ...
-        dydi*didss*dssdbeta2*dbeta2dp2 + ...
-        dydi*didtau*dtaudalpha2*dalpha2dp2 + ...
-        dydi*didtau*dtaudbeta2*dbeta2dp2 + ...
-        dydip*dipdss*dssdalpha2p*dalpha2pdp2 + ...
-        dydip*dipdss*dssdbeta2p*dbeta2pdp2 + ...
-        dydip*dipdtau*dtaudalpha2p*dalpha2pdp2 + ...
-        dydip*dipdtau*dtaudbeta2p*dbeta2pdp2);
-    g(2) = (1/n)*sum(g(2));
+    g(2) = (1/n)*sum(dfdy.*(dydi.*didss*dssdalpha2*dalpha2dp2 + ...
+        dydi.*didss*dssdbeta2*dbeta2dp2 + ...
+        dydi.*didtau*dtaudalpha2*dalpha2dp2 + ...
+        dydi.*didtau*dtaudbeta2*dbeta2dp2 + ...
+        dydip.*dipdss*dssdalpha2p*dalpha2pdp2 + ...
+        dydip.*dipdss*dssdbeta2p*dbeta2pdp2 + ...
+        dydip.*dipdtau*dtaudalpha2p*dalpha2pdp2 + ...
+        dydip.*dipdtau*dtaudbeta2p*dbeta2pdp2));
 
     % p6
     dalpha2dp6_temp1 = p(11)*((volt+p(2))*exp((volt+p(2)+p(3))/p(6))-p(12)*p(3))*exp((volt+p(2)+p(3))/p(6)-(volt+p(2))/p(6));
     dalpha2dp6_temp2 = p(6)^2*(exp((volt+p(2)+p(3))/p(6))+p(12))^2;
     dalpha2dp6 = dalpha2dp6_temp1/dalpha2dp6_temp2;
     dbeta2dp6_temp1 = p(13)*(volt+p(2)+p(3))*exp((volt+p(2)+p(3))/p(6));
-    dbeta2dp6_temp2 = p(6)^2*(p(14)*exp((volt+p(2)+p(3))/p(6))+1)^2;
+    dbeta2dp6_temp2 = p(6)^2*(p(14)*exp((volt+p(2)+p(3))/p(6))+1.0)^2;
     dbeta2dp6 = -dbeta2dp6_temp1/dbeta2dp6_temp2;
     dalpha2pdp6_temp1 = p(11)*((volt+p(2)-p(5))*exp((volt+p(2)+p(3)-p(5))/p(6))-p(12)*p(3))*exp((volt+p(2)+p(3)-p(5))/p(6)-(volt+p(2)-p(5))/p(6));
     dalpha2pdp6_temp2 = p(6)^2*(exp((volt+p(2)+p(3)-p(5))/p(6))+p(12))^2;
     dalpha2pdp6 = dalpha2pdp6_temp1/dalpha2pdp6_temp2;
     dbeta2pdp6_temp1 = p(13)*(volt+p(2)+p(3)-p(5))*exp((volt+p(2)+p(3)-p(5))/p(6));
-    dbeta2pdp6_temp2 = p(6)^2*(p(14)*exp((volt+p(2)+p(3)-p(5))/p(6))+1)^2;
+    dbeta2pdp6_temp2 = p(6)^2*(p(14)*exp((volt+p(2)+p(3)-p(5))/p(6))+1.0)^2;
     dbeta2pdp6 = -dbeta2pdp6_temp1/dbeta2pdp6_temp2;
-    g(3) = dfdy*(dydi*didss*dssdalpha2*dalpha2dp6 + ...
-        dydi*didss*dssdbeta2*dbeta2dp6 + ...
-        dydi*didtau*dtaudalpha2*dalpha2dp6 + ...
-        dydi*didtau*dtaudbeta2*dbeta2dp6 + ...
-        dydip*dipdss*dssdalpha2p*dalpha2pdp6 + ...
-        dydip*dipdss*dssdbeta2p*dbeta2pdp6 + ...
-        dydip*dipdtau*dtaudalpha2p*dalpha2pdp6 + ...
-        dydip*dipdtau*dtaudbeta2p*dbeta2pdp6);    
-    g(3) = (1/n)*sum(g(3));
+    g(3) = (1/n)*sum(dfdy.*(dydi.*didss*dssdalpha2*dalpha2dp6 + ...
+        dydi.*didss*dssdbeta2*dbeta2dp6 + ...
+        dydi.*didtau*dtaudalpha2*dalpha2dp6 + ...
+        dydi.*didtau*dtaudbeta2*dbeta2dp6 + ...
+        dydip.*dipdss*dssdalpha2p*dalpha2pdp6 + ...
+        dydip.*dipdss*dssdbeta2p*dbeta2pdp6 + ...
+        dydip.*dipdtau*dtaudalpha2p*dalpha2pdp6 + ...
+        dydip.*dipdtau*dtaudbeta2p*dbeta2pdp6));
     
     % p10
     dbeta1dp10 = exp(-p(8)*(volt+p(1)));
     dbeta1pdp10 = exp(-p(8)*(volt+p(1)-p(4)));
-    g(4) = dfdy*(dyda*dadss*dssdbeta1*dbeta1dp10 + ...
-        dyda*dadtau*dtaudbeta1*dbeta1dp10 + ...
-        dydap*dapdss*dssdbeta1p*dbeta1pdp10 + ...
-        dydap*dapdtau*dtaudbeta1p*dbeta1pdp10);
-    g(4) = (1/n)*sum(g(4));
+    g(4) = (1/n)*sum(dfdy.*(dyda.*dadss*dssdbeta1*dbeta1dp10 + ...
+        dyda.*dadtau*dtaudbeta1*dbeta1dp10 + ...
+        dydap.*dapdss*dssdbeta1p*dbeta1pdp10 + ...
+        dydap.*dapdtau*dtaudbeta1p*dbeta1pdp10));
 
     % p13
-    dbeta2dp13 = (exp((volt+p(2)+p(3))/p(6)))/(p(14)*exp((volt+p(2)+p(3))/p(6)));
-    dbeta2pdp13 = (exp((volt+p(2)+p(3)-p(5))/p(6)))/p(14)*exp((volt+p(2)+p(3)-p(5))/p(6));
-    g(5) = dfdy*(dydi*didss*dssdbeta2*dbeta2dp13 + ...
-        dydi*didtau*dtaudbeta2*dbeta2dp13 + ...
-        dydip*dipdss*dssdbeta2p*dbeta2pdp13 + ...
-        dydip*dipdtau*dtaudbeta2p*dbeta2pdp13);
-    g(5) = (1/n)*sum(g(5));
+    dbeta2dp13 = (exp((volt+p(2)+p(3))/p(6)))/(p(14)*exp((volt+p(2)+p(3))/p(6))+1.0);
+    dbeta2pdp13 = (exp((volt+p(2)+p(3)-p(5))/p(6)))/(p(14)*exp((volt+p(2)+p(3)-p(5))/p(6))+1.0);
+    g(5) = (1/n)*sum(dfdy.*(dydi.*didss*dssdbeta2*dbeta2dp13 + ...
+        dydi.*didtau*dtaudbeta2*dbeta2dp13 + ...
+        dydip.*dipdss*dssdbeta2p*dbeta2pdp13 + ...
+        dydip.*dipdtau*dtaudbeta2p*dbeta2pdp13));
 
     % p14
     dbeta2dp14_temp1 = p(13)*exp(2*(volt+p(2)+p(3))/p(6));
-    dbeta2dp14_temp2 = (p(14)*exp((volt+p(2)+p(3))/p(6))+1)^2;
+    dbeta2dp14_temp2 = (p(14)*exp((volt+p(2)+p(3))/p(6))+1.0)^2;
     dbeta2dp14 = -dbeta2dp14_temp1/dbeta2dp14_temp2;
     dbeta2pdp14_temp1 = p(13)*exp(2*(volt+p(2)+p(3)-p(5))/p(6));
-    dbeta2pdp14_temp2 = (p(14)*exp((volt+p(2)+p(3)-p(5))/p(6))+1)^2;
+    dbeta2pdp14_temp2 = (p(14)*exp((volt+p(2)+p(3)-p(5))/p(6))+1.0)^2;
     dbeta2pdp14 = -dbeta2pdp14_temp1/dbeta2pdp14_temp2;
-    g(6) = dfdy*(dydi*didss*dssdbeta2*dbeta2dp14 + ...
-        dydi*didtau*dtaudbeta2*dbeta2dp14 + ...
-        dydip*dipdss*dssdbeta2p*dbeta2pdp14 + ...
-        dydip*dipdtau*dtaudbeta2p*dbeta2pdp14);
-    g(6) = (1/n)*sum(g(6));
+    g(6) = (1/n)*sum(dfdy.*(dydi.*didss*dssdbeta2*dbeta2dp14 + ...
+        dydi.*didtau*dtaudbeta2*dbeta2dp14 + ...
+        dydip.*dipdss*dssdbeta2p*dbeta2pdp14 + ...
+        dydip.*dipdtau*dtaudbeta2p*dbeta2pdp14));
 
     % p15
     k1_feacv = gmax*(state_vars(:, 1).^3).*(state_vars(:, 2));
     k2_feacv = gmaxp*(state_vars(:, 3).^3).*(state_vars(:, 4));
     dydfeacv = (-k1_feacv+k2_feacv)*(volt-ek);
-    g(7) = dfdy.*dydfeacv;
-    g(7) = (1/n)*sum(g(7));
+    g(7) = (1/n)*sum(dfdy.*dydfeacv);
 
     % p16
-    k1_gmax = (1-f_ecav)*(state_vars(:, 1).^3).*(state_vars(:, 2));
-    k2_gmax = f_ecav*(1-p(17))*(state_vars(:, 3).^3).*(state_vars(:, 4));
+    k1_gmax = (1-f_eacv)*(state_vars(:, 1).^3).*(state_vars(:, 2));
+    k2_gmax = f_eacv*(1-p(17))*(state_vars(:, 3).^3).*(state_vars(:, 4));
     dydgmax = (k1_gmax+k2_gmax)*(volt-ek);
-    g(8) = dfdy.*dydgmax;
-    g(8) = (1/n)*sum(g(8));
+    g(8) = (1/n)*sum(dfdy.*dydgmax);
 
     % p17
-    dydp17 = -f_ecav*gmax*(state_vars(:, 3).^3).*(state_vars(:, 4))*(volt-ek);
-    g(9) = dfdy.*dydp17;
-    g(9) = (1/n)*sum(g(9));
+    dydp17 = -f_eacv*gmax*(state_vars(:, 3).^3).*(state_vars(:, 4))*(volt-ek);
+    g(9) = (1/n)*sum(dfdy.*dydp17);
 end
 
-function g = grad_ikslow1(p, protocol, dfdm, err, state_vars, trans_rates)
+function g = grad_ikslow1(protocol, dfdm, err, state_vars, trans_rates)
+    % tune_idx1_kslow1 = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
+    
     global param_kslow1
-    g = [];
+    p = param_kslow1;
+    g = NaN(10, 1);
+
+    act0 = 0.5091689794e-03;
+    inact0 = 0.9980927689;
+    
+    f_eacv = p(11);
+    gmax = p(12);
+    gmaxp = p(13);
+
+    time_space = protocol{3};
+    t = time_space{3};
+    n = length(t);
+    volt = protocol{2};
+    ek = protocol{4};
+    
+    ass = trans_rates(1);
+    iss = trans_rates(2);
+    atau = trans_rates(3);
+    itau = trans_rates(4);
+
+    % derivatives
+    dmde = 2*err;
+    dedy = -1;
+    dfdy = dfdm*dmde*dedy;
+
+    dyda = (gmax*f_eacv+gmaxp*(1-f_eacv))*(volt-ek);
+    dydi = (gmax*f_eacv+gmaxp*(1-f_eacv))*(volt-ek);
+
+    dadass = 1.0-exp(-t./atau);
+    dadatau = -(ass - act0)*(t.*exp(-t./atau))/(atau^2);
+    didiss = 1.0-exp(-t./itau);
+    diditau = -(iss - inact0)*(t.*exp(-t./itau))/(itau^2);
+
+    % p1
+    dassdp1
+
+    % p2
+    dissdp2
+
+    % p3
+    dataudp3
+
+    % p4
+
+    % p5
+
+    % p8
+
+    % p9
+
+    % p11
+
+    % p12
+
+    % p13
 end
 
 function g = grad_ikslow2(p, protocol, dfdm, err, state_vars, trans_rates)
