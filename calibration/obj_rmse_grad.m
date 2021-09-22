@@ -726,7 +726,7 @@ function g = grad_ikslow1(protocol, dfdm, err, state_vars, trans_rates)
     diditau = -(iss - inact0)*(t.*exp(-t./itau))/(itau^2);
 
     % p1
-    dassdp1 = (exp((p(1)+volt)/p(4)))/(P(4)*(exp((p(1)+volt)/p(4))+1.0)^2);
+    dassdp1 = (exp((p(1)+volt)/p(4)))/(p(4)*(exp((p(1)+volt)/p(4))+1.0)^2);
     g(1) = (1/n)*sum(dfdy.*(dyda.*dadass*dassdp1));
 
     % p2
@@ -762,11 +762,11 @@ function g = grad_ikslow1(protocol, dfdm, err, state_vars, trans_rates)
     g(8) = (1/n)*sum(dfdy.*dydfeacv);
 
     % p12
-    dydgmax = f_ecav*state_vars.*state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
+    dydgmax = f_eacv.*state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
     g(9) = (1/n)*sum(dfdy.*dydgmax);
 
     % p13
-    dydgmaxp = (1-f_ecav)*state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
+    dydgmaxp = (1-f_eacv)*state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
     g(10) = (1/n)*sum(dfdy.*dydgmaxp);
 end
 
