@@ -770,11 +770,73 @@ function g = grad_ikslow1(protocol, dfdm, err, state_vars, trans_rates)
     g(10) = (1/n)*sum(dfdy.*dydgmaxp);
 end
 
-function g = grad_ikslow2(p, protocol, dfdm, err, state_vars, trans_rates)
+function g = grad_ikslow2(protocol, dfdm, err, state_vars, trans_rates)
+    % tune_idx1_kslow2 = [1, 3]; p([9, 11])
+     
     global param_kslow2
-    g = [];
+    p = param_kslow2;
+    g = NaN(2, 1);
+
+    inact0 = 0.9980927689;
+    gmax = p(11);
+
+    time_space = protocol{3};
+    t = time_space{3};
+    n = length(t);
+    volt = protocol{2};
+    ek = protocol{4};
+    
+    iss = trans_rates(2);
+    itau = trans_rates(4);
+    
+    % derivatives
+    dmde = 2*err;
+    dedy = -1;
+    dfdy = dfdm*dmde*dedy;
+
+    dydi = gmax*state_vars(:, 1)*(volt-ek);
+    diditau = -(iss - inact0)*(t.*exp(-t./itau))/(itau^2);
+
+    % p1 (p(9))
+    ditaudp1 = 1;
+    g(1) = (1/n)*sum(dfdy.*dydi.*diditau*ditaudp1);
+
+    % p3 (p(11))
+    dydgmax = state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
+    g(2) = (1/n)*sum(dfdy.*dydgmax);
 end
-function g = grad_ikss(p, protocol, dfdm, err, state_vars, trans_rates)
+
+function g = grad_ikss(protocol, dfdm, err, state_vars, trans_rates)
+    % tune_idx1_kss = [3, 4]; p([6, 7])
     global param_kss
-    g = [];
+    p = param_kss;
+    g = NaN(2, 1);
+
+    gmax = p(7);
+    act0 = 0.5091689794e-03;
+
+    time_space = protocol{3};
+    t = time_space{3};
+    n = length(t);
+    volt = protocol{2};
+    ek = protocol{4};
+    
+    ass = trans_rates(1);
+    atau = trans_rates(2);
+
+    % derivatives
+    dmde = 2*err;
+    dedy = -1;
+    dfdy = dfdm*dmde*dedy;
+    
+    dyda = gmax*(volt-ek);
+    dadatau = -(ass - act0)*(t.*exp(-t./atau))/(atau^2);
+
+    % p3
+    dataudp3 = 1;
+    g(1) = (1/n)*sum(dfdy*dyda.*dadatau*dataudp3);
+
+    % p4
+    dydgmax = state_vars(:, 1)*(volt-ek);
+    g(2) = (1/n)*sum(dfdy.*dydgmax);
 end
