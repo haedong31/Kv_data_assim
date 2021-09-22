@@ -16,6 +16,20 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
     k1_default = [59.215, 5.476, 594.31, 4.753, ...
         1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
 
+    % declare shared parameters of ikslow1 as global variable
+    matching_idx = strcmp(current_names, 'ikslow1');
+    if any(matching_idx)    
+        num_kslow1_param = 13;
+        
+        tune_idx1 = model_struct(matching_idx).idx1;
+        tune_idx2 = model_struct(matching_idx).idx2;
+        fixed_idx = setdiff(1:num_kslow1_param, tune_idx1);
+
+        param_kslow1 = zeros(num_kslow1_param, 1);
+        param_kslow1(tune_idx1) = p(tune_idx2);
+        param_kslow1(fixed_idx) = kslow1_default(fixed_idx);
+    end
+
     % calibration parameters
     for i = 1:length(model_struct)
         % current model info
@@ -25,23 +39,13 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
 
         switch current_name
         case 'ikto'
-            % generate ikto
             num_param = 17;
             param_kto = NaN(num_param, 1);
 
             fixed_idx = setdiff(1:num_param, tune_idx1);
             param_kto(tune_idx1) = p(tune_idx2);
             param_kto(fixed_idx) = kto_default(fixed_idx);
-        case 'ikslow1'
-            % generate ikslow1
-            num_kslow1_param = 13;
-            param_kslow1 = NaN(num_kslow1_param, 1);
-            
-            fixed_idx = setdiff(1:num_kslow1_param, tune_idx1);
-            param_kslow1(tune_idx1) = p(tune_idx2);
-            param_kslow1(fixed_idx) = kslow1_default(fixed_idx);
         case 'ikslow2'
-            % generate ikslow2
             num_param = 11;
             param_kslow2 = NaN(num_param, 1);
             
@@ -53,7 +57,6 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
             uniq_param(tune_idx1) = p(tune_idx2);
             param_kslow2(uniq_idx) = uniq_param;
         case 'ikss'
-            % generate ikss
             num_param = 7;
             param_kss = NaN(num_param, 1);
             
@@ -66,7 +69,6 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
             uniq_param(tune_idx1) = p(tune_idx2);
             param_kss(uniq_idx) = uniq_param;
         case 'ikur'
-            % generate ikur
             num_param = 11;
             param_kur = NaN(num_param, 1);
             
@@ -78,7 +80,6 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
             uniq_param(tune_idx1) = p(tune_idx2);
             param_kur(uniq_idx) = uniq_param;
         case 'ik1'
-            % generate ik1
             num_param = 10;
             param_k1 = NaN(num_param, 1);
 
