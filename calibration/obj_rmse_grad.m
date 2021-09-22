@@ -717,8 +717,8 @@ function g = grad_ikslow1(protocol, dfdm, err, state_vars, trans_rates)
     dedy = -1;
     dfdy = dfdm*dmde*dedy;
 
-    dyda = (gmax*f_eacv+gmaxp*(1-f_eacv))*(volt-ek);
-    dydi = (gmax*f_eacv+gmaxp*(1-f_eacv))*(volt-ek);
+    dyda = (gmax*f_eacv+gmaxp*(1-f_eacv))*state_vars(:, 2)*(volt-ek);
+    dydi = (gmax*f_eacv+gmaxp*(1-f_eacv))*state_vars(:, 1)*(volt-ek);
 
     dadass = 1.0-exp(-t./atau);
     dadatau = -(ass - act0)*(t.*exp(-t./atau))/(atau^2);
@@ -727,37 +727,47 @@ function g = grad_ikslow1(protocol, dfdm, err, state_vars, trans_rates)
 
     % p1
     dassdp1 = (exp((p(1)+volt)/p(4)))/(P(4)*(exp((p(1)+volt)/p(4))+1.0)^2);
+    g(1) = (1/n)*sum(dfdy.*(dyda.*dadass*dassdp1));
 
     % p2
     dissdp2 = -exp((p(2)+volt)/p(5))/(p(5)*(exp((p(2)+volt)/p(5))+1.0)^2);
     ditaudp2 = (p(10)*exp((p(2)+volt)/p(5)))/(p(5)*(exp((p(2)+volt)/p(5))+1.0)^2);
+    g(2) = (1/n)*sum(dfdy.*dydi.*(didiss*dissdp2 + diditau*ditaudp2));
 
     % p3
     dataudp3_temp1 = p(6)*(p(7)*exp(p(7)*(volt+p(3)))-p(7)*exp(-p(7)*(volt+p(3))));
     dataudp3_temp2 = (exp(p(7)*(volt+p(3))) + exp(-p(7)*(volt+p(3))))^2;
-    dataudp3 = -dataudp3_temp1/dataudp3_temp1;
+    dataudp3 = -dataudp3_temp1/dataudp3_temp2;
+    g(3) = (1/n)*sum(dfdy.*dyda.*dadatau*dataudp3);
 
     % p4
     dassdp4 = -((p(1)+volt)*exp((p(1)+volt)/p(4)))/(p(4)^2*(exp((p(1)+volt)/p(4))+1.0)^2);
+    g(4) = (1/n)*sum(dfdy.*dyda.*dadass*dassdp4);
 
     % p5
     dissdp5 = ((p(2)+volt)*exp((p(2)+volt)/p(5)))/(p(5)^2*(exp((p(2)+volt)/p(5))+1.0)^2);
     ditaudp5 = -(p(10)*(p(2)+volt)*exp((p(2)+volt)/p(5)))/(p(5)^2*(exp((p(2)+volt)/p(5))+1)^2);
+    g(5) = (1/n)*sum(dfdy.*dydi.*(didiss*dissdp5 + diditau*ditaudp5));
 
     % p8
     dataudp8 = 1;
+    g(6) = (1/n)*sum(dfdy.*dyda.*dadatau*dataudp8);
 
     % p9
     ditaudp9 = 1;
+    g(7) = (1/n)*sum(dfdy.*dydi.*diditau*ditaudp9);
 
     % p11
     dydfeacv = (gmax-gmaxp)*state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
+    g(8) = (1/n)*sum(dfdy.*dydfeacv);
 
     % p12
     dydgmax = f_ecav*state_vars.*state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
+    g(9) = (1/n)*sum(dfdy.*dydgmax);
 
     % p13
     dydgmaxp = (1-f_ecav)*state_vars(:, 1).*state_vars(:, 2)*(volt-ek);
+    g(10) = (1/n)*sum(dfdy.*dydgmaxp);
 end
 
 function g = grad_ikslow2(p, protocol, dfdm, err, state_vars, trans_rates)
