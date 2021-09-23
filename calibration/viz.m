@@ -7,7 +7,7 @@ clear variables
 file_group = 'wt';
 file_name = '15o26002.xlsx';
 
-save_dir1 = 'calib_exp17';
+save_dir1 = 'calib_exp20';
 
 % voltages info
 min_volt = -50;

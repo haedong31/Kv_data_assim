@@ -1,3 +1,20 @@
+%% test trust-region-reflective
+% options = optimoptions('fmincon','Algorithm','trust-region-reflective','SpecifyObjectiveGradient',true);
+options = optimoptions('fmincon','Algorithm','interior-point','SpecifyObjectiveGradient',true);
+
+fun = @rosenbrockwithgrad;
+x0 = [-1,2];
+A = [];
+b = [];
+Aeq = [];
+beq = [];
+lb = [-2,-2];
+ub = [2,2];
+nonlcon = [];
+[x, fval] = fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options);
+disp(fval)
+
+%% test obj_rmse_grad
 clc
 close all
 clear variables

@@ -16,6 +16,12 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
     k1_default = [59.215, 5.476, 594.31, 4.753, ...
         1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
 
+    num_currents = length(model_struct);        
+    current_names = cell(num_currents, 1);
+    for i = 1:num_currents
+        current_names{i} = model_struct(i).name;
+    end
+
     % declare shared parameters of ikslow1 as global variable
     matching_idx = strcmp(current_names, 'ikslow1');
     if any(matching_idx)    
@@ -31,7 +37,7 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
     end
 
     % calibration parameters
-    for i = 1:length(model_struct)
+    for i = 1:num_currents
         % current model info
         current_name = model_struct(i).name;
         tune_idx1 = model_struct(i).idx1;
@@ -112,6 +118,7 @@ function [f, g] = obj_rmse_grad(p, model_struct, volt_space, time_space, yksum)
         grad_list(:, i) = kcurrent_grad(model_struct, protocol, mserr, err, state_vars_list, trans_rates_list);
     end
     f = sum(rmse_list);
+    g = sum(grad_list, 2);
 end
 
 function [yksum_hat, state_vars_list, trans_rates_list] = kcurrent_model(model_struct, protocol_info)
