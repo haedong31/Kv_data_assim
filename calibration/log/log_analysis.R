@@ -11,7 +11,7 @@ read_log <- function(log_path, num_file, num_iter) {
     }
     log_list[[i]] <- log_lines
   }
-  close(con)
+  on.exit(close(con))
   return(log_list)
 }
 
@@ -34,9 +34,10 @@ log_dir <- "./calibration/log/"
 
 ## WT -----
 num_files <- 34
-log1_name <- "exp16"
-log2_name <- "exp17"
-log3_name <- "exp18"
+log1_name <- "exp20"
+log2_name <- "exp21"
+log3_name <- "exp22"
+log4_name <- "exp23"
 # wt_file_names <- c('15o26002','15o26005','15o26008','15o26014','15o26017',
 #                    '15o26020','15o26023','15o26031','15o29002','15o29009',
 #                    '15o29012','15o29015','15o29021','15o29024','15o29027',
@@ -48,20 +49,23 @@ file_names <- seq(1, num_files) %>% as.character()
 
 log1 <- read_log(str_c(log_dir, log1_name, "_wt.txt"), num_files, 30)
 log2 <- read_log(str_c(log_dir, log2_name, "_wt.txt"), num_files, 30)
-log3 <- read_log(str_c(log_dir, log3_name, "_wt.txt"), num_files, 1)
+log3 <- read_log(str_c(log_dir, log3_name, "_wt.txt"), num_files, 30)
+log4 <- read_log(str_c(log_dir, log4_name, "_wt.txt"), num_files, 30)
 
 rmse_val1 <- find_min_rmse(log1)
 rmse_val2 <- find_min_rmse(log2)
 rmse_val3 <- find_min_rmse(log3)
+rmse_val4 <- find_min_rmse(log4)
 
 bar_df <- tibble(
   name = file_names,
-  mdl1 = rmse_val1,
-  mdl2 = rmse_val2,
-  mdl3 = rmse_val3)
+  mtd1 = rmse_val1,
+  mtd2 = rmse_val2,
+  mtd3 = rmse_val3,
+  mtd4 = rmse_val4)
 
 # export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_exp16-17-18.csv')
+write_csv(bar_df, './calibration/bar_graph_exp16-17-18-19.csv')
 
 bar_df <- bar_df %>% 
   pivot_longer(c('mdl1','mdl2'), names_to = 'mdl', values_to = 'rmse')
@@ -79,21 +83,26 @@ num_files <- 33
 log1_name <- "exp16"
 log2_name <- "exp17"
 log3_name <- "exp18"
+log4_name <- "exp19"
+
 file_names <- seq(1, num_files) %>% as.character()
 
 log1 <- read_log(str_c(log_dir, log1_name, "_ko.txt"), num_files, 30)
 log2 <- read_log(str_c(log_dir, log2_name, "_ko.txt"), num_files, 30)
 log3 <- read_log(str_c(log_dir, log3_name, "_ko.txt"), num_files, 1)
+log4 <- read_log(str_c(log_dir, log4_name, "_ko.txt"), num_files, 30)
 
 rmse_val1 <- find_min_rmse(log1)
 rmse_val2 <- find_min_rmse(log2)
 rmse_val3 <- find_min_rmse(log3)
+rmse_val4 <- find_min_rmse(log4)
 
 bar_df <- tibble(
   name = file_names,
-  mdl1 = rmse_val1,
-  mdl2 = rmse_val2,
-  mdl3 = rmse_val3)
+  mtd1 = rmse_val1,
+  mtd2 = rmse_val2,
+  mtd3 = rmse_val3,
+  mtd4 = rmse_val4)
 
 # export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_exp16-17-18_ko.csv')
+write_csv(bar_df, './calibration/bar_graph_exp16-17-18_19_ko.csv')
