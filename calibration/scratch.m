@@ -237,8 +237,8 @@ clc
 close all
 clear variables
 
-group_name = 'wt';
-exp_name = strcat('calib_exp18_', group_name);
+group_name = 'ko';
+exp_name = strcat('calib_exp20_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
