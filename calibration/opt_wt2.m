@@ -5,8 +5,8 @@ clear variables
 warning('off', 'all')
 
 % code arguments for calibration
-group_name = 'wt';
-save_dir = strcat('calib_exp20_', group_name);
+group_name = 'ko';
+save_dir = strcat('calib_exp24sqp_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -25,14 +25,11 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 30;
-options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
-    'Algorithm','interior-point', 'Display','off', ...
+num_iters = 200;
+options = optimoptions(@fmincon, ...
+    'Algorithm','sqp', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
     'SpecifyObjectiveGradient',true);
-global history
-history.x = [];
-history.fval = [];
 
 % protocol
 hold_volt = -70;
@@ -94,6 +91,7 @@ for i = 1:num_files
     end
     loop_idx = [loop_idx, i];
 end
+loop_idx = loop_idx([12, 13, 14, 22, 24]);
 len_loop_idx = length(loop_idx);
 
 % default values
@@ -225,7 +223,7 @@ for l = 1:len_loop_idx
     time_space{5} = ideal_end_idx;
     
     % objective function
-%     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum)
+%    obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
     opt_fun = @(p) obj_rmse_grad(p, model_struct, volt_space, time_space, yksum);
 
     % run optimization
@@ -237,16 +235,12 @@ for l = 1:len_loop_idx
     sol_list{1} = sol;
     rmse_list(1) = fval;
 
-    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, min(history.fval));
+    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
     
     % random intialization
     running_p0 = lhsdesign(num_iters, cul_idx_len);
     running_p0 = scale_param(running_p0, model_struct);
     for j = 2:num_iters
-        history.x = [];
-        history.fval = [];
-
-        
         % optimization
         try
             [sol, fval] = fmincon(opt_fun, running_p0(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
@@ -255,7 +249,7 @@ for l = 1:len_loop_idx
         catch
             rmse_list(j) = 1e+3;
         end
-        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, j, num_iters, min(history.fval));
+        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, j, num_iters, fval);
     end
 
     [~, best_fit_idx] = min(rmse_list);
@@ -356,16 +350,16 @@ function scaledp = scale_param(unitp, model_struct)
     end
 end
 
-function [stop] = outfun(x,optimValues,state)
-    global history
-    stop = false;
-    
-    switch state
-        case 'iter'
-        % Concatenate current point and objective function
-        % value with history. x must be a row vector.
-        history.fval = [history.fval; optimValues.fval];
-        history.x = [history.x; x];
-        otherwise
-     end
-end
+% function [stop] = outfun(x,optimValues,state)
+%     global history
+%     stop = false;
+%     
+%     switch state
+%         case 'iter'
+%         % Concatenate current point and objective function
+%         % value with history. x must be a row vector.
+%         history.fval = [history.fval; optimValues.fval];
+%         history.x = [history.x; x];
+%         otherwise
+%      end
+% end
