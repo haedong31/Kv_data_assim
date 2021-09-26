@@ -27,9 +27,9 @@ tune_idx1_k1 = [1, 3, 5, 7];
 max_evals = 1e+6;
 num_iters = 30;
 options = optimoptions(@fmincon, 'OutputFcn',@outfun, ...
-    'Algorithm','sqp', 'Display','off', ...
+    'Algorithm','active-set', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
-    'SpecifyObjectiveGradient',true);
+    'SpecifyObjectiveGradient',false);
 global history
 history.x = [];
 history.fval = [];
@@ -233,7 +233,9 @@ for l = 1:len_loop_idx
     sol_list = cell(num_iters, 1);
 
     % first run with p0
+    tic
     [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
+    toc
     sol_list{1} = sol;
     rmse_list(1) = fval;
 

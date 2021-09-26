@@ -16,6 +16,7 @@ numbering in the app
     5: IKss
     6: IKr
 
+alpha2; (ae^(-(v+b)/x))/(ce^(-(v+b+d)/x)+1)
 beta2; (ae^((v+b+d)/x))/(ce^((v+b+d)/x)+1)
-
-beta2p
+alpha2p; (ae^(-(v+b-h)/x))/(ce^(-(v+b+d-h)/x)+1)
+beta2p; 

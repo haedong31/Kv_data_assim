@@ -1,4 +1,4 @@
-function [z] = obj_rmse(p, phase, kcurrent_model, model_struct, volt_space, time_space, yksum)
+function z = obj_rmse(p, kcurrent_model, model_struct, volt_space, time_space, yksum)
     hold_idx = time_space{4};
     end_idx = time_space{5};
     
@@ -12,39 +12,12 @@ function [z] = obj_rmse(p, phase, kcurrent_model, model_struct, volt_space, time
 
     break_pt = floor((end_idx - hold_idx)*0.05) + hold_idx;
     rmse_list = zeros(num_volts, 1);
-    switch phase
-        case 'early'
-            for i = 1:num_volts
-                yksum_i = yksum(:, i);
-                protocol{2} = volts(i);
-        
-                [yksum_hat, ~] = kcurrent_model(p, model_struct, protocol);
-                
-                yksum_i = yksum_i(1:break_pt);
-                yksum_hat = yksum_hat(1:break_pt);
+    for i = 1:num_volts
+        yksum_i = yksum(:, i);
+        protocol{2} = volts(i);
 
-                rmse_list(i) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
-            end
-        case 'tail'
-            for i = 1:num_volts
-                yksum_i = yksum(:, i);
-                protocol{2} = volts(i);
-        
-                [yksum_hat, ~] = kcurrent_model(p, model_struct, protocol);
-
-                yksum_i = yksum_i((break_pt + 1):end);
-                yksum_hat = yksum_hat((break_pt + 1):end);
-
-                rmse_list(i) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
-            end
-        otherwise
-            for i = 1:num_volts
-                yksum_i = yksum(:, i);
-                protocol{2} = volts(i);
-        
-                [yksum_hat, ~] = kcurrent_model(p, model_struct, protocol);
-                rmse_list(i) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
-            end
+        [yksum_hat, ~] = kcurrent_model(p, model_struct, protocol);
+        rmse_list(i) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
     end
     z = sum(rmse_list);
 end

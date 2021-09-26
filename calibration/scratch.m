@@ -355,7 +355,7 @@ for l = 1:length(loop_idx)
         sol(model_struct(j).idx2) = running_sol(model_struct(j).idx1);
     end
     
-    r = obj_rmse(sol, 'all', @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+    r = obj_rmse(sol, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
     fprintf('[File %i/%i] %s Min RMSE: %f \n', l, length(loop_idx), file_names{i}, r)
 end
 

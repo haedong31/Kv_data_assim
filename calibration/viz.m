@@ -66,18 +66,25 @@ time_space{3} = pulse_t_adj;
 time_space{4} = ideal_hold_idx;
 time_space{5} = ideal_end_idx;
 
+volt_space = cell(3, 1);
+volt_space{1} = hold_volt;
+volt_space{2} = volts;
+volt_space{3} = ek;
+
 protocol{1} = hold_volt;
 protocol{3} = time_space;
 protocol{4} = ek;
 
 % generate yksum_hat
-figure
+r = obj_rmse(sol1, @kcurrent_model1, model_struct1, volt_space, time_space, yksum);
+fprintf('File %s Min RMSE: %f \n', file_name, r)
+
+figure('Position',[100,100,1500,1200])
 for i=1:length(volts)
     protocol{2} = volts(i);
     yksum_i = yksum(:, i);
 
     [yksum_hat1, ~] = kcurrent_model1(sol1, model_struct1, protocol);
- 
     
     subplot(3, 3, i)
     plot(t, yksum_i, 'Color','red')
