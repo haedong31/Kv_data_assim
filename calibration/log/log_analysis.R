@@ -30,7 +30,7 @@ find_min_rmse <- function(log_list) {
   return(mins)
 }
 
-log_dir <- "./calibration/log/"
+log_dir <- "./calibration/log_norm/"
 
 ## WT -----
 num_files <- 34
@@ -38,24 +38,22 @@ log1_name <- "exp20"
 log2_name <- "exp21"
 log3_name <- "exp22"
 log4_name <- "exp23"
-# wt_file_names <- c('15o26002','15o26005','15o26008','15o26014','15o26017',
-#                    '15o26020','15o26023','15o26031','15o29002','15o29009',
-#                    '15o29012','15o29015','15o29021','15o29024','15o29027',
-#                    '15o20002','15o20005','15o20010','15o20015','15o21003',
-#                    '15o21008','15o22002','15o22008','15n10002','15n10006',
-#                    '15n10009','15n10012','15n23002','15n23005','15n23008',
-#                    '15n23011','15n23014','15n23019','15n23022')
-file_names <- seq(1, num_files) %>% as.character()
 
-log1 <- read_log(str_c(log_dir, log1_name, "_wt.txt"), num_files, 30)
+file_names <- seq(1, num_files) %>% as.character()
+extra_idx <- c(18, 19, 29, 31, 32)
+
+log1 <- read_log(str_c(log_dir, log1_name, "_wt.txt"), num_files, 1)
 log2 <- read_log(str_c(log_dir, log2_name, "_wt.txt"), num_files, 1)
-log3 <- read_log(str_c(log_dir, log3_name, "_wt.txt"), num_files, 30)
-log4 <- read_log(str_c(log_dir, log4_name, "_wt.txt"), num_files, 30)
+log3 <- read_log(str_c(log_dir, log3_name, "_wt.txt"), num_files, 1)
+log4 <- read_log(str_c(log_dir, log4_name, "_wt.txt"), num_files, 1)
 
 rmse_val1 <- find_min_rmse(log1)
 rmse_val2 <- find_min_rmse(log2)
 rmse_val3 <- find_min_rmse(log3)
 rmse_val4 <- find_min_rmse(log4)
+
+rmse_val1[extra_idx]
+rmse_val2
 
 bar_df <- tibble(
   name = file_names,
@@ -65,7 +63,7 @@ bar_df <- tibble(
   mtd4 = rmse_val4)
 
 # export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_exp20-21-22-23.csv')
+write_csv(bar_df, './calibration/bar_graph_norm.csv')
 
 bar_df <- bar_df %>% 
   pivot_longer(c('mtd1','mtd2'), names_to = 'mtd', values_to = 'rmse')
@@ -81,21 +79,25 @@ ggplot(data = bar_df, mapping = aes(x = name, y = rmse, fill = mtd)) +
 ## Mgat1KO -----
 num_files <- 33
 log1_name <- "exp20"
-log2_name <- "exp21"
+log2_name <- "exp20_extra"
 log3_name <- "exp22"
 log4_name <- "exp23"
 
 file_names <- seq(1, num_files) %>% as.character()
+extra_idx <- c(12, 13, 14, 22, 24)
 
 log1 <- read_log(str_c(log_dir, log1_name, "_ko.txt"), num_files, 1)
 log2 <- read_log(str_c(log_dir, log2_name, "_ko.txt"), num_files, 1)
-log3 <- read_log(str_c(log_dir, log3_name, "_ko.txt"), num_files, 30)
-log4 <- read_log(str_c(log_dir, log4_name, "_ko.txt"), num_files, 30)
+log3 <- read_log(str_c(log_dir, log3_name, "_ko.txt"), num_files, 1)
+log4 <- read_log(str_c(log_dir, log4_name, "_ko.txt"), num_files, 1)
 
 rmse_val1 <- find_min_rmse(log1)
 rmse_val2 <- find_min_rmse(log2)
 rmse_val3 <- find_min_rmse(log3)
 rmse_val4 <- find_min_rmse(log4)
+
+rmse_val1[extra_idx]
+rmse_val2
 
 bar_df <- tibble(
   name = file_names,
@@ -105,4 +107,4 @@ bar_df <- tibble(
   mtd4 = rmse_val4)
 
 # export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_exp20-21-22-23_ko.csv')
+write_csv(bar_df, './calibration/bar_graph_norm_ko.csv')

@@ -5,9 +5,9 @@ clear variables
 
 % specify result files and voltages to check
 file_group = 'wt';
-file_name = '15o26002.xlsx';
+file_name = '15o26008.xlsx';
 
-save_dir1 = 'calib_exp20';
+save_dir1 = 'calib_exp22';
 
 % voltages info
 min_volt = -50;
@@ -79,7 +79,7 @@ protocol{4} = ek;
 r = obj_rmse(sol1, @kcurrent_model1, model_struct1, volt_space, time_space, yksum);
 fprintf('File %s Min RMSE: %f \n', file_name, r)
 
-figure('Position',[100,100,1500,1200])
+figure('Position',[50,50,800,800])
 for i=1:length(volts)
     protocol{2} = volts(i);
     yksum_i = yksum(:, i);
@@ -102,6 +102,14 @@ for i=1:length(volts)
     set(gca,'LineWidth',2, 'FontSize',10, 'FontWeight','bold');
     set(gca,'GridLineStyle','--')
 end
+
+figure(2)
+plot(t, yksum(:, 1))
+hold on
+for i = 2:length(volts)
+plot(t, yksum(:, i))
+end
+hold off
 
 function [model_struct, psize] = gen_mdl_struct(current_names, tune_idx)
     num_currents = length(current_names);

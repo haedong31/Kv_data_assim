@@ -10,7 +10,6 @@ function z = obj_rmse(p, kcurrent_model, model_struct, volt_space, time_space, y
     protocol{3} = time_space;
     protocol{4} = volt_space{3};
 
-    break_pt = floor((end_idx - hold_idx)*0.05) + hold_idx;
     rmse_list = zeros(num_volts, 1);
     for i = 1:num_volts
         yksum_i = yksum(:, i);

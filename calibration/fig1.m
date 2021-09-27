@@ -4,8 +4,8 @@ close all
 clear variables
 
 % specify result files and voltages to check
-file_group = 'wt';
-cell_name = '15o20010';
+file_group = 'ko';
+cell_name = '15o27031';
 file_name = strcat(cell_name, '.xlsx');
 
 save_dir1 = 'calib_exp16';
@@ -95,7 +95,7 @@ fprintf('File %s Min RMSE: %f \n', file_name, r3)
 fprintf('File %s Min RMSE: %f \n', file_name, r4)
 
 % generate yksum_hat
-figure('Position',[100,100,1500,1200])
+figure('Position',[100,100,800,800])
 for i=1:length(volts)
     protocol{2} = volts(i);
     yksum_i = yksum(:, i);

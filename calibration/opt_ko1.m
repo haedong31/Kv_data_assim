@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp24_', group_name);
+save_dir = strcat('calib_exp22_extra_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -25,9 +25,9 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 200;
+num_iters = 10;
 options = optimoptions(@fmincon, ...
-    'Algorithm','interior-point', 'Display','off', ...
+    'Algorithm','active-set', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
     'SpecifyObjectiveGradient',true);
 
@@ -231,16 +231,18 @@ for l = 1:len_loop_idx
     sol_list = cell(num_iters, 1);
 
     % first run with p0
-    [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
-    sol_list{1} = sol;
-    rmse_list(1) = fval;
-
-    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
+%     [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
+%     sol_list{1} = sol;
+%     rmse_list(1) = fval;
+% 
+%     fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
     
     % random intialization
-    running_p0 = lhsdesign(num_iters, cul_idx_len);
+%     running_p0 = lhsdesign(num_iters, cul_idx_len);
+    running_p0 = gensg(cul_idx_len+1, cul_idx_len);
+    running_p0 = running_p0.design;
     running_p0 = scale_param(running_p0, model_struct);
-    for j = 2:num_iters
+    for j = 1:num_iters
         % optimization
         try
             [sol, fval] = fmincon(opt_fun, running_p0(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);

@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp24_', group_name);
+save_dir = strcat('calib_exp_22', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -25,9 +25,9 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 200;
+num_iters = 100;
 options = optimoptions(@fmincon, ...
-    'Algorithm','interior-point', 'Display','off', ...
+    'Algorithm','sqp', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
     'SpecifyObjectiveGradient',true);
 
@@ -91,7 +91,7 @@ for i = 1:num_files
     end
     loop_idx = [loop_idx, i];
 end
-loop_idx = loop_idx([18, 19, 29, 31, 32]);
+loop_idx = loop_idx(3);
 len_loop_idx = length(loop_idx);
 
 % default values
