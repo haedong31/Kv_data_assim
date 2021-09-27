@@ -2,7 +2,7 @@ clc
 close all
 clear variables
 
-rmse_df = readtable('bar_graph_exp16-17-18_19_ko.csv');
+rmse_df = readtable('bar_graph_exp20-21-22-23_ko.csv');
 rmse_df = table2array(rmse_df(:,2:end));
 [num_files, ~] = size(rmse_df);
 
@@ -29,7 +29,7 @@ grid on
 title('Mgat1KO')
 xlabel('Data Index', 'FontSize',10, 'FontWeight','bold');
 ylabel('Sum of RMSEs (-30 mV ~ 50 mV)', 'FontSize',10, 'FontWeight','bold');
-legend('Interior Point', 'SQP', 'GA', 'Active Set', 'Location','best')
+legend('Interior Point', 'Trust Region', 'SQP', 'Active Set', 'Location','best')
 xticks(1:num_files)
 get(gcf,'CurrentAxes');
 set(gca,'YDir','normal');

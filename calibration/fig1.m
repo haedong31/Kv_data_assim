@@ -4,8 +4,8 @@ close all
 clear variables
 
 % specify result files and voltages to check
-file_group = 'ko';
-cell_name = '15o27002';
+file_group = 'wt';
+cell_name = '15o20010';
 file_name = strcat(cell_name, '.xlsx');
 
 save_dir1 = 'calib_exp16';
@@ -76,12 +76,26 @@ time_space{3} = pulse_t_adj;
 time_space{4} = ideal_hold_idx;
 time_space{5} = ideal_end_idx;
 
+volt_space = cell(3, 1);
+volt_space{1} = hold_volt;
+volt_space{2} = volts;
+volt_space{3} = ek;
+
 protocol{1} = hold_volt;
 protocol{3} = time_space;
 protocol{4} = ek;
 
+r1 = obj_rmse(sol1, @kcurrent_model1, model_struct1, volt_space, time_space, yksum);
+r2 = obj_rmse(sol2, @kcurrent_model1, model_struct1, volt_space, time_space, yksum);
+r3 = obj_rmse(sol3, @kcurrent_model1, model_struct1, volt_space, time_space, yksum);
+r4 = obj_rmse(sol4, @kcurrent_model1, model_struct1, volt_space, time_space, yksum);
+fprintf('File %s Min RMSE: %f \n', file_name, r1)
+fprintf('File %s Min RMSE: %f \n', file_name, r2)
+fprintf('File %s Min RMSE: %f \n', file_name, r3)
+fprintf('File %s Min RMSE: %f \n', file_name, r4)
+
 % generate yksum_hat
-figure
+figure('Position',[100,100,1500,1200])
 for i=1:length(volts)
     protocol{2} = volts(i);
     yksum_i = yksum(:, i);
@@ -96,12 +110,12 @@ for i=1:length(volts)
     hold on
     plot(t, yksum_hat1, '--', 'Color','green', 'LineWidth',2)
     plot(t, yksum_hat2, '--', 'Color','blue', 'LineWidth',2)
-    plot(t, yksum_hat4, '--', 'Color','cyan', 'LineWidth',2)
     plot(t, yksum_hat3, '--', 'Color','black', 'LineWidth',2)
+    plot(t, yksum_hat4, '--', 'Color','cyan', 'LineWidth',2)
     hold off
     axis tight
     grid on
-    legend('Experimental Data','Interior Point', 'SQP', 'Active Set', 'GA', 'Location','best')
+    legend('Experimental Data','Interior Point', 'SQP', 'GA', 'Active Set', 'Location','best')
     title(strcat(cell_name, '(', file_group, ')', ' Clamp Voltage: ', string(volts(i)), ' mV'), 'FontSize',10, 'FontWeight','bold');
     xlabel('Time (ms)', 'FontSize',10, 'FontWeight','bold');
     ylabel('Current (pA/pF)', 'FontSize',10, 'FontWeight','bold');

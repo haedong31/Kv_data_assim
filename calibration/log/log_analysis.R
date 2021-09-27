@@ -48,7 +48,7 @@ log4_name <- "exp23"
 file_names <- seq(1, num_files) %>% as.character()
 
 log1 <- read_log(str_c(log_dir, log1_name, "_wt.txt"), num_files, 30)
-log2 <- read_log(str_c(log_dir, log2_name, "_wt.txt"), num_files, 30)
+log2 <- read_log(str_c(log_dir, log2_name, "_wt.txt"), num_files, 1)
 log3 <- read_log(str_c(log_dir, log3_name, "_wt.txt"), num_files, 30)
 log4 <- read_log(str_c(log_dir, log4_name, "_wt.txt"), num_files, 30)
 
@@ -65,31 +65,31 @@ bar_df <- tibble(
   mtd4 = rmse_val4)
 
 # export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_exp16-17-18-19.csv')
+write_csv(bar_df, './calibration/bar_graph_exp20-21-22-23.csv')
 
 bar_df <- bar_df %>% 
-  pivot_longer(c('mdl1','mdl2'), names_to = 'mdl', values_to = 'rmse')
+  pivot_longer(c('mtd1','mtd2'), names_to = 'mtd', values_to = 'rmse')
   
-ggplot(data = bar_df, mapping = aes(x = name, y = rmse, fill = mdl)) + 
+ggplot(data = bar_df, mapping = aes(x = name, y = rmse, fill = mtd)) + 
   geom_bar(stat = "identity", position = "dodge") + 
   geom_hline(yintercept = mean(rmse_val1), col = 'red') +
   geom_hline(yintercept = mean(rmse_val2), col = 'green') +
   scale_fill_discrete(name = "Model",
-                      breaks = c("mdl1", "mdl2"),
-                      labels = c("Model 1", "Model 2"))
+                      breaks = c("mtd1", "mtd2"),
+                      labels = c("Method 1", "Method 2"))
 
 ## Mgat1KO -----
 num_files <- 33
-log1_name <- "exp16"
-log2_name <- "exp17"
-log3_name <- "exp18"
-log4_name <- "exp19"
+log1_name <- "exp20"
+log2_name <- "exp21"
+log3_name <- "exp22"
+log4_name <- "exp23"
 
 file_names <- seq(1, num_files) %>% as.character()
 
-log1 <- read_log(str_c(log_dir, log1_name, "_ko.txt"), num_files, 30)
-log2 <- read_log(str_c(log_dir, log2_name, "_ko.txt"), num_files, 30)
-log3 <- read_log(str_c(log_dir, log3_name, "_ko.txt"), num_files, 1)
+log1 <- read_log(str_c(log_dir, log1_name, "_ko.txt"), num_files, 1)
+log2 <- read_log(str_c(log_dir, log2_name, "_ko.txt"), num_files, 1)
+log3 <- read_log(str_c(log_dir, log3_name, "_ko.txt"), num_files, 30)
 log4 <- read_log(str_c(log_dir, log4_name, "_ko.txt"), num_files, 30)
 
 rmse_val1 <- find_min_rmse(log1)
@@ -105,4 +105,4 @@ bar_df <- tibble(
   mtd4 = rmse_val4)
 
 # export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_exp16-17-18_19_ko.csv')
+write_csv(bar_df, './calibration/bar_graph_exp20-21-22-23_ko.csv')

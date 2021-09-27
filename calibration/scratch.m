@@ -238,7 +238,7 @@ close all
 clear variables
 
 group_name = 'ko';
-exp_name = strcat('calib_exp20_', group_name);
+exp_name = strcat('calib_exp21_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
