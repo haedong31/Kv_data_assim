@@ -1,3 +1,29 @@
+%% voltage-clamp protocol
+clc
+clearvars
+close all
+
+v = -50:10:50;
+holdv = -70;
+
+holdt = 100;
+endt = 4.6*1000;
+t = 1:endt;
+
+figure('Color','w')
+cv = ones(length(t),1);
+cv(1:holdt) = holdv;
+cv(holdt+1:end) = v(1);
+plot(t,cv, 'LineWidth',1.5)
+hold on
+for i=2:length(v)
+    cv(holdt+1:end) = v(i);
+    plot(t,cv, 'LineWidth',1.5)
+end
+xlabel('Time (ms)')
+ylabel('Clamp Voltage (mV)')
+set(gca, 'XLimSpec','tight', 'LineWidth',1.5)
+set(gca, 'FontName','Arial', 'FontWeight','bold', 'FontSize',10)
 %% new function form of taua in Bondarenko 2020
 clc
 close all
