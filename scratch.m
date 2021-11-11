@@ -1,3 +1,137 @@
+%% exponential fitting example
+clc
+clearvars
+close all
+
+v = -50:10:50;
+holdv = -70;
+
+holdt = 100;
+endt = 4.6*1000;
+t = 1:endt;
+tt = 0:(endt-holdt);
+
+amp = [22.8, 13.1, 7.3, 3.7];
+tau = [105, 1119, 7271];
+
+f1 = @(t) amp(1)*exp(-t./tau(1));
+f2 = @(t) amp(2)*exp(-t./tau(2));
+f3 = @(t) amp(3)*exp(-t./tau(3));
+
+figure('Name','ikto', 'Color','w')
+y1 = zeros(length(t),1);
+y1(holdt:end) = f1(tt);
+plot(t, y1, 'Color','black', 'LineWidth',1.5)
+ylim([0, sum(amp)])
+set(gca, 'XLimSpec','Tight', 'LineWidth',1.5)
+xlabel('Time (ms)')
+ylabel('I_{Kto} (pA/pF)')
+set(gca, 'FontName','Arial', 'FontSize',10, 'FontWeight','bold')
+
+figure('Name','ikslow1', 'Color','w')
+y2 = zeros(length(t),1);
+y2(holdt:end) = f2(tt);
+plot(t, y2, 'Color','black', 'LineWidth',1.5)
+ylim([0, sum(amp)])
+set(gca, 'XLimSpec','Tight', 'LineWidth',1.5)
+xlabel('Time (ms)')
+ylabel('I_{Kslow1} (pA/pF)')
+set(gca, 'FontName','Arial', 'FontSize',10, 'FontWeight','bold')
+
+figure('Name','ikslow2', 'Color','w')
+y3 = zeros(length(t),1);
+y3(holdt:end) = f3(tt);
+plot(t, y3, 'Color','black', 'LineWidth',1.5)
+ylim([0, sum(amp)])
+set(gca, 'XLimSpec','Tight', 'LineWidth',1.5)
+xlabel('Time (ms)')
+ylabel('I_{Kslow2} (pA/pF)')
+set(gca, 'FontName','Arial', 'FontSize',10, 'FontWeight','bold')
+
+figure('Name','ikss', 'Color','w')
+y4 = zeros(length(t),1);
+y4(holdt:end) = amp(4);
+plot(t, y4, 'Color','black', 'LineWidth',1.5)
+ylim([0, sum(amp)])
+set(gca, 'XLimSpec','Tight', 'LineWidth',1.5)
+xlabel('Time (ms)')
+ylabel('I_{Kslow2} (pA/pF)')
+set(gca, 'FontName','Arial', 'FontSize',10, 'FontWeight','bold')
+
+figure('Name', 'iksum', 'Color','w')
+plot(t, y1+y2+y3+y4, 'Color','magenta')
+ylim([0, sum(amp)])
+set(gca, 'XLimSpec','Tight', 'LineWidth',1.5)
+xlabel('Time (ms)')
+ylabel('I_{Ksum} (pA/pF)')
+set(gca, 'FontName','Arial', 'FontSize',10, 'FontWeight','bold')
+
+%% experimental data
+clc
+clearvars
+close all
+
+% WT
+wtobs = table2array(readtable('./data/wt-preprocessed/15n10002.xlsx'));
+
+t = wtobs(:,1);
+c = wtobs(:,2:end);
+ymax = max(c, [], 'all');
+
+[~, numv] = size(c);
+
+figure('Color','w')
+plot(t, c(:,1), 'Color','black')
+hold on
+for i=2:numv
+    plot(t,c(:,i), 'Color','black')
+end
+hold off
+axis tight
+ylabel('I_{Ksum} (pA/pF)')
+xlabel('Time (ms)')
+set(gca, 'FontName','Arial', 'FontSize',10', 'FontWeight','bold')
+
+% Mgat1KO
+mgatobs = table2array(readtable('./data/ko-preprocessed/15o28006.xlsx'));
+
+t = mgatobs(:,1);
+c = mgatobs(:,2:end);
+
+[~, numv] = size(c);
+
+figure('Color','w')
+plot(t, c(:,1), 'Color','red')
+hold on
+for i=2:numv
+    plot(t,c(:,i), 'Color','red')
+end
+hold off
+axis tight
+ylim([0, ymax])
+ylabel('I_{Ksum} (pA/pF)')
+xlabel('Time (ms)')
+set(gca, 'FontName','Arial', 'FontSize',10', 'FontWeight','bold')
+
+%% experimental data
+clc
+clearvars
+close all
+
+df = table2array(readtable('calibration\data\wt-preprocessed\15n10009.xlsx'));
+% df = table2array(readtable('calibration\data\ko-preprocessed\15n03008.xlsx'));
+
+t = df(:,1);
+y = df(:,2:end);
+
+figure('Color','w', 'Position',[100, 100, 600, 400])
+plot(t, y(:,end), 'Color','black')
+ylim([0,47])
+xlabel('Time (ms)')
+ylabel('I_{Ksum} (pA/pF)')
+set(gca, 'XLimSpec','tight', 'LineWidth',1.5)
+set(gca, 'FontName','Arial', 'FontWeight','bold', 'FontSize',10)
+
 %% voltage-clamp protocol
 clc
 clearvars
