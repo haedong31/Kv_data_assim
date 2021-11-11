@@ -12,7 +12,19 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Abstract
 
-Electrical signaling initiates and controls the contraction of cardiac muscles. Voltage-gated ion channels (VGICs) are the functional unit of electrical activities in cardiomyocytes, so they have been important subjects of research in cardiac electrophysiology. Among major cardiac VGICs, K\textsuperscript{+} channel (K\textsubscript{v}) has a distinctive feature in that it has multiple isoforms. Each isoform produces a different but slightly overlapping component of the total K\textsuperscript{+} current (I\textsubscript{Ksum}). Despite the importance of studying each K\textsubscript{v} isoform rigorously, only I\textsubscript{Ksum} can be recorded during in-vitro experiments. Hence, we need a data assimilation method that combines mathematical models with experimental data, I\textsubscript{Ksum}, to estimate individual K\textsuperscript{+} currents. Exponential fitting is a traditional method to estimate the current functions of K\textsubscript{v} isoforms from I\textsubscript{Ksum} data based on the observation that K\textsuperscript{+} currents have the shape of an exponential decay function. It has been proven that exponential fitting accurately describes I\textsubscript{Ksum} with estimated K\textsuperscript{+} currents. However, this classical method does not consider the kinetics of ion channels at the cellular level but only the shape of each I\textsubscript{Ksum} recording. On the other hand, computer models of cardiac electrophysiology can simulate complex dynamics of electrical activities in the heart. This study proposes a data assimilation method based on simulation of K\textsubscript{v} kinetics that combines in-vitro experimental results I\textsubscript{Ksum} with in-silico models of K\textsubscript{v} isoforms by calibrating the computer models. The proposed method differs from the exponential fitting in a way that it estimates the characteristics of current functions and underlying kinetics. In addition, the suggested approach assimilates I\textsubscript{Ksum} recordings at cellular level rather than analyzing each recording independently. An accompanying graphical user interface (GUI) is developed to provide a user-friendly environment to test the proposed method for practitioners. We conducted a case study with our in-vitro experimental data that investigated the effect of reduced glycosylation on K\textsubscript{v}.
+* **Motivation** - Among major cardiac voltage-gated ion channels (VGICs), K\textsuperscript{+} channels (K\textsubscript{v}) have a distinctive feature that they have various isoforms. Although each K\textsubscript{v} isoform produces a unique but slightly overlapping current, having different functionality, only the sum of these individual K\textsuperscript{+} currents (I\textsubscript{Ksum}) can be recorded through in-vitro experiments. A data analysis tool is used to estimate information about K\textsubscript{v} isoforms from experimental I\textsubscript{Ksum} recordings. 
+
+* **Gaps & Needs** - A traditional approach is based on the data-driven curve fitting method that assumes the functional forms for the shape of individual K\textsuperscript{+} currents. This method directly fits individual K\textsuperscript{+} currents by searching the shape parameters of the current functions that have the best fit to experimental I\textsubscript{Ksum} recordings. It has been proven that the curve fitting approach describes I\textsubscript{Ksum} well with estimated K\textsuperscript{+} currents. However, the mathematical model of this classical method only characterizes the shape of the currents, not the kinetics of corresponding K\textsubscript{v} isoforms. 
+
+* **Objective** - As opposed to the traditional data-driven curve fitting method, we propose a novel framework of biophysics-driven data assimilation method for kinetics modeling of K\textsubscript{v} isoforms.
+
+* **Approach**
+  1. haedong
+  2. kim
+
+* **Experiment & Performance** - Experimental results show that the proposed method has strong potential to be a novel analysis tool to decompose I\textsubscript{Ksum} recordings to estimate not only the current characteristics but also kinetics of K\textsubscript{v} isoforms that gives a better understanding of disease-related perturbations.
+
+* **Significance** - impacts on the research community
 
 **Keywords:** Cardiac electrophysiology models, data assimilation, model calibration, K\textsubscript{v} isoforms, mouse cardiomyocytes
 
@@ -39,3 +51,9 @@ On the other hand, computer models of cardiac electrophysiology can simulate com
 ## Conclusions
 
 ## References
+
+<div id="refs"></div>
+
+## Appendix
+
+equations of potassium models
