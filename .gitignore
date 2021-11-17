@@ -18,6 +18,7 @@
 **.psd
 /Kv_app/*.csv
 /Kv_app/*.xlsx
+/writing/*.pdf
 
 # History files
 .Rhistory
