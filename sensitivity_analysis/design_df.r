@@ -21,4 +21,4 @@ dgn4 <- FrF2(nruns = 2^num_param_kss, nfactors = num_param_kss, factor.names = p
 write_csv(dgn1, "./sensitivity_analysis/ikto_dgn.csv")
 write_csv(dgn2, "./sensitivity_analysis/ikslow1_dgn.csv")
 write_csv(dgn3, "./sensitivity_analysis/ikslow2_dgn.csv")
-write_csv(dgn3, "./sensitivity_analysis/ikss_dgn.csv")
+write_csv(dgn4, "./sensitivity_analysis/ikss_dgn.csv")
