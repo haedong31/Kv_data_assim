@@ -16,6 +16,7 @@
 **.DS_Store
 **.mat
 **.psd
+**.asv
 /Kv_app/*.csv
 /Kv_app/*.xlsx
 /writing/*.pdf
