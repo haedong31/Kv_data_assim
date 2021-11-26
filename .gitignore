@@ -19,6 +19,7 @@
 **.asv
 /Kv_app/*.csv
 /Kv_app/*.xlsx
+/sensitivity_analysis/*.pdf
 /writing/*.pdf
 
 # History files

@@ -59,7 +59,7 @@ tic
 p = NaN(17,1);
 p(15:17) = kto_default(15:17);
 [num_dgn, num_param] = size(dgn_kto);
-response_kto = NaN(num_dgn,5);
+response_kto = NaN(num_dgn,6);
 for i=1:num_dgn
     dgn = dgn_kto(i,:);
     
@@ -71,7 +71,7 @@ for i=1:num_dgn
         end
     end
     
-    o = NaN(length(volts),5);
+    o = NaN(length(volts),6);
     for j=1:length(volts)
         protocol_info{2} = volts(j);
          o(j,:) = ikto_biomarkers(p, protocol_info);
@@ -85,7 +85,7 @@ tic
 p = NaN(13,1);
 p(11:13) = kslow1_default(11:13);
 [num_dgn, num_param] = size(dgn_kslow1);
-response_kslow1 = NaN(num_dgn,5);
+response_kslow1 = NaN(num_dgn,6);
 for i=1:num_dgn
     dgn = dgn_kslow1(i,:);
     
@@ -97,7 +97,7 @@ for i=1:num_dgn
         end
     end
     
-    o = NaN(length(volts),5);
+    o = NaN(length(volts),6);
     for j=1:length(volts)
         protocol_info{2} = volts(j);
          o(j,:) = ikslow1_biomarkers(p, protocol_info);
@@ -112,7 +112,7 @@ p = NaN(11,1);
 p(1:8) = kslow1_default(1:8);
 p(11) = kslow2_default(3);
 [num_dgn, num_param] = size(dgn_kslow2);
-response_kslow2 = NaN(num_dgn,5);
+response_kslow2 = NaN(num_dgn,6);
 for i=1:num_dgn
     dgn = dgn_kslow2(i,:);
     
@@ -124,7 +124,7 @@ for i=1:num_dgn
         end
     end
     
-    o = NaN(length(volts),5);
+    o = NaN(length(volts),6);
     for j=1:length(volts)
         protocol_info{2} = volts(j);
          o(j,:) = ikslow2_biomarkers(p, protocol_info);
@@ -139,7 +139,7 @@ p = NaN(7,1);
 p(1:3) = kslow1_default([1,3,4]);
 p(7) = kss_default(4);
 [num_dgn, num_param] = size(dgn_kss);
-response_kss = NaN(num_dgn,5);
+response_kss = NaN(num_dgn,6);
 for i=1:num_dgn
     dgn = dgn_kss(i,:);
     
@@ -151,7 +151,7 @@ for i=1:num_dgn
         end
     end
     
-    o = NaN(length(volts),5);
+    o = NaN(length(volts),6);
     for j=1:length(volts)
         protocol_info{2} = volts(j);
          o(j,:) = ikss_biomarkers(p, protocol_info);
@@ -173,6 +173,7 @@ doe_plot(response_kto(:,2),dgn_kto,1);
 doe_plot(response_kto(:,3),dgn_kto,1);
 doe_plot(response_kto(:,4),dgn_kto,0.8);
 doe_plot(response_kto(:,5),dgn_kto,2);
+doe_plot(response_kto(:,6),dgn_kto,500);
 
 %% ikslow1
 clc
@@ -187,6 +188,7 @@ doe_plot(response_kslow1(:,2),dgn_kslow1,1.5);
 doe_plot(response_kslow1(:,3),dgn_kslow1,1);
 doe_plot(response_kslow1(:,4),dgn_kslow1,1);
 doe_plot(response_kslow1(:,5),dgn_kslow1,1.8);
+doe_plot(response_kslow1(:,6),dgn_kslow1,500);
 
 %% ikslow2
 clc
@@ -201,6 +203,7 @@ doe_plot(response_kslow2(:,2),dgn_kslow2,0.2);
 doe_plot(response_kslow2(:,3),dgn_kslow2,0.3);
 doe_plot(response_kslow2(:,4),dgn_kslow2,0.3);
 doe_plot(response_kslow2(:,5),dgn_kslow2,0.002);
+doe_plot(response_kslow2(:,6),dgn_kslow2,0);
 
 %% ikss
 clc
@@ -215,6 +218,7 @@ doe_plot(response_kss(:,2),dgn_kss,0.3)
 doe_plot(response_kss(:,3),dgn_kss,0.07)
 doe_plot(response_kss(:,4),dgn_kss,0.03)
 doe_plot(response_kss(:,5),dgn_kss,0.5)
+doe_plot(response_kss(:,6),dgn_kss,100)
 
 function doe_plot(y,dgn,text_pos)
     stat_beta = regress(y,dgn);

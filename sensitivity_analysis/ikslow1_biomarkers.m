@@ -7,9 +7,15 @@ function bm = ikslow1_biomarkers(p, protocol_info)
 
     % generate current
     c = ikslow1(p, hold_volt, volt, time_space, ek);
+    t = time_space{1};
+    
     hold_t = time_space{2};
     cc = c(length(hold_t):end);
+    tt = t(length(hold_t):end);
     pulse_t = length(cc);
+
+    % calculate biomarkers
+    bm = NaN(1,6);
 
     % calculate biomarkers
     bm = NaN(1,5);
@@ -27,7 +33,12 @@ function bm = ikslow1_biomarkers(p, protocol_info)
     bm(4) = cc(floor(pulse_t*0.75));
 
     % peak
-    bm(5) = max(cc(1:floor(pulse_t*0.1)));
+    [bm(5), peak_idx] = max(cc(1:floor(pulse_t*0.1)));
+
+    % tau
+    [~,tau_idx] = min(abs(cc(peak_idx:end)-bm(5)*exp(-1)));
+    tt = tt(peak_idx:end);
+    bm(6) = tt(tau_idx)-length(hold_t);
 end
 
 function current_trc = ikslow1(p, hold_volt, volt, time_space, ek)
