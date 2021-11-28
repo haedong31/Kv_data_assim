@@ -168,12 +168,80 @@ close all
 load('response_kto.mat')
 dgn_kto = table2array(readtable('ikto_dgn.csv'));
 
-doe_plot(response_kto(:,1),dgn_kto,2);
-doe_plot(response_kto(:,2),dgn_kto,1);
-doe_plot(response_kto(:,3),dgn_kto,1);
-doe_plot(response_kto(:,4),dgn_kto,0.8);
-doe_plot(response_kto(:,5),dgn_kto,2);
-doe_plot(response_kto(:,6),dgn_kto,500);
+fig = figure('Color','w','Position',[100,100,900,500]);
+orient(fig,'landscape')
+
+subplot(2,3,1)
+[theta,idx,phiinv] = doe_plot(response_kto(:,1),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,2)
+[theta,idx,phiinv] = doe_plot(response_kto(:,2),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 2', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,3)
+[theta,idx,phiinv] = doe_plot(response_kto(:,3),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,4)
+[theta,idx,phiinv] = doe_plot(response_kto(:,4),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.8,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 4', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,5)
+[theta,idx,phiinv] = doe_plot(response_kto(:,5),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 5', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,6)
+[theta,idx,phiinv] = doe_plot(response_kto(:,6),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+500,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
 
 %% ikslow1
 clc
@@ -183,12 +251,80 @@ close all
 load('response_kslow1.mat')
 dgn_kslow1 = table2array(readtable('ikslow1_dgn.csv'));
 
-doe_plot(response_kslow1(:,1),dgn_kslow1,1);
-doe_plot(response_kslow1(:,2),dgn_kslow1,1.5);
-doe_plot(response_kslow1(:,3),dgn_kslow1,1);
-doe_plot(response_kslow1(:,4),dgn_kslow1,1);
-doe_plot(response_kslow1(:,5),dgn_kslow1,1.8);
-doe_plot(response_kslow1(:,6),dgn_kslow1,500);
+fig = figure('Color','w','Position',[100,100,900,500]);
+orient(fig,'landscape')
+
+subplot(2,3,1)
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,1),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,2)
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,2),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1.5,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 2', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,3)
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,3),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,4)
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,4),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 4', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,5)
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,5),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1.8,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 5', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,6)
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,6),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+500,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
 
 %% ikslow2
 clc
@@ -198,12 +334,80 @@ close all
 load('response_kslow2.mat')
 dgn_kslow2 = table2array(readtable('ikslow2_dgn.csv'));
 
-doe_plot(response_kslow2(:,1),dgn_kslow2,0.001);
-doe_plot(response_kslow2(:,2),dgn_kslow2,0.2);
-doe_plot(response_kslow2(:,3),dgn_kslow2,0.3);
-doe_plot(response_kslow2(:,4),dgn_kslow2,0.3);
-doe_plot(response_kslow2(:,5),dgn_kslow2,0.002);
-doe_plot(response_kslow2(:,6),dgn_kslow2,0);
+fig = figure('Color','w','Position',[100,100,900,500]);
+orient(fig,'landscape')
+
+subplot(2,3,1)
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,1),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,2)
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,2),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 2', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,3)
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,3),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.3,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,4)
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,4),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.3,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 4', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,5)
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,5),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.002,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 5', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,6)
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,6),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
 
 %% ikss
 clc
@@ -213,14 +417,82 @@ close all
 load('response_kss.mat')
 dgn_kss = table2array(readtable('ikss_dgn.csv'));
 
-doe_plot(response_kss(:,1),dgn_kss,0.8)
-doe_plot(response_kss(:,2),dgn_kss,0.3)
-doe_plot(response_kss(:,3),dgn_kss,0.07)
-doe_plot(response_kss(:,4),dgn_kss,0.03)
-doe_plot(response_kss(:,5),dgn_kss,0.5)
-doe_plot(response_kss(:,6),dgn_kss,100)
+fig = figure('Color','w','Position',[100,100,900,500]);
+orient(fig,'landscape')
 
-function doe_plot(y,dgn,text_pos)
+subplot(2,3,1)
+[theta,idx,phiinv] = doe_plot(response_kss(:,1),dgn_kss);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.8,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,2)
+[theta,idx,phiinv] = doe_plot(response_kss(:,2),dgn_kss);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.3,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2)-1,'Biomarker 2', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,3)
+[theta,idx,phiinv] = doe_plot(response_kss(:,3),dgn_kss);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.07,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,4)
+[theta,idx,phiinv] = doe_plot(response_kss(:,4),dgn_kss);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.03,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2)-0.2,'Biomarker 4', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,5)
+[theta,idx,phiinv] = doe_plot(response_kss(:,5),dgn_kss);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.5,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2)-2,'Biomarker 5', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+subplot(2,3,6)
+[theta,idx,phiinv] = doe_plot(response_kss(:,6),dgn_kss);
+plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+100,int2str(idx(i)),'FontSize',10);
+end
+NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
+text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontSize',11,'FontWeight','bold')
+
+function [theta,idx,phiinv] = doe_plot(y,dgn)
     stat_beta = regress(y,dgn);
     beta = 2*stat_beta;
     beta = abs(beta);
@@ -228,13 +500,4 @@ function doe_plot(y,dgn,text_pos)
     [theta,idx] = sort(beta);
     p = 0.5 + (0.5*(1:length(beta))-0.5)/length(beta);
     phiinv = norminv(p,0,1);
-
-    figure('Color','w')
-    plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
-    for i=1:length(beta)
-        text(phiinv(i),theta(i)+text_pos,strcat('p',int2str(idx(i))), 'FontWeight','bold');
-    end
-    xlabel('Half-normal Quantiles')
-    ylabel('Absolute Effects')
-    set(gca,'FontSize',10,'FontWeight','bold')
 end
