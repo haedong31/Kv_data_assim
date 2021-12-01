@@ -1,158 +1,174 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This is just an example/guide for you to refer to when submitting manuscripts to Frontiers, it is not mandatory to use Frontiers .cls files nor frontiers.tex
+\documentclass[11pt]{article}
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\pdfminorversion=4
+% NOTE: To produce blinded version, replace "0" with "1" below.
+\newcommand{\blind}{0}
 
-% This will only generate the Manuscript, the final article will be typeset by Frontiers after acceptance.   
+%%%%%%% IISE Transactions margin specifications %%%%%%%%%%%%%%%%%%%
+% DON'T change margins - should be 1 inch all around.
+\addtolength{\oddsidemargin}{-.5in}%
+\addtolength{\evensidemargin}{-.5in}%
+\addtolength{\textwidth}{1in}%
+\addtolength{\textheight}{1.3in}%
+\addtolength{\topmargin}{-.8in}%
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+                                   {-3.5ex \@plus -1ex \@minus -.2ex}%
+                                   {2.3ex \@plus.2ex}%
+                                   {\normalfont\fontfamily{phv}\fontsize{16}{19}\bfseries}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\fontfamily{phv}\fontsize{14}{17}\bfseries}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+                                    {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\fontfamily{phv}\fontsize{14}{17}\selectfont}}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% When submitting your files, remember to upload this *tex file, the pdf generated with it, the *bib file (if bibliography is not within the *tex) and all the figures.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% IISE Transactions package list %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{natbib} %comment out if you do not have the package
+\usepackage{url} % not crucial - just used below for the URL
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%% Version 3.4 Generated 2018/06/15 %%%
-%%% You will need to have the following packages installed: datetime, fmtcount, etoolbox, fcprefix, which are normally inlcuded in WinEdt. %%%
-%%% In http://www.ctan.org/ you can find the packages and how to install them, if necessary. %%%
-%%%  NB logo1.jpg is required in the path in order to correctly compile front page header %%%
-
-%\documentclass[utf8]{frontiersSCNS} % for Science, Engineering and Humanities and Social Sciences articles
-\documentclass[utf8]{frontiersHLTH} % for Health articles
-%\documentclass[utf8]{frontiersFPHY} % for Physics and Applied Mathematics and Statistics articles
-
-%\setcitestyle{square} % for Physics and Applied Mathematics and Statistics articles
-\usepackage{url,hyperref,lineno,microtype,subcaption}
-\usepackage[onehalfspacing]{setspace}
-
-\linenumbers
-
-
-% Leave a blank line between paragraphs instead of using \\
-
-%%% Please be aware that for original research articles we only permit a combined number of 15 figures and tables, one figure with multiple subfigures will count as only one figure.
-%%% Use this if adding the figures directly in the mansucript, if so, please remember to also upload the files when submitting your article
-%%% There is no need for adding the file termination, as long as you indicate where the file is saved. In the examples below the files (logo1.eps and logos.eps) are in the Frontiers LaTeX folder
-%%% If using *.tif files convert them to .jpg or .png
-%%%  NB logo1.eps is required in the path in order to correctly compile front page header %%%
-
-%%% If you are submitting a figure with subfigures please combine these into one image file with part labels integrated.
-%%% If you don't add the figures in the LaTeX files, please upload them when submitting the article.
-%%% Frontiers will add the figures at the end of the provisional pdf automatically
-%%% The use of LaTeX coding to draw Diagrams/Figures/Structures should be avoided. They should be external callouts including graphics.
-
-%% Figures, tables, and images will be published under a Creative Commons CC-BY licence and permission must be obtained for use of copyrighted material from other sources (including re-published/adapted/modified/partial figures and images from the internet). It is the responsibility of the authors to acquire the licenses, to follow any citation instructions requested by third-party rights holders, and cover any supplementary charges.
-
-
-\def\keyFont{\fontsize{8}{11}\helveticabold }
-\def\firstAuthorLast{H. Kim {et~al.}} %use et al only if is more than 1 author
-\def\Authors{Haedong Kim\,$^{1}$, Hui Yang\,$^{1,*}$, Andrew R. Ednie\,$^{2}$ and Eric S. Bennett\,$^{2}$}
-% Affiliations should be keyed to the author's name with superscript numbers and be listed as follows: Laboratory, Institute, Department, Organization, City, State abbreviation (USA, Canada, Australia), and Country (without detailed address information such as city zip codes or street names).
-% If one of the authors has a change of address, list the new address below the correspondence details using a superscript symbol and use the same symbol to indicate the author in the author list.
-\def\Address{$^{1}$Complex Systems Monitoring, Modeling, and Control Laboratory, The Pennsylvania State University, University Park, PA, USA \\
-$^{2}$Department of Neuroscience, Cell Biology and Physiology, Wright State University, Dayton, OH, USA}
-% The Corresponding Author should be marked with an asterisk
-% Provide the exact contact address (this time including street name and city zip code) and email of the corresponding author
-\def\corrAuthor{310 Leonhard Building, University Park, PA 16802-4400, USA}
-\def\corrEmail{huiyang@psu.edu}
-
+%%%%% Author package list and commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Here are some examples %%%%%%%%%%%%%%
+%	\usepackage{amsfonts, amsthm, latexsym, amssymb}
+%	\usepackage{lineno}
+%	\newcommand{\mb}{\mathbf}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\onecolumn
-\firstpage{1}
-
-\title[Simulation-guided Data Assimilation of K\textsubscript{v}]{Simulation-guided Data Assimilation for Kinetics Modeling of Potassium Channel Isoforms in Mouse Cardiomyocytes} 
-
-\author[\firstAuthorLast ]{\Authors} %This field will be automatically populated
-\address{} %This field will be automatically populated
-\correspondance{} %This field will be automatically populated
-
-\extraAuth{}% If there are more than 1 corresponding author, comment this line and uncomment the next one.
-%\extraAuth{corresponding Author2 \\ Laboratory X2, Institute X2, Department X2, Organization X2, Street X2, City X2 , State XX2 (only USA, Canada and Australia), Zip Code2, X2 Country X2, email2@uni2.edu}
-
-
-\maketitle
-
-
+	
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\def\spacingset#1{\renewcommand{\baselinestretch}%
+		{#1}\small\normalsize} \spacingset{1}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\if0\blind
+	{
+		\title{\bf Simulation-guided Data Assimilation for Kinetics Modeling of Potassium Channel Isoforms in Mouse Cardiomyocytes}
+		\author{Haedong Kim $^a$, Hui Yang $^a$, Andrew R. Ednie $^b$, and Eric S. Bennett $^b$ \\
+		$^a$ Department of Industrial and Manufacturing Engineering, \\
+		The Pennsylvania State University, State College, PA USA \\
+        $^b$ Department of Neuroscience, Cell Biology, and Physiology, \\
+        Wright State University, City, OH USA}
+		\date{}
+		\maketitle
+	} \fi
+	
+	\if1\blind
+	{
+        \title{\bf \emph{IISE Transactions} \LaTeX \ Template}
+		\author{Author information is purposely removed for double-blind review}
+		
+\bigskip
+		\bigskip
+		\bigskip
+		\begin{center}
+			{\LARGE\bf \emph{IISE Transactions} \LaTeX \ Template}
+		\end{center}
+		\medskip
+	} \fi
+	\bigskip
+		
 \begin{abstract}
-Electrical signaling plays vital roles in the heart that initiates and controls the synchronous contraction of cardiac muscles. Voltage-gated ion channels (VGICs) are the functional unit of electrical activities in cardiomyocytes. Among major cardiac VGICs, K\textsuperscript{+} channels (K\textsubscript{v}) have a distinctive feature that they have multiple isoforms. Although each K\textsubscript{v} isoform produces a unique but slightly overlapping current, having different functionality, only the sum of these individual K\textsuperscript{+} currents (I\textsubscript{Ksum}) can be recorded through in-vitro experiments. Hence, there is an urgent need to develop a data assimilation method that combines mathematical models with experimental data, I\textsubscript{Ksum} recordings, to estimate individual K\textsuperscript{+} currents. Exponential fitting is a traditional method based on the assumption that prominent K\textsuperscript{+} currents have the shape of an exponential decay function. It has been proven that exponential fitting describes I\textsubscript{Ksum} well with estimated K\textsuperscript{+} currents. However, the mathematical model of this classical method only characterizes the shape of the currents, not the kinetics of corresponding K\textsubscript{v} isoforms. In addition, exponential fitting handles I\textsubscript{Ksum} recordings from the same cell with different conditions independently, so it lacks the cellular-level analysis. This paper presents a data assimilation method based on the cellular-level simulation of the underlying gating kinetics of K\textsubscript{v} isoforms. Computer models are designed with parameters that allow us to control the behavior of the ion channel models. A fractional factorial design is utilized to identify the parameters having significant effects on the current shape. Then, various nonlinear optimization methods were applied and compared to calibrate the selected parameters to minimize the discrepancies between the simulated currents and I\textsubscript{Ksum} recordings from the same cell. Further, we develop a graphical user interface (GUI) to provide a user-friendly environment to test the proposed method for practitioners unfamiliar with coding. We conduct a case study with our in-vitro experimental data investigating the effect of reduced glycosylation on K\textsubscript{v}. Experimental results show that the proposed method has strong potential to be a novel analysis tool to decompose I\textsubscript{Ksum} recordings to estimate not only the current characteristics but also kinetics of K\textsubscript{v} isoforms that gives a better understanding of disease-related perturbations. 
-
-% You may provide up to 8 keywords; at least 5 are mandatory.
-\tiny
-\keyFont{\section{Keywords:} Cardiac electrophysiology models, data assimilation, model calibration, K\textsubscript{v} isoforms, mouse cardiomyocytes} 
+This document provides a \LaTeX \ template for \emph{IISE Transactions}. Your paper should be compiled in the following order: title; abstract; keywords; main text, including an introduction and a conclusion or summary; acknowledgments; declaration of interest statement; references; appendices (as appropriate). Figures and tables should be inserted into the text as close to first mention as possible (NOT appended to the end of the manuscript). In-text citations and the reference list must follow \emph{IISE Transactions} guidelines. Use 11 point font, 1 inch margins, and double-spacing for the manuscript. A typical paper for this journal should be no more than 30 pages in manuscript format, counting from the title page to references. Appendices should be included as supplemental online materials. Do not use footnotes. \emph{IISE Transactions} uses a double-blind review process. Please make sure that you submit the \textbf{blind version} of your manuscript, which does not contain any information identifying the authors.  This includes removing the authors information on the title page as well as the information that may be identifying in the Acknowledgment section. We thank you for your attention to these details.
 \end{abstract}
+		
+\noindent%
+{\it Keywords:} \emph{IISE Transactions}; \LaTeX; Manuscript format; Taylor \& Francis.
 
-\section{Introduction}
-Cardiac muscle cells have a conduction system that controls the propagation of electrical excitation, which triggers and synchronizes the mechanical contraction of the network of a large number of cardiomyocytes \cite{veeraraghavan2014mechanisms}. In turn, this electrical signaling system is responsible for the heart to pump blood throughout the body properly. Cardiac voltage-gated ion channels (VGICs) are membrane proteins in a cardiomyocyte that control specific ions to flow through the membrane \cite{bezanilla2005vgic}. They are fundamental functional units of electrical activities in cardiomyocytes as the electrical excitation results from the orchestrated dynamics of different types of ionic currents controlled by the gating kinetics of VGICs as shown in Figure~\ref{fig:variety_ionc} \cite{grant2009cardiac}. This electrical simulation is called the action potentials (AP), which is the net change of membrane potential, and there are three major cardiac VIGCs contributing to the shape and length of the AP: Na\textsuperscript{+}  (Na\textsubscript{v}), Ca\textsuperscript{2+}  (Ca\textsubscript{v}), and K\textsuperscript{+}  (K\textsubscript{v}) channels. Na\textsubscript{v} are responsible for AP initiation (depolarization phase), Ca\textsubscript{v} are responsible for the prolonged depolarization phase (``plateau'') particularly in larger species like human, while various isoforms of K\textsubscript{v}s are collectively responsible for AP deactivation (repolarization phase). 
-\begin{figure}[!ht]
+%\newpage
+\spacingset{1.5} % DON'T change the spacing!
+
+
+\section{Introduction} \label{s:intro}
+\begin{itemize}
+    \item \textbf{Motivation} Among major cardiac voltage-gated ion channels (VGICs), K\textsuperscript{+} channels (K\textsubscript{v}) have a distinctive feature that they have various isoforms. Although each K\textsubscript{v} isoform produces a unique but slightly overlapping current, having different functionality, only the sum of these individual K\textsuperscript{+} currents (I\textsubscript{Ksum}) can be recorded through in-vitro experiments. Data analysis tools are used to estimate information about K\textsubscript{v} isoforms from experimental I\textsubscript{Ksum} recordings.
+    \item \textbf{Gaps \& Needs} A traditional approach is based on the data-driven curve fitting method that assumes the functional forms for the shape of individual K\textsuperscript{+} currents. This method directly fits individual K\textsuperscript{+} currents to experimental I\textsubscript{Ksum} recordings by searching the shape parameters of the current functions that have the best fit. It has been proven that the curve fitting approach describes I\textsubscript{Ksum} well with estimated K\textsuperscript{+} currents. However, the mathematical form of this classical method only characterizes the shape of the currents, not the kinetics of corresponding K\textsubscript{v} isoforms. In addition, the curve fitting method handles experimental I\textsubscript{Ksum} recordings from the same cell independently, so it lacks the cellular-level analysis.
+    \item \textbf{Objective} As opposed to the traditional data-driven curve fitting method, we propose a novel framework of biophysics-driven data assimilation method for kinetics modeling of K\textsubscript{v} isoforms based on computer models of K\textsuperscript{+} currents that can simulate underlying gating kinetics of the currents.
+    \item \textbf{Approach} 
+    \item \textbf{Experiment \& Performance} The proposed framework outperforms the curve fitting method for minimizing discrepancies between experimental and estimated total K\textsuperscript{+} currents. We also provide the kinetics modeling results that are not possible in the traditional method.
+    \item \textbf{Significance} Experimental results show that the proposed method has strong potential to be a novel analysis tool to decompose I\textsubscript{Ksum} recordings to estimate not only the current characteristics but also kinetics of K\textsubscript{v} isoforms.
+\end{itemize}
+
+The review of literature can be a separate section but it can be merged with the introduction section. One can find a number of reference examples at the end of this template, like,
+\begin{itemize}
+\item A book: \cite{Hastie2009}.
+\item A journal article: \cite{Byon2013}.
+\item A conference paper: \cite{Breunig2000}.
+\item A book chapter: \cite{Yang2010}.
+\item A technical report: \cite{Kelley2007}.
+\end{itemize}
+
+\section{Methods} \label{s:methods}
+
+\subsection{\emph{Computer Models of Potassium Channel Isoforms}} \label{s:methods.1}
+modeling (mathematical equations)
+\begin{figure}
     \centering
-    \includegraphics[scale=1]{figures/variety_currents.pdf}
-    \caption{A schematic illustration of action potentials in mouse ventricular cardiomyocytes and underlying ionic currents of Na\textsubscript{v}, Ca\textsubscript{v}, and K\textsubscript{v} isoforms \cite{nerbonne2003molecular}.}
-    \label{fig:variety_ionc}
-\end{figure}
-
-In contrast to Na\textsubscript{v} and Ca\textsubscript{v}, K\textsubscript{v} have a distinctive feature that they have multiple isoforms. Each isoform produces different but slightly overlapping component of the total K\textsuperscript{+} current (I\textsubscript{Ksum}) and contributes to different portions of the AP repolarization. To be specific, as shown in Figure~\ref{fig:variety_ionc}, there are various K\textsubscript{v} isoforms and currents conducted through them: the transient outward K\textsuperscript{+} current I\textsubscript{Kto} (K\textsubscript{v}4.2/K\textsubscript{v}4.3) several components of delayed rectifier K\textsuperscript{+} currents including I\textsubscript{Ks} (K\textsubscript{v}7.1 and minK), I\textsubscript{Kr} (mERG), I\textsubscript{Kslow1} (K\textsubscript{v}1.5), and I\textsubscript{Kslow2} (K\textsubscript{v}2.1), non-inactivating steady-state K\textsuperscript{+} current I\textsubscript{Kss} (K\textsubscript{2P}), and time independent K\textsuperscript{+} current I\textsubscript{K1} (Kir2 family) \cite{brouillette2004functional, liu2011dissection}. Note that although there are two types of transient outward currents, I\textsubscript{Ktof} and I\textsubscript{Ktos}, 
-they are referred to as one, I\textsubscript{Kto}, because I\textsubscript{Ktos} is reported to appear only in the ventricular septum myocytes \cite{xu1999four}. There are several K\textsubscript{v} isoforms whose exact roles in shaping the cardiac AP are still subject of intensive research. Although it is highly desirable to study each unique K\textsuperscript{+} current rigorously, only I\textsubscript{Ksum} can be recorded through in-vitro experiments.
-
-Hence, there is an urgent need to develop a data analysis tool to estimate individual K\textsuperscript{+} currents from I\textsubscript{Ksum}. Data assimilation is a scientific method that combines mathematical models and experimental data to calibrate the models; thereby, the in-silico models are compatible with the in-vitro observations. To be specific, for our case, a data assimilation method is required that couples mathematical models of K\textsuperscript{+} models with experimental data of I\textsubscript{Ksum} using whole-cell patch-clamp recordings to estimate various K\textsuperscript{+} currents. Exponential fitting is a traditional method based on the assumption that prominent K\textsuperscript{+} currents from patch-clamp recordings such as I\textsubscript{Kto}, I\textsubscript{Kslow1}, and I\textsubscript{Kslow2} have the shape of an exponential decay function $A_{i}e^{-t/\tau_{i}}$ as in Equation~\ref{eq:sumexp_model}, where $t$ is time variable, and $A_{i}$ and $\tau_{i}$ are the shape parameters. I\textsubscript{kss} is simplified as constant $A\textsubscript{Kss}$. It has been proven that exponential fitting accurately describes I\textsubscript{Ksum} with estimated K\textsuperscript{+} currents and has served as a standard method to analyze the sum of K\textsuperscript{+} currents \cite{brunet2004heterogeneous, liu2011dissection}. However, the mathematical model of this classical method only characterizes the shape of the currents, not the kinetics of corresponding K\textsubscript{v} isoforms. In addition, exponential fitting handles I\textsubscript{Ksum} recordings from the same cell with different conditions independently, so it lacks systematic analyses at the cellular level. 
-\begin{equation}
-    \text{I}\textsubscript{Ksum} = \sum_{i} A_{i} e^{-t/\tau_{i}} + A\textsubscript{Kss}, \; i \in I \subseteq \{\text{Kto, } \text{Kslow1, } \text{Kslow2}\} \label{eq:sumexp_model}
-\end{equation}
-
-On the other hand, computer models of cardiac electrophysiology can simulate complex dynamics of electrical activities at the cellular level that enable the quantitative understanding of biophysical functions such as gating kinetics of VGICs in the behavior of cardiomyocytes \cite{winslow2011integrative}. This paper proposes a data assimilation method based on the computer models of K\textsubscript{v} isoforms that facilitates kinetics modeling at the cellular level. Hodgkin-Huxley-type computer models of potassium isoforms are developed with parameters that act like ``knobs'', allowing to control the behavior of the models. The more parameters the models have, the more flexible they are, but surplus parameters increase the risk of overfitting, make interpretation of calibration results harder, and have a chance to acerbate calibration accuracy. We utilize a fractional factorial design to identify parameters that significantly affect the current shape, which is a standard sensitivity analysis tool \cite{du2015statistical, du2017silico}. A calibration process consists of an objective function and an optimization method to minimize that objective. We derive the objective function measuring discrepancies between experimental I\textsubscript{Ksum} recordings and simulated ones for each cell. VGIC kinetics is a nonlinear process \cite{rudy2006computational}, so nonlinear optimization methods are utilized. A graphical user interface (GUI) is provided in which researchers can easily apply the proposed method to their data and visualize the modeling results. 
-
-We conduct a case study with 
-
-\textbf{impacts}
-\begin{enumerate}
-    \item contribution 1
-    \item contribution 2
-\end{enumerate}
-
-% For Original Research articles, please note that the Material and Methods section can be placed in any of the following ways: before Results, before Discussion or after Discussion.
-
-\section{Material and Methods}
-\subsection{Computer Models}
-Hodgkin-Huxley type modeling; current equations; full model equations in appendix
-
-\subsection{Sensitivity Analysis and Calibration Parameters}
-Half-normal plots; calibration parameters; selected calibration parameters
-
-\subsection{Model Calibration}
-Least squares method with multiple starting points \cite{reali2017optimization}.
-\begin{figure}[!ht]
-    \centering
-    \includegraphics{figures/overall_diagram.pdf}
+    \includegraphics{figs/ap_underlying_currents.pdf}
     \caption{Caption}
-    \label{fig:overall}
+    \label{fig:ap_underlying_currents}
 \end{figure}
 
-\subsection{GUI}
-screenshots of GUI
+\subsection{\emph{Sensitivity Analysis of Calibration Parameters}} \label{s:methods.2}
+this section shows the results of the variable screening.
+\begin{figure}
+    \centering
+    \includegraphics{figs/doe_kto.pdf}
+    \caption{Half-normal plots I\textsubscript{Kto}}
+    \label{fig:doe_kto}
+\end{figure}
 
-\section{Results}
+\begin{figure}
+    \centering
+    \includegraphics{figs/doe_kslow1.pdf}
+    \caption{Half-normal plots I\textsubscript{Kslow1}}
+    \label{fig:doe_kslow1}
+\end{figure}
 
-\section{Conclusions}
+\begin{figure}
+    \centering
+    \includegraphics{figs/doe_kslow2.pdf}
+    \caption{Half-normal plots I\textsubscript{Kslow2}}
+    \label{fig:doe_kslow2}
+\end{figure}
 
-\section*{Conflict of Interest Statement}
-%All financial, commercial or other relationships that might be perceived by the academic community as representing a potential conflict of interest must be disclosed. If no such relationship exists, authors will be asked to confirm the following statement: 
+\begin{figure}
+    \centering
+    \includegraphics{figs/doe_kss.pdf}
+    \caption{Half-normal plots I\textsubscript{Kss}}
+    \label{fig:doe_kss}
+\end{figure}
 
-The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest.
+\subsection{\emph{Model Calibration}} \label{s:methods.3}
+calibration procedure; non-linear optimization methods
 
-\section*{Author Contributions}
+\subsection{\emph{Graphical User Interface}} \label{s:methods.4}
+show how to use it
 
-The Author Contributions section is mandatory for all articles, including articles by sole authors. If an appropriate statement is not provided on submission, a standard one will be inserted during the production process. The Author Contributions statement must describe the contributions of individual authors referred to by their initials and, in doing so, all authors agree to be accountable for the content of the work. Please see  \href{http://home.frontiersin.org/about/author-guidelines#AuthorandContributors}{here} for full authorship criteria.
+\subsection{\emph{Case Study Glycosylations}} \label{s:methods.5}
+case study
 
-\section*{Funding}
-Details of all funding sources should be provided, including grant numbers if applicable. Please ensure to add all necessary funding information, as after publication this is no longer possible.
+\section{Results} \label{s:results}
+Perhaps numerical analysis of performance, comparison, and demonstration of applicability and impact using real data.
 
-\section*{Acknowledgments}
-This is a short text to acknowledge the contributions of specific colleagues, institutions, or agencies that aided the efforts of the authors.
+\section{Conclusion}\label{s:conclusion}
+A paper ends with a conclusion or summary section.
 
-\section*{Supplemental Data}
- \href{http://home.frontiersin.org/about/author-guidelines#SupplementaryMaterial}{Supplementary Material} should be uploaded separately on submission, if there are Supplementary Figures, please include the caption in the same file as the figure. LaTeX Supplementary Material templates can be found in the Frontiers LaTeX folder.
+\if0\blind{
+\section*{Acknowledgements}
+The authors acknowledge the generous support from the funding agency of XYZ.	} \fi
 
-\section*{Data Availability Statement}
-The datasets [GENERATED/ANALYZED] for this study can be found in the [NAME OF REPOSITORY] [LINK].
-% Please see the availability of data guidelines for more information, at https://www.frontiersin.org/about/author-guidelines#AvailabilityofData
-
-\bibliographystyle{frontiersinSCNS_ENG_HUMS} % for Science, Engineering and Humanities and Social Sciences articles, for Humanities and Social Sciences articles please include page numbers in the in-text citations
-%\bibliographystyle{frontiersinHLTH&FPHY} % for Health, Physics and Mathematics articles
-\bibliography{frontiers}
-
-%%% Make sure to upload the bib file along with the tex file and PDF
+\bibliographystyle{chicago}
+\spacingset{1}
+\bibliography{IISE-Trans}
+	
 \end{document}
