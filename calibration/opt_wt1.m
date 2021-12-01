@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp_22', group_name);
+save_dir = strcat('calib_exp_24', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -16,20 +16,20 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
+tune_idx1_kto = [1, 2, 6, 7, 9, 13, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 4, 5, 8, 9, 11, 12, 13];
 tune_idx1_kslow2 = [1, 3];
-tune_idx1_kss = [3, 4];
+tune_idx1_kss = [1, 2, 3, 4];
 tune_idx1_kur = [1, 3];
 tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 100;
+num_iters = 30;
 options = optimoptions(@fmincon, ...
-    'Algorithm','sqp', 'Display','off', ...
+    'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
-    'SpecifyObjectiveGradient',true);
+    'SpecifyObjectiveGradient',false);
 
 % protocol
 hold_volt = -70;
@@ -91,7 +91,7 @@ for i = 1:num_files
     end
     loop_idx = [loop_idx, i];
 end
-loop_idx = loop_idx(3);
+% loop_idx = loop_idx(3);
 len_loop_idx = length(loop_idx);
 
 % default values
@@ -223,8 +223,9 @@ for l = 1:len_loop_idx
     time_space{5} = ideal_end_idx;
     
     % objective function
-%    obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
-    opt_fun = @(p) obj_rmse_grad(p, model_struct, volt_space, time_space, yksum);
+%     obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+%     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum)
+    opt_fun = @(p) obj_rmse(p, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
