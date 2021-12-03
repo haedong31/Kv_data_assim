@@ -17,7 +17,7 @@ tune_idx1_k1 = [1, 3, 5, 7];
 % protocol
 hold_volt = -70;
 min_volt = -50;
-volt = 30;
+volt = 0;
 ek = -91.1;
 ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
@@ -101,18 +101,34 @@ protocol{4} = volt_space{3};
 
 [yksum_hat, comp_currents] = kcurrent_model1(p0, model_struct, protocol);
 
-figure('Color','w', 'Position',[100,100,700,250])
-subplot(1,2,1)
+figure('Color','w', 'Position',[100,100,550,500])
+subplot(2,2,1)
 plot(t,comp_currents{1},'LineWidth',2,'Color','red')
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
 set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+box off
 
-subplot(1,2,2)
+subplot(2,2,2)
 plot(t,comp_currents{2}, 'LineWidth',2, 'Color','red')
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
 set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+box off
+
+subplot(2,2,3)
+plot(t,comp_currents{3},'LineWidth',2,'Color','red')
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+box off
+
+subplot(2,2,4)
+plot(t,comp_currents{4}, 'LineWidth',2, 'Color','red')
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+box off
 
 %% test trust-region-reflective
 % options = optimoptions('fmincon','Algorithm','trust-region-reflective','SpecifyObjectiveGradient',true);
@@ -348,13 +364,13 @@ for l = 1:len_loop_idx
     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum);
 end
 
-%% calculate RMSEs from calibration results (current model 2)
+%% calculate RMSEs from calibration results
 clc
 close all
 clear variables
 
 group_name = 'ko';
-exp_name = strcat('calib_exp21_', group_name);
+exp_name = strcat('calib_exp24_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -364,10 +380,10 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
+tune_idx1_kto = [1, 2, 6, 7, 9, 13, 15, 16, 17];
+tune_idx1_kslow1 = [1, 2, 4, 5, 8, 9, 11, 12, 13];
 tune_idx1_kslow2 = [1, 3];
-tune_idx1_kss = [3, 4];
+tune_idx1_kss = [1, 2, 3, 4];
 tune_idx1_kur = [1, 3];
 tune_idx1_k1 = [1, 3, 5, 7];
 
