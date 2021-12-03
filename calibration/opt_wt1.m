@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp_24', group_name);
+save_dir = strcat('calib_exp25', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -16,7 +16,7 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 6, 7, 9, 13, 15, 16, 17];
+tune_idx1_kto = [1, 2, 6, 7, 9, 13, 14, 15, 16, 17];
 tune_idx1_kslow1 = [1, 2, 4, 5, 8, 9, 11, 12, 13];
 tune_idx1_kslow2 = [1, 3];
 tune_idx1_kss = [1, 2, 3, 4];
