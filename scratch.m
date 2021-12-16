@@ -1,3 +1,25 @@
+%% test currents
+pkto = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+pkslow1 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
+pkslow2 = [5334, 5000, 0.05766];
+pkss = [0.0862, 1235.5, 13.17, 0.0428];
+
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
+
+time_space = cell(1, 3);
+t = 1:ideal_end_time;
+time_space{1} = t;
+time_space{2} = t(1:ideal_hold_time);
+pulse_t = t(ideal_hold_time+1:end);
+pulse_t_adj = pulse_t - pulse_t(1);
+time_space{3} = pulse_t_adj;
+
+pkto(6) = 0.01;
+y = ikto(pkto, -70, 30, time_space, -91.1);
+y = ikslow2([pkslow1(1:8), pkslow2], -70, 30, time_space, -91.1);
+plot(t,y)
+
 %% exponential fitting example
 clc
 clearvars
