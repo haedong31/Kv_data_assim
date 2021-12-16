@@ -4,11 +4,7 @@
 /calibration/data/
 /calibration/fig/
 /calibration/calib*
-/Kv_app/20210719-exp1/
-/Kv_app/20210801-exp2/
-/Kv_app/20210807-exp3/
-/Kv_app/20210813-exp4/
-/Kv_app/data/
+/KvApp/data/
 /saved_results/
 /.vs/
 
