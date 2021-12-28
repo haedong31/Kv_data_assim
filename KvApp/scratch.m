@@ -1,3 +1,37 @@
+clc
+clearvars
+close all
+
+group_name = 'ko';
+save_dir = fullfile(pwd,'data','ko-preprocessed-rd');
+
+% matching table
+matching_table = readtable(fullfile(pwd, 'data', strcat('matching-table-', group_name, '.xlsx')));
+[num_files, ~] = size(matching_table);
+
+% file names and capacitance values
+file_names = matching_table.trace_file_name_4half;
+
+% exclude row not having file names
+loop_idx = [];
+for i = 1:num_files
+    if isempty(file_names{i})
+        continue
+    end
+    loop_idx = [loop_idx, i];
+end
+len_loop_idx = length(loop_idx);
+
+for l = 1:len_loop_idx
+    disp(l)
+    i = loop_idx(l);
+    file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed'), file_names{i});
+    save_path = fullfile(save_dir, file_names{i});
+
+    trace_data = table2array(readtable(file_path));
+    trace_data(:,2:3) = [];
+    writematrix(trace_data, save_path);
+end
 %% plot data
 clc
 close all
