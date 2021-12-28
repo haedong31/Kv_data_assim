@@ -5,6 +5,7 @@
 /calibration/fig/
 /calibration/calib*
 /KvApp/data/
+/KvApp/calib*
 /saved_results/
 /.vs/
 
