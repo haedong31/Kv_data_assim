@@ -23,7 +23,7 @@ for i=1:length(param)
     axis tight
     xlabel(strcat('Parameter', num2str(param(i))))
     ylabel('Density')
-    set(gca, 'LineWidth',2, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
+    set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
     if i==4
         legend('WT','Mgat1KO', 'Location','best')
@@ -56,7 +56,7 @@ for i=1:length(param)
     axis tight
     xlabel(strcat('Parameter', num2str(param(i))))
     ylabel('Density')
-    set(gca, 'LineWidth',2, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
+    set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
     if i==4
         legend('WT','Mgat1KO', 'Location','best')
@@ -89,7 +89,7 @@ for i=1:length(param)
     axis tight
     xlabel(strcat('Parameter', num2str(param(i))))
     ylabel('Density')
-    set(gca, 'LineWidth',2, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
+    set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
     if i==1
         legend('WT','Mgat1KO', 'Location','best')
@@ -122,7 +122,7 @@ for i=1:length(param)
     axis tight
     xlabel(strcat('Parameter', num2str(param(i))))
     ylabel('Density')
-    set(gca, 'LineWidth',2, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
+    set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
     if i==1
         legend('WT','Mgat1KO', 'Location','best')
