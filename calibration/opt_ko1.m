@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp25_', group_name);
+save_dir = strcat('calib_exp24_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -352,17 +352,3 @@ function scaledp = scale_param(unitp, model_struct)
         scaledp(i, :) = row;
     end
 end
-
-% function [stop] = outfun(x,optimValues,state)
-%     global history
-%     stop = false;
-%     
-%     switch state
-%         case 'iter'
-%         % Concatenate current point and objective function
-%         % value with history. x must be a row vector.
-%         history.fval = [history.fval; optimValues.fval];
-%         history.x = [history.x; x];
-%         otherwise
-%      end
-% end
