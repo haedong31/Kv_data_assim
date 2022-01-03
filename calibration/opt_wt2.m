@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'wt';
-save_dir = strcat('calib_exp23_extra_', group_name);
+save_dir = strcat('calib_exp25_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -25,9 +25,9 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 100;
+num_iters = 30;
 options = optimoptions(@fmincon, ...
-    'Algorithm','active-set', 'Display','off', ...
+    'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
     'SpecifyObjectiveGradient',true);
 
@@ -223,7 +223,8 @@ for l = 1:len_loop_idx
     time_space{5} = ideal_end_idx;
     
     % objective function
-%    obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+%     obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+%     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum)
     opt_fun = @(p) obj_rmse_grad(p, model_struct, volt_space, time_space, yksum);
 
     % run optimization
