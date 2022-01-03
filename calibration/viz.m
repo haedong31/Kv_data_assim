@@ -5,9 +5,9 @@ clear variables
 
 % specify result files and voltages to check
 file_group = 'wt';
-file_name = '15o26008.xlsx';
+file_name = '15o26002.xlsx';
 
-save_dir1 = 'calib_exp22';
+save_dir1 = 'calib_exp24';
 
 % voltages info
 min_volt = -50;
@@ -26,11 +26,18 @@ current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
 num_currents = length(current_names);
 
 % field 2: tunning index in individual current models
-tune_idx1 = cell(1, 6);
-tune_idx1{1} = [1, 2, 6, 10, 13, 14, 15, 16, 17];
-tune_idx1{2} = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
+% tune_idx1 = cell(1, 6);
+% tune_idx1{1} = [1, 2, 6, 10, 13, 14, 15, 16, 17];
+% tune_idx1{2} = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
+% tune_idx1{3} = [1, 3];
+% tune_idx1{4} = [3, 4];
+% tune_idx1{5} = [1, 3];
+% tune_idx1{6} = [1, 3, 5, 7];
+
+tune_idx1{1} = [1, 2, 6, 7, 9, 13, 14, 15, 16, 17];
+tune_idx1{2} = [1, 2, 4, 5, 8, 9, 11, 12, 13];
 tune_idx1{3} = [1, 3];
-tune_idx1{4} = [3, 4];
+tune_idx1{4} = [1, 2, 3, 4];
 tune_idx1{5} = [1, 3];
 tune_idx1{6} = [1, 3, 5, 7];
 
