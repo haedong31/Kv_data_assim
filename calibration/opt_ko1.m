@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp24_', group_name);
+save_dir = strcat('calib_exp26_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -29,7 +29,7 @@ num_iters = 30;
 options = optimoptions(@fmincon, ...
     'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
-    'SpecifyObjectiveGradient',false);
+    'SpecifyObjectiveGradient',true);
 
 % protocol
 hold_volt = -70;
@@ -91,7 +91,7 @@ for i = 1:num_files
     end
     loop_idx = [loop_idx, i];
 end
-% loop_idx = loop_idx([12, 13, 14, 22, 24]);
+% loop_idx = loop_idx(3);
 len_loop_idx = length(loop_idx);
 
 % default values
@@ -224,26 +224,24 @@ for l = 1:len_loop_idx
     
     % objective function
 %     obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
-%     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum)
-    opt_fun = @(p) obj_rmse(p, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+%     obj_rmse_grad1(p0, model_struct, volt_space, time_space, yksum)
+    opt_fun = @(p) obj_rmse_grad1(p, model_struct, volt_space, time_space, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
     sol_list = cell(num_iters, 1);
 
     % first run with p0
-%     [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
-%     sol_list{1} = sol;
-%     rmse_list(1) = fval;
-% 
-%     fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
+    [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
+    sol_list{1} = sol;
+    rmse_list(1) = fval;
+
+    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
     
     % random intialization
-%     running_p0 = lhsdesign(num_iters, cul_idx_len);
-    running_p0 = gensg(cul_idx_len+1, cul_idx_len);
-    running_p0 = running_p0.design;
+    running_p0 = lhsdesign(num_iters, cul_idx_len);
     running_p0 = scale_param(running_p0, model_struct);
-    for j = 1:num_iters
+    for j = 2:num_iters
         % optimization
         try
             [sol, fval] = fmincon(opt_fun, running_p0(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);

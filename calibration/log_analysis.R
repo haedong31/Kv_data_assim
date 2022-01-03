@@ -30,7 +30,7 @@ find_min_rmse <- function(log_list) {
   return(mins)
 }
 
-log_dir <- "./calibration/log_norm/"
+log_dir <- "./log/"
 
 ## WT -----
 num_files <- 34
