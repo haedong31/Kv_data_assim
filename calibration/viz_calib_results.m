@@ -1,13 +1,27 @@
-%% comparison with experimental data
+%% bar graph of RMSE
+clc
+close all
+
+file_group = 'wt';
+exp_num = 'exp25';
+
+rmse_df = readtable(fullfile(pwd,'log',strcat(exp_num,'_',file_group,'.csv')));
+
+file_names = categorical(rmse_df.File);
+rmse = rmse_df.RMSE;
+
+figure('Color','w')
+barh(file_names,rmse, 'blue')
+set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
+
+%% current traces for each dataset
 clc
 close all 
-clear variables
 
 % specify result files and voltages to check
-file_group = 'wt';
 file_name = '15o26002.xlsx';
-
-save_dir1 = 'calib_exp24';
+% file_name = file_names(1);
+save_dir = strcat('calib_', exp_num);
 
 % voltages info
 min_volt = -50;
@@ -18,7 +32,7 @@ for i = 1:length(volt_range)
 end
 
 % import calibration results
-calib1 = table2array(readtable(fullfile(pwd, strcat(save_dir1, '_', file_group), file_name)));
+calib1 = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), file_name)));
 
 % specify model structure
 % field 1: selection of currents
