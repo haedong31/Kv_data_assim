@@ -1,3 +1,45 @@
+%% data preprocessing 25s data: downsample & normalization
+clc
+close all
+clear variables
+
+matching_table = readtable('./data/matching-table-ko.xlsx');
+file_names = matching_table.trace_file_name_25;
+caps = matching_table.cap;
+
+loop_idx = [];
+[num_files, ~] = size(matching_table);
+for i = 1:num_files
+    if isempty(file_names{i})
+        continue
+    end
+    loop_idx = [loop_idx, i];
+end
+
+ideal_end_time = 25*1000;
+for i = loop_idx
+    read_path = fullfile(pwd, 'data', 'Mgat1KO-25s-50mV-traces', file_names{i});
+    save_path = fullfile(pwd, 'data', 'ko-preprocessed-25s', file_names{i});
+
+    % read data
+    trace_data = table2array(readtable(read_path));
+
+    % downsample
+    trace_data = downsample(trace_data, 20);
+
+    % normalize
+    trace_data(:, 2:end) = trace_data(:, 2:end) ./ caps(i); 
+
+    % estimate time points
+    [~, ideal_end_idx] = min(abs(trace_data(:, 1) - ideal_end_time));
+    
+    % cut data
+    trace_data = trace_data(1:ideal_end_idx, :);
+
+    % save data
+    writematrix(trace_data, save_path);
+end
+
 %% data preprocessing: remove upward spikes in preprocess2
 clc
 close all
@@ -264,9 +306,6 @@ hold off
 data_processed = array2table(data_sampled, 'VariableNames',col_names);
 writetable(data_processed, './data/wt-preprocessed/15o29009.xlsx')
 
-%% preprocessing for wt-25 / 12.10 / 10/29/2015 Cell 3 / 15o29010
-
-
 %% preprocessing for ko-4.5 / 15.40 / 11/24/2015 Cell 5 / 15n24005.xlsx
 clc
 close all
@@ -338,9 +377,6 @@ hold off
 
 data_processed = array2table(data_sampled, 'VariableNames',col_names);
 writetable(data_processed, './data/ko-preprocessed/15n24005.xlsx')
-
-%% preprocessing for ko-25 / 15.40 / 11/24/2015 Cell 5 / 15n24014
-
 
 %% preprocessing for 4.5-2-avg-ko data
 clc
