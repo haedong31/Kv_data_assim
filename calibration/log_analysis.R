@@ -17,9 +17,21 @@ read_log <- function(log_path, num_file, num_iter) {
 
 find_min_rmse <- function(log_list) {
   mins <- vector(mode = "numeric", length(log_list))
+  file_names <- vector(mode = "character", length(log_list))
   for (i in seq_along(log_list)) {
     log_lines <- log_list[[i]]
-    rmse <- str_split(log_lines, pattern = ": ") %>% 
+    log_split <- str_split(log_lines, pattern = ": ")
+    
+    # file name
+    file_name <- log_split %>% 
+      map_chr(1) %>% 
+      str_split(pattern = " ") %>% 
+      map_chr(3) %>% 
+      str_remove(".xlsx")
+    file_names[i] <- file_name[1]
+    
+    # min RMSE
+    rmse <- log_split %>% 
       map_chr(2) %>% 
       str_trim() %>% 
       as.numeric()
@@ -27,14 +39,15 @@ find_min_rmse <- function(log_list) {
       na.omit() %>% 
       min()
   }
-  return(mins)
+  rmse_df <- tibble(File = file_names, RMSE = mins)
+  return(rmse_df)
 }
 
-log_dir <- "./log/"
+log_dir <- "./calibration/log/"
 
 ## WT -----
 num_files <- 34
-log1_name <- "exp20"
+log1_name <- "exp25"
 log2_name <- "exp21"
 log3_name <- "exp22"
 log4_name <- "exp23"
@@ -42,12 +55,13 @@ log4_name <- "exp23"
 file_names <- seq(1, num_files) %>% as.character()
 extra_idx <- c(18, 19, 29, 31, 32)
 
-log1 <- read_log(str_c(log_dir, log1_name, "_wt.txt"), num_files, 1)
+log1 <- read_log(str_c(log_dir, log1_name, "_wt.txt"), num_files, 30)
 log2 <- read_log(str_c(log_dir, log2_name, "_wt.txt"), num_files, 1)
 log3 <- read_log(str_c(log_dir, log3_name, "_wt.txt"), num_files, 1)
 log4 <- read_log(str_c(log_dir, log4_name, "_wt.txt"), num_files, 1)
 
-rmse_val1 <- find_min_rmse(log1)
+rmse_df1 <- find_min_rmse(log1)
+write_csv(rmse_df1, str_c(log_dir, log1_name, "_wt.csv"))
 rmse_val2 <- find_min_rmse(log2)
 rmse_val3 <- find_min_rmse(log3)
 rmse_val4 <- find_min_rmse(log4)
