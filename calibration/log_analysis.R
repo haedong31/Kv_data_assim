@@ -46,29 +46,31 @@ find_min_rmse <- function(log_list) {
 log_dir <- "./calibration/log/"
 
 ## WT -----
-num_files <- 34
-log1_name <- "exp25"
-log2_name <- "exp21"
-log3_name <- "exp22"
-log4_name <- "exp23"
+num_files <- 33
+group_name <- "ko"
+log1_name <- "exp16"
+log2_name <- "exp26"
+# log3_name <- "exp26"
+# log4_name <- "exp23"
 
-file_names <- seq(1, num_files) %>% as.character()
-extra_idx <- c(18, 19, 29, 31, 32)
-
-log1 <- read_log(str_c(log_dir, log1_name, "_wt.txt"), num_files, 30)
-log2 <- read_log(str_c(log_dir, log2_name, "_wt.txt"), num_files, 1)
-log3 <- read_log(str_c(log_dir, log3_name, "_wt.txt"), num_files, 1)
-log4 <- read_log(str_c(log_dir, log4_name, "_wt.txt"), num_files, 1)
+log1 <- read_log(str_c(log_dir, log1_name, "_", group_name, ".txt"), num_files, 30)
+log2 <- read_log(str_c(log_dir, log2_name, "_", group_name, ".txt"), num_files, 1)
+# log3 <- read_log(str_c(log_dir, log3_name, "_", group_name, ".txt"), num_files, 1)
+# log4 <- read_log(str_c(log_dir, log4_name, "_", group_name, ".txt"), num_files, 1)
 
 rmse_df1 <- find_min_rmse(log1)
-write_csv(rmse_df1, str_c(log_dir, log1_name, "_wt.csv"))
-rmse_val2 <- find_min_rmse(log2)
-rmse_val3 <- find_min_rmse(log3)
-rmse_val4 <- find_min_rmse(log4)
+rmse_df2 <- find_min_rmse(log2)
+# rmse_val3 <- find_min_rmse(log3)
+# rmse_val4 <- find_min_rmse(log4)
 
-rmse_val1[extra_idx]
-rmse_val2
+write_csv(rmse_df1, str_c(log_dir, log1_name, "_", group_name, ".csv"))
+write_csv(rmse_df2, str_c(log_dir, log2_name, "_", group_name, ".csv"))
 
+# file_names <- seq(1, num_files) %>% as.character()
+# extra_idx <- c(18, 19, 29, 31, 32)
+# rmse_val1[extra_idx]
+
+## create data frame for multiple bar plot -----
 bar_df <- tibble(
   name = file_names,
   mtd1 = rmse_val1,
