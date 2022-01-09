@@ -78,7 +78,7 @@
 	\bigskip
 		
 \begin{abstract}
-This document provides a \LaTeX \ template for \emph{IISE Transactions}. Your paper should be compiled in the following order: title; abstract; keywords; main text, including an introduction and a conclusion or summary; acknowledgments; declaration of interest statement; references; appendices (as appropriate). Figures and tables should be inserted into the text as close to first mention as possible (NOT appended to the end of the manuscript). In-text citations and the reference list must follow \emph{IISE Transactions} guidelines. Use 11 point font, 1 inch margins, and double-spacing for the manuscript. A typical paper for this journal should be no more than 30 pages in manuscript format, counting from the title page to references. Appendices should be included as supplemental online materials. Do not use footnotes. \emph{IISE Transactions} uses a double-blind review process. Please make sure that you submit the \textbf{blind version} of your manuscript, which does not contain any information identifying the authors.  This includes removing the authors information on the title page as well as the information that may be identifying in the Acknowledgment section. We thank you for your attention to these details.
+Abstract goes here.
 \end{abstract}
 		
 \noindent%
@@ -90,7 +90,7 @@ This document provides a \LaTeX \ template for \emph{IISE Transactions}. Your pa
 
 \section{Introduction} \label{s:intro}
 \begin{itemize}
-    \item \textbf{Motivation} Among major cardiac voltage-gated ion channels (VGICs), K\textsuperscript{+} channels (K\textsubscript{v}) have a distinctive feature that they have various isoforms. Although each K\textsubscript{v} isoform produces a unique but slightly overlapping current, having different functionality, only the sum of these individual K\textsuperscript{+} currents (I\textsubscript{Ksum}) can be recorded through in-vitro experiments. Data analysis tools are used to estimate information about K\textsubscript{v} isoforms from experimental I\textsubscript{Ksum} recordings.
+    \item \textbf{Motivation} Voltage-gated ion channels (VGICs) are the functional unit of the electrical conduction system of the heart that controls the synchronous contraction of numerous cardiomyocytes. Among major cardiac VGICs, K\textsuperscript{+} channels (K\textsubscript{v}) have a distinctive feature: they have various isoforms that contribute to K\textsuperscript{+} current, while the dominant isoform is responsible for Na\textsuperscript{+} and Ca\textsuperscript{2+} currents. Although each K\textsubscript{+} generated through K\textsubscript{v} isoform has a different role in the repolarization phase, only the sum of these individual K\textsuperscript{+} currents (I\textsubscript{Ksum}) can be recorded through in-vitro experiments. Data analysis tools are used to estimate information about K\textsubscript{v} isoforms from experimental I\textsubscript{Ksum} recordings.
     \item \textbf{Gaps \& Needs} A traditional approach is based on the data-driven curve fitting method that assumes the functional forms for the shape of individual K\textsuperscript{+} currents. This method directly fits individual K\textsuperscript{+} currents to experimental I\textsubscript{Ksum} recordings by searching the shape parameters of the current functions that have the best fit. It has been proven that the curve fitting approach describes I\textsubscript{Ksum} well with estimated K\textsuperscript{+} currents. However, the mathematical form of this classical method only characterizes the shape of the currents, not the kinetics of corresponding K\textsubscript{v} isoforms. In addition, the curve fitting method handles experimental I\textsubscript{Ksum} recordings from the same cell independently, so it lacks the cellular-level analysis.
     \item \textbf{Objective} As opposed to the traditional data-driven curve fitting method, we propose a novel framework of biophysics-driven data assimilation method for kinetics modeling of K\textsubscript{v} isoforms based on computer models of K\textsuperscript{+} currents that can simulate underlying gating kinetics of the currents.
     \item \textbf{Approach} 
@@ -107,15 +107,23 @@ The review of literature can be a separate section but it can be merged with the
 \item A technical report: \cite{Kelley2007}.
 \end{itemize}
 
-\section{Methods} \label{s:methods}
-
-\subsection{\emph{Computer Models of Potassium Channel Isoforms}} \label{s:methods.1}
-modeling (mathematical equations)
+action potential and various ioninc currents
 \begin{figure}
     \centering
     \includegraphics{figs/ap_underlying_currents.pdf}
-    \caption{Caption}
+    \caption{The action potentials and underlying ionic currents in \textbf{(A)} human ventricular cardiomyocytes and \textbf{(B)} mouse ventricular cardiomyocytes \cite{nerbonne2003molecular}.}
     \label{fig:ap_underlying_currents}
+\end{figure}
+
+\section{Methods} \label{s:methods}
+
+\subsection{\emph{Computer Models of Potassium Channel Isoforms}} \label{s:methods.1}
+Various K\textsuperscript{+} currents play different roles in cardiac repolarization. 
+\begin{figure}
+    \centering
+    \includegraphics{figs/biomarkers.pdf}
+    \caption{Six biomarkers of K\textsuperscript{+} currents that are subjects of sensitivity analysis. (A) I\textsubscript{Kto}, (B) I\textsubscript{Kslow1}, (C) I\textsubscript{Kslow2}, (D) I\textsubscript{Kss}. All currents are simulated for the purpose of illustration and biomarker labels refer to a: at 10 ms, b: 25\%, c: 50\%, d: 75\%, e: peak, and f: time constant}
+    \label{fig:biomarkers}
 \end{figure}
 
 \subsection{\emph{Sensitivity Analysis of Calibration Parameters}} \label{s:methods.2}
@@ -150,6 +158,33 @@ this section shows the results of the variable screening.
 
 \subsection{\emph{Model Calibration}} \label{s:methods.3}
 calibration procedure; non-linear optimization methods
+\begin{figure}
+    \centering
+    \includegraphics{figs/pkto.pdf}
+    \caption{parameter distribution}
+    \label{fig:pkto}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{figs/pkslow1.pdf}
+    \caption{parameter distribution}
+    \label{fig:pkslow1}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{figs/pkslow2.pdf}
+    \caption{parameter distribution}
+    \label{fig:pkslow2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics{figs/pkss.pdf}
+    \caption{parameter distribution}
+    \label{fig:pkss}
+\end{figure}
 
 \subsection{\emph{Graphical User Interface}} \label{s:methods.4}
 show how to use it

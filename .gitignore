@@ -1,4 +1,4 @@
- # folders
+# folders
 /literature/
 /code_reference/fickleheart-method-tutorials-master/
 /calibration/data/
@@ -19,6 +19,9 @@
 /sensitivity_analysis/*.pdf
 /writing/*.pdf
 
+###############################
+# R .gitignore
+###############################
 # History files
 .Rhistory
 .Rapp.history
@@ -59,6 +62,9 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
+###############################
+# Python .gitignore
+###############################
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -189,3 +195,44 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+###############################
+# LaTex .gitignore
+###############################
+# Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+
+# Intermediate documents:
+*.dvi
+*.xdv
+*-converted-to.*
+
+# Bibliography auxiliary files (bibtex/biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.run.xml
+
+# Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex
+*.synctex(busy)
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# Build tool directories for auxiliary files
+# latexrun
+latex.out/
