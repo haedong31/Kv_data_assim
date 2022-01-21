@@ -45,16 +45,18 @@ find_min_rmse <- function(log_list) {
 
 log_dir <- "./calibration/log/"
 
-## WT -----
-num_files <- 33
-group_name <- "ko"
-log1_name <- "exp16"
-log2_name <- "exp26"
+## create data frame for bar plot -----
+num_files <- 34
+num_files2 <- 33
+group_name <- "wt"
+group_name2 <- "ko"
+log1_name <- "exp24"
+log2_name <- "exp24"
 # log3_name <- "exp26"
 # log4_name <- "exp23"
 
 log1 <- read_log(str_c(log_dir, log1_name, "_", group_name, ".txt"), num_files, 30)
-log2 <- read_log(str_c(log_dir, log2_name, "_", group_name, ".txt"), num_files, 1)
+log2 <- read_log(str_c(log_dir, log2_name, "_", group_name2, ".txt"), num_files2, 30)
 # log3 <- read_log(str_c(log_dir, log3_name, "_", group_name, ".txt"), num_files, 1)
 # log4 <- read_log(str_c(log_dir, log4_name, "_", group_name, ".txt"), num_files, 1)
 
@@ -64,7 +66,7 @@ rmse_df2 <- find_min_rmse(log2)
 # rmse_val4 <- find_min_rmse(log4)
 
 write_csv(rmse_df1, str_c(log_dir, log1_name, "_", group_name, ".csv"))
-write_csv(rmse_df2, str_c(log_dir, log2_name, "_", group_name, ".csv"))
+write_csv(rmse_df2, str_c(log_dir, log2_name, "_", group_name2, ".csv"))
 
 # file_names <- seq(1, num_files) %>% as.character()
 # extra_idx <- c(18, 19, 29, 31, 32)
@@ -91,36 +93,3 @@ ggplot(data = bar_df, mapping = aes(x = name, y = rmse, fill = mtd)) +
   scale_fill_discrete(name = "Model",
                       breaks = c("mtd1", "mtd2"),
                       labels = c("Method 1", "Method 2"))
-
-## Mgat1KO -----
-num_files <- 33
-log1_name <- "exp20"
-log2_name <- "exp20_extra"
-log3_name <- "exp22"
-log4_name <- "exp23"
-
-file_names <- seq(1, num_files) %>% as.character()
-extra_idx <- c(12, 13, 14, 22, 24)
-
-log1 <- read_log(str_c(log_dir, log1_name, "_ko.txt"), num_files, 1)
-log2 <- read_log(str_c(log_dir, log2_name, "_ko.txt"), num_files, 1)
-log3 <- read_log(str_c(log_dir, log3_name, "_ko.txt"), num_files, 1)
-log4 <- read_log(str_c(log_dir, log4_name, "_ko.txt"), num_files, 1)
-
-rmse_val1 <- find_min_rmse(log1)
-rmse_val2 <- find_min_rmse(log2)
-rmse_val3 <- find_min_rmse(log3)
-rmse_val4 <- find_min_rmse(log4)
-
-rmse_val1[extra_idx]
-rmse_val2
-
-bar_df <- tibble(
-  name = file_names,
-  mtd1 = rmse_val1,
-  mtd2 = rmse_val2,
-  mtd3 = rmse_val3,
-  mtd4 = rmse_val4)
-
-# export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_norm_ko.csv')

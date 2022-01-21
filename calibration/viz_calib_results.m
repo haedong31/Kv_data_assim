@@ -1,16 +1,36 @@
+%% multiple bar graph
+clc
+clearvars
+close all
+
+exp_num1 = 'exp24';
+exp_num2 = 'exp26';
+
+rmse_df1 = readtable(fullfile(pwd,'log',strcat(exp_num1,'_','wt','.csv')));
+rmse_df2 = readtable(fullfile(pwd,'log',strcat(exp_num2,'_','wt','.csv')));
+rmse_df_wt = join(rmse_df1,rmse_df2,'Keys','File');
+
+file_names = categorical(rmse_df_wt.File);
+rmse = table2array(rmse_df_wt(:,2:3));
+
+figure('Color','w', 'Position',[100,100,1000,850])
+barh(file_names,rmse)
+legend(exp_num1,exp_num2)
+set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
+
+
 %% bar graph of RMSE
 clc
 close all
 
 file_group = 'wt';
-exp_num = 'exp25';
+exp_num = 'exp26';
 
 rmse_df = readtable(fullfile(pwd,'log',strcat(exp_num,'_',file_group,'.csv')));
-
 file_names = categorical(rmse_df.File);
 rmse = rmse_df.RMSE;
 
-figure('Color','w')
+figure('Color','w', 'Position',[100,100,670,550])
 barh(file_names,rmse, 'blue')
 set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
