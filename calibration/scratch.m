@@ -130,6 +130,23 @@ ylabel('Current (pA/pF)')
 set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
 box off
 
+% in one figure
+iksum = comp_currents{1} + comp_currents{2} + comp_currents{3} + comp_currents{4};
+
+figure('Color','w')
+plot(t,comp_currents{1}, '-', 'Color','black', 'LineWidth',1.5)
+hold on
+plot(t,comp_currents{2}, '--','Color','black', 'LineWidth',1.5)
+plot(t,comp_currents{3}, ':','Color','black', 'LineWidth',1.5)
+plot(t,comp_currents{4}, '-.','Color','black', 'LineWidth',1.5)
+plot(t,iksum, 'Color','red', 'LineWidth',1.5)
+hold off
+axis tight
+xlabel('Time (ms)')
+ylabel('Current (pA/pF)')
+legend('I_{Ksum}','I_{Kto,f}','I_{Kslow1}','I_{Kslow2}','I_{Kss}')
+set(gca,'FontName','Arial','FontSize',11','FontWeight','bold')
+
 %% test trust-region-reflective
 % options = optimoptions('fmincon','Algorithm','trust-region-reflective','SpecifyObjectiveGradient',true);
 options = optimoptions('fmincon','Algorithm','interior-point','SpecifyObjectiveGradient',true);
