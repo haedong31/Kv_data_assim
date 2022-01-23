@@ -144,7 +144,7 @@ hold off
 axis tight
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
-legend('I_{Ksum}','I_{Kto,f}','I_{Kslow1}','I_{Kslow2}','I_{Kss}')
+legend('I_{Kto,f}','I_{Kslow1}','I_{Kslow2}','I_{Kss}','I_{Ksum}')
 set(gca,'FontName','Arial','FontSize',11','FontWeight','bold')
 
 %% test trust-region-reflective
