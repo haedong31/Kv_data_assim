@@ -49,86 +49,83 @@ function [current_trace] = gen_matching_current(p, model_info, protocol_info)
 
     % generate current
     switch current_name
-        case 'ikto'
-            % generate ikto
-            num_param = 17;
-            kto_default = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
-                0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
-            fixed_idx = setdiff(1:num_param, tune_idx1);
-            
-            param = zeros(num_param, 1);
-            param(tune_idx1) = p(tune_idx2);
-            param(fixed_idx) = kto_default(fixed_idx);
-            
-            current_trace = ikto(param, hold_volt, volt, time_space, ek);
-        case 'ikslow1'
-            % generate ikslow1
-            current_trace = ikslow1(param_kslow1, hold_volt, volt, time_space, ek);
-        case 'ikslow2'
-            % generate ikslow2
-            num_param = 11;
-            kslow2_default = [5334, 4912, 0.05766];
-            shared_idx = 1:8;
-            uniq_idx = setdiff(1:num_param, shared_idx);
+    case 'ikto'
+        % generate ikto
+        num_param = 17;
+        kto_default = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+            0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
+        fixed_idx = setdiff(1:num_param, tune_idx1);
+        
+        param = zeros(num_param, 1);
+        param(tune_idx1) = p(tune_idx2);
+        param(fixed_idx) = kto_default(fixed_idx);
+        
+        current_trace = ikto(param, hold_volt, volt, time_space, ek);
+    case 'ikslow1'
+        % generate ikslow1
+        current_trace = ikslow1(param_kslow1, hold_volt, volt, time_space, ek);
+    case 'ikslow2'
+        % generate ikslow2
+        num_param = 11;
+        kslow2_default = [5334, 4912, 0.05766];
+        shared_idx = 1:8;
+        uniq_idx = setdiff(1:num_param, shared_idx);
 
-            param = zeros(num_param, 1);
-            param(shared_idx) = param_kslow1(shared_idx);
+        param = zeros(num_param, 1);
+        param(shared_idx) = param_kslow1(shared_idx);
 
-            uniq_param = kslow2_default;
-            uniq_param(tune_idx1) = p(tune_idx2);
-            param(uniq_idx) = uniq_param;
+        uniq_param = kslow2_default;
+        uniq_param(tune_idx1) = p(tune_idx2);
+        param(uniq_idx) = uniq_param;
 
-            current_trace = ikslow2(param, hold_volt, volt, time_space, ek);
-        case 'ikss'
-            % generate ikss
-            num_param = 7;
-            kss_default = [0.0862, 1235.5, 13.17, 0.0428];
-            shared_idx1 = 1:3;
-            shared_idx2 = [1, 3, 4];
-            uniq_idx = setdiff(1:num_param, shared_idx1);
+        current_trace = ikslow2(param, hold_volt, volt, time_space, ek);
+    case 'ikss'
+        % generate ikss
+        num_param = 7;
+        kss_default = [0.0862, 1235.5, 13.17, 0.0428];
+        shared_idx1 = 1:3;
+        shared_idx2 = [1, 3, 4];
+        uniq_idx = setdiff(1:num_param, shared_idx1);
 
-            param = zeros(num_param, 1);
-            param(shared_idx1) = param_kslow1(shared_idx2);
+        param = zeros(num_param, 1);
+        param(shared_idx1) = param_kslow1(shared_idx2);
 
-            uniq_param = kss_default;
-            uniq_param(tune_idx1) = p(tune_idx2);
-            param(uniq_idx) = uniq_param;
+        uniq_param = kss_default;
+        uniq_param(tune_idx1) = p(tune_idx2);
+        param(uniq_idx) = uniq_param;
 
-            current_trace = ikss(param, hold_volt, volt, time_space, ek);
-        case 'ikur'
-            % generate ikur
-            num_param = 11;
-            kur_default = [270, 1050, 0];
-            shared_idx = 1:8;
-            uniq_idx = setdiff(1:num_param, shared_idx);
+        current_trace = ikss(param, hold_volt, volt, time_space, ek);
+    case 'ikur'
+        % generate ikur
+        num_param = 11;
+        kur_default = [270, 1050, 0];
+        shared_idx = 1:8;
+        uniq_idx = setdiff(1:num_param, shared_idx);
 
-            param = zeros(num_param, 1);
-            param(shared_idx) = param_kslow1(shared_idx);
+        param = zeros(num_param, 1);
+        param(shared_idx) = param_kslow1(shared_idx);
 
-            uniq_param = kur_default;
-            uniq_param(tune_idx1) = p(tune_idx2);
-            param(uniq_idx) = uniq_param;
+        uniq_param = kur_default;
+        uniq_param(tune_idx1) = p(tune_idx2);
+        param(uniq_idx) = uniq_param;
 
-            current_trace = ikur(param, hold_volt, volt, time_space, ek);            
-        case 'ik1'
-            % generate ik1
-            num_param = 10;
-            k1_default = [59.215, 5.476, 594.31, 4.753, ...
-                1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
-            fixed_idx = setdiff(1:num_param, tune_idx1);
+        current_trace = ikur(param, hold_volt, volt, time_space, ek);            
+    case 'ik1'
+        % generate ik1
+        num_param = 10;
+        k1_default = [59.215, 5.476, 594.31, 4.753, ...
+            1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
+        fixed_idx = setdiff(1:num_param, tune_idx1);
 
-            param = zeros(num_param, 1);
-            param(tune_idx1) = p(tune_idx2);
-            param(fixed_idx) = k1_default(fixed_idx);
+        param = zeros(num_param, 1);
+        param(tune_idx1) = p(tune_idx2);
+        param(fixed_idx) = k1_default(fixed_idx);
 
-            current_trace = ik1(param, hold_volt, volt, time_space, ek);
+        current_trace = ik1(param, hold_volt, volt, time_space, ek);
     end
 end
 
-function [current_trc] = ikto(p, hold_volt, volt, time_space, Ek)
-    % 17 parameters 
-    % see 2014 Bondarenko and 2020 Bondarenko
-    
+function current_trc = ikto(p, hold_volt, volt, time_space, Ek)    
     % constants & initial values
     f_eacv = p(15); % 0.2087704319 Ikto fraction phophorylated
     gmax = p(16); % 0.14067
@@ -172,7 +169,7 @@ function [current_trc] = ikto(p, hold_volt, volt, time_space, Ek)
         f_eacv.*gmaxp.*(actp_pulse.^3).*(inactp_pulse).*(volt-Ek);
 end
 
-function [gv] = ikto_gating_variables(p, V)
+function gv = ikto_gating_variables(p, V)
     % p0 = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
     %     0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
 
@@ -213,10 +210,7 @@ function [gv] = ikto_gating_variables(p, V)
     gv(8) = 1./(alpha2p+beta2p);
 end
 
-function [current_trc] = ikslow1(p, hold_volt, volt, time_space, Ek)
-    % 13 parameters; {p(11): f_ecav, p(12): gmax, p(13): gmaxp}
-    % see 2020 Bondarenko
-
+function current_trc = ikslow1(p, hold_volt, volt, time_space, Ek)
     % constants & initial values
     f_eacv = p(11); % 0.9214774521 Ikslow1 fraction of nonphospholatedl
     gmax = p(12); % 0.05766
@@ -245,7 +239,7 @@ function [current_trc] = ikslow1(p, hold_volt, volt, time_space, Ek)
     current_trc((hold_idx + 1):end) = (gmax*f_eacv + gmaxp*(1-f_eacv)).*(act_pulse).*(inact_pulse).*(volt - Ek);
 end
 
-function [gv] = ikslow1_gating_variables(p, V)
+function gv = ikslow1_gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow2
     % gv(1:3) = gv(1:3) in Ikur
     % gv(1) = gv(1) in Ikss
@@ -258,10 +252,7 @@ function [gv] = ikslow1_gating_variables(p, V)
     gv(4) = p(9)-p(10)./(1.0+exp((p(2)+V)./p(5))); % taui
 end
 
-function [current_trc] = ikslow2(p, hold_volt, volt, time_space, Ek)
-    % 11 parameters; {p(11): gmax} 
-    % see 2020 Bondarenko
-
+function current_trc = ikslow2(p, hold_volt, volt, time_space, Ek)
     % constants & initial values
     gmax = p(11); % 0.05766
     act0 = 0.5091689794e-03;
@@ -288,7 +279,7 @@ function [current_trc] = ikslow2(p, hold_volt, volt, time_space, Ek)
     current_trc((hold_idx + 1):end) = gmax.*(act_pulse).*(inact_pulse).*(volt - Ek);
 end
 
-function [gv] = ikslow2_gating_variables(p, V)
+function gv = ikslow2_gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow1
     % gv(4) = p(9) - p(1)*[gv(2) in Ikslow1]
     % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 5334, 4912, 0.05766];
@@ -301,7 +292,7 @@ function [gv] = ikslow2_gating_variables(p, V)
     gv(4) = p(9) - p(10)./(1.0+exp((p(2)+V)./p(5)));
 end
 
-function [current_trc] = ikss(p, hold_volt, volt, time_space, Ek)
+function current_trc = ikss(p, hold_volt, volt, time_space, Ek)
     % 7 parameters; {p(7): gmax}
 
     % constants & initial values
@@ -327,7 +318,7 @@ function [current_trc] = ikss(p, hold_volt, volt, time_space, Ek)
     current_trc((hold_idx + 1):end) = gmax.*act_pulse.*(volt - Ek);
 end
 
-function [gv] = ikss_gating_variables(p, V)
+function gv = ikss_gating_variables(p, V)
     % gv(1) = gv(1) in Ikslow1
     % p0 = [22.5, 40.0, 7.7, 0.0862, 1235.5, 13.17, 0.0428]
 
@@ -336,7 +327,7 @@ function [gv] = ikss_gating_variables(p, V)
     gv(2) = p(5)./(exp(p(4)*(V+p(2))) + exp(-p(4)*(V+p(2)))) + p(6);
 end
 
-function [current_trc] = ikur(p, hold_volt, volt, time_space, Ek)
+function current_trc = ikur(p, hold_volt, volt, time_space, Ek)
     gmax = p(11); % 0
     act0 = 0.5091689794e-03;
     inact0 = 0.9980927689;
@@ -362,7 +353,7 @@ function [current_trc] = ikur(p, hold_volt, volt, time_space, Ek)
     current_trc((hold_idx + 1):end) = gmax.*(act_pulse).*(inact_pulse).*(volt - Ek);    
 end
 
-function [gv] = ikur_gating_variables(p, V)
+function gv = ikur_gating_variables(p, V)
     % gv(1:3) = gv(1:3) in Ikslow1
     % p0 = [270, 1050];
     % p0 = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 270, 1050, 0];
@@ -374,7 +365,7 @@ function [gv] = ikur_gating_variables(p, V)
     gv(4) = p(9) + p(10)./(1.0+exp((p(2)+V)./p(5)));
 end
 
-function [current_trc] = ik1(p, hold_volt, volt, time_space, Ek)
+function current_trc = ik1(p, hold_volt, volt, time_space, Ek)
     % time space information
     t = time_space{1};
     hold_t = time_space{2};
@@ -398,6 +389,6 @@ function [alpha_k1, beta_k1] = ik1_transition_rates(p, v, Ek)
         (1.0 + exp(-p(10)*(v-Ek+p(4))));
 end
 
-function [y] = hh_model(t, ss0, ss, tau)
+function y = hh_model(t, ss0, ss, tau)
     y = ss - (ss - ss0).*exp(-t./tau);
 end
