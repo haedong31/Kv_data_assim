@@ -18,7 +18,6 @@ barh(file_names,rmse)
 legend(exp_num1,exp_num2)
 set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
-
 %% bar graph of RMSE
 clc
 close all
@@ -34,12 +33,16 @@ figure('Color','w', 'Position',[100,100,670,550])
 barh(file_names,rmse, 'blue')
 set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
-%% current traces for each dataset
+%% current traces for each dataset (kcurrent_model2)
 clc
 close all 
+clearvars
+
+file_group = 'wt';
+exp_num = 'exp27';
 
 % specify result files and voltages to check
-file_name = '15o26002.xlsx';
+file_name = '15o29024.xlsx';
 % file_name = file_names(1);
 save_dir = strcat('calib_', exp_num);
 
@@ -60,20 +63,133 @@ current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
 num_currents = length(current_names);
 
 % field 2: tunning index in individual current models
-% tune_idx1 = cell(1, 6);
-% tune_idx1{1} = [1, 2, 6, 10, 13, 14, 15, 16, 17];
-% tune_idx1{2} = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
-% tune_idx1{3} = [1, 3];
-% tune_idx1{4} = [3, 4];
-% tune_idx1{5} = [1, 3];
-% tune_idx1{6} = [1, 3, 5, 7];
-
-tune_idx1{1} = [1, 2, 6, 7, 9, 13, 14, 15, 16, 17];
-tune_idx1{2} = [1, 2, 4, 5, 8, 9, 11, 12, 13];
-tune_idx1{3} = [1, 3];
-tune_idx1{4} = [1, 2, 3, 4];
+tune_idx1{1} = [1, 2, 4, 5, 7, 11, 13];
+tune_idx1{2} = [1, 2, 4, 5, 9, 10, 11];
+tune_idx1{3} = [2, 3];
+tune_idx1{4} = [3, 4];
 tune_idx1{5} = [1, 3];
 tune_idx1{6} = [1, 3, 5, 7];
+
+[model_struct1, psize1] = gen_mdl_struct(current_names, tune_idx1);
+
+sol1 = gen_sol_vec(calib1, model_struct1, psize1);
+
+% experimental data to be compared
+exp_data = table2array(readtable(fullfile(pwd,'data', strcat(file_group, '-preprocessed'), file_name)));
+t = exp_data(:, 1);
+yksum = exp_data(:, (volt_range+1));
+
+% protocol
+protocol = cell(4, 1);
+
+hold_volt = -70;
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
+ek = -91.1;
+
+[~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
+[~, ideal_end_idx] = min(abs(t - ideal_end_time));
+
+t = t(1:ideal_end_idx);
+yksum = yksum(1:ideal_end_idx, :);
+
+time_space = cell(1, 3);
+time_space{1} = t;
+time_space{2} = t(1:ideal_hold_idx);
+pulse_t = t(ideal_hold_idx+1:end);
+pulse_t_adj = pulse_t - pulse_t(1);
+time_space{3} = pulse_t_adj;
+time_space{4} = ideal_hold_idx;
+time_space{5} = ideal_end_idx;
+
+volt_space = cell(3, 1);
+volt_space{1} = hold_volt;
+volt_space{2} = volts;
+volt_space{3} = ek;
+
+protocol{1} = hold_volt;
+protocol{3} = time_space;
+protocol{4} = ek;
+
+% generate yksum_hat
+r = obj_rmse(sol1, @kcurrent_model2, model_struct1, volt_space, time_space, yksum);
+fprintf('File %s Min RMSE: %f \n', file_name, r)
+
+figure('Position',[50,50,800,800])
+for i=1:length(volts)
+    protocol{2} = volts(i);
+    yksum_i = yksum(:, i);
+
+    [yksum_hat1, ~] = kcurrent_model2(sol1, model_struct1, protocol);
+    
+    subplot(3, 3, i)
+    plot(t, yksum_i, 'Color','red')
+    hold on
+    plot(t, yksum_hat1, '--', 'Color','green', 'LineWidth',2)
+    hold off
+    axis tight
+    grid on
+%    legend('Experimental Data','Model Prediction 1', 'Model Prediction 2', 'Location','best')
+    title(strcat('Clamp Voltage: ', string(volts(i)), ' mV'), 'FontSize',10, 'FontWeight','bold');
+    xlabel('Time (ms)', 'FontSize',10, 'FontWeight','bold');
+    ylabel('Current (pA/pF)', 'FontSize',10, 'FontWeight','bold');
+    get(gcf,'CurrentAxes');
+    set(gca,'YDir','normal');
+    set(gca,'LineWidth',2, 'FontSize',10, 'FontWeight','bold');
+    set(gca,'GridLineStyle','--')
+end
+
+figure(2)
+plot(t, yksum(:, 1))
+hold on
+for i = 2:length(volts)
+    plot(t, yksum(:, i))
+end
+hold off
+
+%% current traces for each dataset (kcurrent_model1)
+% clc
+% close all 
+
+file_group = 'wt';
+exp_num = 'exp16';
+
+% specify result files and voltages to check
+file_name = '15o29024.xlsx';
+% file_name = file_names(1);
+save_dir = strcat('calib_', exp_num);
+
+% voltages info
+min_volt = -50;
+volt_range = 3:11;
+volts = NaN(length(volt_range), 1);
+for i = 1:length(volt_range)
+    volts(i) = min_volt + (volt_range(i)-1)*10;
+end
+
+% import calibration results
+calib1 = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), file_name)));
+
+% specify model structure
+% field 1: selection of currents
+current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
+num_currents = length(current_names);
+
+% field 2: tunning index in individual current models
+tune_idx1 = cell(1, 6);
+tune_idx1{1} = [1, 2, 6, 10, 13, 14, 15, 16, 17];
+tune_idx1{2} = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
+tune_idx1{3} = [1, 3];
+tune_idx1{4} = [3, 4];
+tune_idx1{5} = [1, 3];
+tune_idx1{6} = [1, 3, 5, 7];
+
+% tune_idx1{1} = [1, 2, 6, 7, 9, 13, 14, 15, 16, 17];
+% tune_idx1{2} = [1, 2, 4, 5, 8, 9, 11, 12, 13];
+% tune_idx1{3} = [1, 3];
+% tune_idx1{4} = [1, 2, 3, 4];
+% tune_idx1{5} = [1, 3];
+% tune_idx1{6} = [1, 3, 5, 7];
 
 [model_struct1, psize1] = gen_mdl_struct(current_names, tune_idx1);
 
@@ -148,10 +264,11 @@ figure(2)
 plot(t, yksum(:, 1))
 hold on
 for i = 2:length(volts)
-plot(t, yksum(:, i))
+    plot(t, yksum(:, i))
 end
 hold off
 
+%% custom functions
 function [model_struct, psize] = gen_mdl_struct(current_names, tune_idx)
     num_currents = length(current_names);
     

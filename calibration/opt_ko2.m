@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp23_extra_', group_name);
+save_dir = strcat('calib_exp27_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -16,20 +16,20 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 6, 10, 13, 14, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 3, 4, 5, 8, 9, 11, 12, 13];
-tune_idx1_kslow2 = [1, 3];
+tune_idx1_kto = [1, 2, 4, 5, 7, 11, 13];
+tune_idx1_kslow1 = [1, 2, 4, 5, 9, 10, 11];
+tune_idx1_kslow2 = [2, 3];
 tune_idx1_kss = [3, 4];
 tune_idx1_kur = [1, 3];
 tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 100;
+num_iters = 30;
 options = optimoptions(@fmincon, ...
-    'Algorithm','active-set', 'Display','off', ...
+    'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
-    'SpecifyObjectiveGradient',true);
+    'SpecifyObjectiveGradient',false);
 
 % protocol
 hold_volt = -70;
@@ -91,14 +91,14 @@ for i = 1:num_files
     end
     loop_idx = [loop_idx, i];
 end
-loop_idx = loop_idx([12, 13, 14, 22, 24]);
+% loop_idx = loop_idx([12, 13, 14, 22, 24]);
 len_loop_idx = length(loop_idx);
 
 % default values
-kto_default = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
-kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
-kslow2_default = [5334, 4912, 0.05766];
-kss_default = [0.0862, 1235.5, 13.17, 0.0428];
+kto_default = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.3846];
+kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18.0, 2.058, 803.0, 0.16];
+kslow2_default = [4912, 5334, 0.16];
+kss_default = [0.0862, 1235.5, 13.17, 0.0611];
 kur_default = [270, 1050, 0];
 k1_default = [59.215, 5.476, 594.31, 4.753, 1.02, 0.2385, 0.8, 0.08032, 0.06175, 0.5143];
 
@@ -109,9 +109,11 @@ global lb_kss
 global lb_kur
 global lb_k1
 
-lb_kto = [-70, -70, -70, -10, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
-lb_kslow1 = [-70, -70, -70, eps, eps, eps, eps, eps, eps, eps, eps, eps, eps];
-lb_kslow2 = [5000, eps, eps];
+lb_kto = NaN(1,length(kto_default));
+lb_kto([1:4, 13]) = [-70, -70, eps, 1, eps];
+lb_kto(5:12) = kto_default(5:12)*0.05;
+lb_kslow1 = [-70, -70, -70, 1, 1, eps, eps, eps, eps, 50+eps, eps];
+lb_kslow2 = [eps, 5000, eps];
 lb_kss = [eps, eps, eps, eps];
 lb_kur = [eps, 500, eps];
 lb_k1 = [eps, -20, eps, -30, eps, eps, eps, eps, eps, eps];
@@ -123,9 +125,11 @@ global ub_kss
 global ub_kur
 global ub_k1
 
-ub_kto = [70, 70, 70, 50, 50, 30, 1, 1, 1, 10, 0.005, 0.3, 0.005, 0.5, 1, 1, 1];
-ub_kslow1 = [50, 50, 50, 10, 50, 50, 1, 100, 1000, 50, 1, 1, 1];
-ub_kslow2 = [10000, 5000, 1];
+ub_kto = NaN(1,length(kto_default));
+ub_kto([1:4, 13]) = [70, 40, 40, 30, 1];
+ub_kto(5:12) = kto_default(5:12)*1.95;
+ub_kslow1 = [50, 50, 50, 20, 20, 1, 30, 50, 20, 2000, 1];
+ub_kslow2 = [5000, 10000, 1];
 ub_kss = [1, 2000, 100, 1];
 ub_kur = [500, 2000, 1];
 ub_k1 = [120, 30, 1000, 30, 3, 1, 2, 0.25, 0.25, 1];
@@ -223,8 +227,11 @@ for l = 1:len_loop_idx
     time_space{5} = ideal_end_idx;
     
     % objective function
-%    obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
-    opt_fun = @(p) obj_rmse_grad(p, model_struct, volt_space, time_space, yksum);
+%     obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+%     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum)
+    opt_fun = @(p) obj_rmse(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
+%     opt_fun = @(p) obj_rmse_grad(p, model_struct, volt_space, time_space, yksum);
+
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
@@ -349,17 +356,3 @@ function scaledp = scale_param(unitp, model_struct)
         scaledp(i, :) = row;
     end
 end
-
-% function [stop] = outfun(x,optimValues,state)
-%     global history
-%     stop = false;
-%     
-%     switch state
-%         case 'iter'
-%         % Concatenate current point and objective function
-%         % value with history. x must be a row vector.
-%         history.fval = [history.fval; optimValues.fval];
-%         history.x = [history.x; x];
-%         otherwise
-%      end
-% end
