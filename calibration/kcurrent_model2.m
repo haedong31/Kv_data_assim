@@ -11,7 +11,7 @@ function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info
     % declare shared parameters of ikslow1 as global variable
     matching_idx = strcmp(current_names, 'ikslow1');
     if any(matching_idx)    
-        num_kslow1_param = 13-2;
+        num_kslow1_param = 11;
         kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, ...
             6.1, 18.0, 2.058, 803.0, 0.16];
         
@@ -51,7 +51,7 @@ function current_trace = gen_matching_current(p, model_info, protocol_info)
     switch current_name
     case 'ikto'
         % generate ikto
-        num_param = 17-2-2;
+        num_param = 13;
 
         kto_default = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
             0.000152, 0.067083, 0.00095, 0.051335, 0.4067];
@@ -101,10 +101,7 @@ end
 
 function current_trc = ikto(p, hold_volt, volt, time_space, ek)    
     % constants & initial values
-    % f_eacv = p(15); % 0.2087704319 Ikto fraction phophorylated
-    gmax = p(13); % 0.14067
-   %  gmaxp = p(16)*(1.0-p(17)); % 0.14067*(1.0-0.387)
-
+    gmax = p(13);
     act0 = 0.4139033547E-02;
     inact0 = 0.9999623535E+00;
 
@@ -156,9 +153,7 @@ end
 
 function current_trc = ikslow1(p, hold_volt, volt, time_space, ek)
     % constants & initial values
-    % f_eacv = p(11); % 0.9214774521 Ikslow1 fraction of nonphospholatedl
-    gmax = p(11); % 0.05766
-    % gmaxp = p(13); % 0.07496
+    gmax = p(11);
     act0 = 0.5091689794e-03;
     inact0 = 0.9980927689;
     
