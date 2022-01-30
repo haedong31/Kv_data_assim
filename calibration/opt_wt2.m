@@ -25,7 +25,7 @@ tune_idx1_k1 = [1, 3, 5, 7];
 
 % optimization options
 max_evals = 1e+6;
-num_iters = 30;
+% num_iters = 30;
 options = optimoptions(@fmincon, ...
     'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
@@ -199,6 +199,12 @@ for i = 1:num_currents
 end
 
 % main loop
+d = idx_info2{end}(end);
+sg = gensg(d+1,d);
+sg = sg.design;
+[sg_size,~] = size(sg);
+num_iters = sg_size+1;
+
 for l = 1:len_loop_idx
     i = loop_idx(l);
 
@@ -245,12 +251,11 @@ for l = 1:len_loop_idx
     fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
     
     % random intialization
-    running_p0 = lhsdesign(num_iters, cul_idx_len);
-    running_p0 = scale_param(running_p0, model_struct);
+    running_p0 = scale_param(sg, model_struct);
     for j = 2:num_iters
         % optimization
         try
-            [sol, fval] = fmincon(opt_fun, running_p0(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
+            [sol, fval] = fmincon(opt_fun, running_p0(j-1,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
             sol_list{j} = sol;
             rmse_list(j) = fval;
         catch
