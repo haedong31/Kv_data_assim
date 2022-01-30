@@ -6,7 +6,7 @@ warning('off', 'all')
 
 % code arguments for calibration
 group_name = 'ko';
-save_dir = strcat('calib_exp27_', group_name);
+save_dir = strcat('calib_exp28_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -19,7 +19,7 @@ volt_range = 3:11;
 tune_idx1_kto = [1, 2, 4, 5, 7, 11, 13];
 tune_idx1_kslow1 = [1, 2, 4, 5, 9, 10, 11];
 tune_idx1_kslow2 = [2, 3];
-tune_idx1_kss = [3, 4];
+tune_idx1_kss = [1, 2, 3, 4];
 tune_idx1_kur = [1, 3];
 tune_idx1_k1 = [1, 3, 5, 7];
 
@@ -29,7 +29,7 @@ num_iters = 30;
 options = optimoptions(@fmincon, ...
     'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
-    'SpecifyObjectiveGradient',false);
+    'SpecifyObjectiveGradient',true);
 
 % protocol
 hold_volt = -70;
@@ -229,8 +229,8 @@ for l = 1:len_loop_idx
     % objective function
 %     obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
 %     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum)
-    opt_fun = @(p) obj_rmse(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
-%     opt_fun = @(p) obj_rmse_grad(p, model_struct, volt_space, time_space, yksum);
+%     opt_fun = @(p) obj_rmse(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
+    opt_fun = @(p) obj_rmse_grad2(p, model_struct, volt_space, time_space, yksum);
 
 
     % run optimization
