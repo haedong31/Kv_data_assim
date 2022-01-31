@@ -50,8 +50,8 @@ num_files <- 34
 num_files2 <- 33
 group_name <- "wt"
 group_name2 <- "ko"
-log1_name <- "exp24"
-log2_name <- "exp24"
+log1_name <- "exp27"
+log2_name <- "exp27"
 # log3_name <- "exp26"
 # log4_name <- "exp23"
 
