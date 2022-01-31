@@ -533,8 +533,8 @@ clc
 close all
 clear variables
 
-group_name = 'ko';
-exp_name = strcat('calib_exp24_', group_name);
+group_name = 'wt';
+exp_name = strcat('calib_exp28_', group_name);
 
 % selection of currents
 current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
@@ -544,9 +544,9 @@ num_currents = length(current_names);
 volt_range = 3:11;
 
 % tunning index in individual current models
-tune_idx1_kto = [1, 2, 6, 7, 9, 13, 15, 16, 17];
-tune_idx1_kslow1 = [1, 2, 4, 5, 8, 9, 11, 12, 13];
-tune_idx1_kslow2 = [1, 3];
+tune_idx1_kto = [1, 2, 4, 5, 7, 11, 13];
+tune_idx1_kslow1 = [1, 2, 4, 5, 9, 10, 11];
+tune_idx1_kslow2 = [2, 3];
 tune_idx1_kss = [1, 2, 3, 4];
 tune_idx1_kur = [1, 3];
 tune_idx1_k1 = [1, 3, 5, 7];
@@ -651,7 +651,7 @@ for l = 1:length(loop_idx)
         sol(model_struct(j).idx2) = running_sol(model_struct(j).idx1);
     end
     
-    r = obj_rmse(sol, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
+    r = obj_rmse(sol, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
     fprintf('[File %i/%i] %s Min RMSE: %f \n', l, length(loop_idx), file_names{i}, r)
 end
 
