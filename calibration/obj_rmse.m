@@ -1,7 +1,5 @@
 function z = obj_rmse(p, kcurrent_model, model_struct, volt_space, time_space, yksum)
     hold_idx = time_space{4};
-    end_idx = time_space{5};
-    
     volts = volt_space{2};
     num_volts = length(volts);
 

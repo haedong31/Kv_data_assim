@@ -1,30 +1,52 @@
-function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info)
+function z = objad(p, model_struct, volt_space, time_space, yksum)
     global param_kslow1
-    
-    num_currents = length(model_struct);
+
+    hold_idx = time_space{4};
+    volts = volt_space{2};
+    num_volts = length(volts);
+
+    protocol = cell(4, 1);
+    protocol{1} = volt_space{1};
+    protocol{3} = volt_space{3};
+    protocol{4} = time_space;
+
+    rmse_list = NaN(num_volts, 1);
+    for i = 1:num_volts
+        yksum_i = yksum(:, i);
+        protocol{2} = volts(i);
+
+        yksum_hat = kcurrent_model(p, model_struct, protocol);
+        rmse_list(i) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
+    end
+    z = sum(rmse_list);
+end
+
+function [yksum, comp_currents] = kcurrent_model(p, model_struct, protocol_info)
+    global param_kslow1
+
+    num_currents = length(model_struct);        
     current_names = cell(num_currents, 1);
-    
     for i = 1:num_currents
         current_names{i} = model_struct(i).name;
     end
-    
+
     % declare shared parameters of ikslow1 as global variable
     matching_idx = strcmp(current_names, 'ikslow1');
     if any(matching_idx)    
-        num_kslo1w1_param = 11;
         kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, ...
-            6.1, 18.0, 2.058, 803.0, 0.16];
-        
+            6.1, 18.0, 2.058, 803.0, 0.16];        
+        num_kslow1_param = length(kslow1_default);
+
         tune_idx1 = model_struct(matching_idx).idx1;
         tune_idx2 = model_struct(matching_idx).idx2;
         fixed_idx = setdiff(1:num_kslow1_param, tune_idx1);
 
-        param_kslow1 = zeros(num_kslow1_param, 1);
+        param_kslow1 = NaN(num_kslow1_param, 1);
         param_kslow1(tune_idx1) = p(tune_idx2);
         param_kslow1(fixed_idx) = kslow1_default(fixed_idx);
     end
 
-    time_space = protocol_info{3};
+    time_space = protocol_info{4};
     yksum = zeros(length(time_space{1}), 1);
     comp_currents = cell(num_currents, 1);
     for i = 1:num_currents
@@ -44,8 +66,8 @@ function current_trace = gen_matching_current(p, model_info, protocol_info)
     % protocol info
     hold_volt = protocol_info{1};
     volt = protocol_info{2};
-    time_space = protocol_info{3};
-    ek = protocol_info{4};
+    ek = protocol_info{3};
+    time_space = protocol_info{4};
 
     % generate current
     switch current_name
