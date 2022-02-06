@@ -99,33 +99,33 @@ protocol{4} = volt_space{3};
 
 [~, comp_currents] = kcurrent_model2(p0, model_struct, protocol);
 
-figure('Color','w', 'Position',[100,100,550,500])
+figure('Color','w', 'Position',[100,100,650,500])
 subplot(2,2,1)
 plot(t,comp_currents{1},'LineWidth',2,'Color','red')
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
-set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+set(gca,'FontName','Arial','FontSize',11','FontWeight','bold')
 box off
 
 subplot(2,2,2)
 plot(t,comp_currents{2}, 'LineWidth',2, 'Color','red')
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
-set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+set(gca,'FontName','Arial','FontSize',11','FontWeight','bold')
 box off
 
 subplot(2,2,3)
 plot(t,comp_currents{3},'LineWidth',2,'Color','red')
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
-set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+set(gca,'FontName','Arial','FontSize',11','FontWeight','bold')
 box off
 
 subplot(2,2,4)
 plot(t,comp_currents{4}, 'LineWidth',2, 'Color','red')
 xlabel('Time (ms)')
 ylabel('Current (pA/pF)')
-set(gca,'FontName','Arial','FontSize',10','FontWeight','bold')
+set(gca,'FontName','Arial','FontSize',11','FontWeight','bold')
 box off
 
 % in one figure

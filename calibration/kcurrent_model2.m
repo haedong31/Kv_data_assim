@@ -11,7 +11,7 @@ function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info
     % declare shared parameters of ikslow1 as global variable
     matching_idx = strcmp(current_names, 'ikslow1');
     if any(matching_idx)    
-        num_kslo1w1_param = 11;
+        num_kslow1_param = 11;
         kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, ...
             6.1, 18.0, 2.058, 803.0, 0.16];
         
