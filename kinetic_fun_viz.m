@@ -15,7 +15,7 @@ kss_default = [0.0862, 1235.5, 13.17, kslow1_default(3)];
 kto_kv = ikto_kinetic_var(kto_default,volt);
 
 % figure 1
-figure('Color','w', 'Position',[100, 100, 560, 420])
+figure('Color','w', 'Position',[100, 100, 470, 350])
 
 subplot(2,2,1)
 yyaxis left
@@ -33,7 +33,7 @@ plot(volt,kto_kv(:,1)./(kto_kv(:,1)+kto_kv(:,2)), 'Color','red', 'LineWidth',1.5
 set(get(gca,'YLabel'), 'String','Steady State (Activation)')
 set(gca, 'YColor','red')
 legend('\alpha_{a}', '\beta_{a}', '')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 % figure 2
 subplot(2,2,2)
@@ -52,7 +52,7 @@ plot(volt,1./(kto_kv(:,1)+kto_kv(:,2)), 'Color','red', 'LineWidth',1.5)
 set(get(gca,'YLabel'), 'String','Time Constant (Activation)')
 set(gca, 'YColor','red')
 legend('\alpha_{a}', '\beta_{a}', '')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 % figure 3
 subplot(2,2,3)
@@ -71,7 +71,7 @@ plot(volt,kto_kv(:,3)./(kto_kv(:,3)+kto_kv(:,4)), 'Color','blue', 'LineWidth',1.
 set(get(gca,'YLabel'), 'String','Steady State (Inactivation)')
 set(gca, 'YColor','blue')
 legend('\alpha_{i}','\beta_{i}','')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 % figure 4
 subplot(2,2,4)
@@ -90,12 +90,12 @@ plot(volt,1./(kto_kv(:,3)+kto_kv(:,4)), 'Color','blue', 'LineWidth',1.5)
 set(get(gca,'YLabel'), 'String','Time Constant (Inactivation)')
 set(gca, 'YColor','blue')
 legend('\alpha_{i}', '\beta_{i}', '')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 %% IKslow1, IKslow2, and IKss
 kslow1_kv = ikslow1_kinetic_var(kslow1_default,volt);
 
-figure('Color','w', 'Position',[100, 100, 560, 420])
+figure('Color','w', 'Position',[100, 100, 470, 350])
 
 subplot(2,2,1)
 plot(volt,kslow1_kv(:,1), 'Color','black', 'LineWidth',1.5)
@@ -106,7 +106,7 @@ set(gca,'XLimSpec','Tight')
 xlabel('Voltage (mV)')
 ylabel('Steady States')
 legend('a_{ss}','i_{ss}')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 subplot(2,2,2)
 yyaxis left
@@ -120,7 +120,7 @@ set(gca, 'YColor','black')
 set(gca,'XLimSpec','Tight')
 xlabel('Voltage (mV)')
 legend('\tau_{a}^{(1)}','\tau_{i}^{(1)}', 'Location','best')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 % IKslow2
 kslow2_kv = ikslow2_kinetic_var(kslow2_default,kslow1_kv(:,2));
@@ -129,7 +129,7 @@ plot(volt, kslow2_kv, 'Color','black', 'LineWidth',1.5)
 axis tight
 xlabel('Voltage (mV)')
 ylabel('Time Constant \tau_{i}^{(2)}')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 % IKss
 kss_kv = ikss_kinetic_var(kss_default,volt);
@@ -138,7 +138,7 @@ plot(volt,kss_kv, 'Color','black', 'LineWidth',1.5)
 axis tight
 xlabel('Voltage (mV)')
 ylabel('Time Constant \tau_{a}^{(3)}')
-set(gca, 'FontWeight','bold', 'FontSize',11)
+set(gca, 'FontWeight','bold', 'FontSize',10)
 
 function kv = ikto_kinetic_var(p, V)
     kv = NaN(length(V),4);
