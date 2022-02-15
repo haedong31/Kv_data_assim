@@ -14,12 +14,12 @@ function current_trc = ikss(p, hold_volt, volt, time_space, ek)
     % current equation at holding
     kv_hold = ikss_kinetic_variables(p, hold_volt);
     act_hold = hh_model(hold_t, act0, kv_hold(1), kv_hold(2));
-    current_trc(1:hold_idx) = gmax.*act_hold.*(hold_volt - Ek);
+    current_trc(1:hold_idx) = gmax.*act_hold.*(hold_volt - ek);
 
     % current equation at pulse voltage
     kv_pulse = ikss_kinetic_variables(p, volt);
     act_pulse = hh_model(pulse_t, act0, kv_pulse(1), kv_pulse(2));
-    current_trc((hold_idx + 1):end) = gmax.*act_pulse.*(volt - Ek);
+    current_trc((hold_idx + 1):end) = gmax.*act_pulse.*(volt - ek);
 end
 
 function kv = ikss_kinetic_variables(p, V)
