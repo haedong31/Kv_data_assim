@@ -2,11 +2,12 @@ clc
 clearvars
 close all
 
-group_name = 'ko';
-save_dir = fullfile(pwd,'data','ko-preprocessed-rd');
+group_name = 'wt';
+read_dir = fullfile(pwd, 'mgat1ko_data', strcat(group_name,'-preprocessed'));
+save_dir = fullfile(pwd, 'mgat1ko_data', strcat(group_name,'-preprocessed-rd'));
 
 % matching table
-matching_table = readtable(fullfile(pwd, 'data', strcat('matching-table-', group_name, '.xlsx')));
+matching_table = readtable(fullfile(pwd, 'mgat1ko_data', strcat('matching-table-', group_name, '.xlsx')));
 [num_files, ~] = size(matching_table);
 
 % file names and capacitance values
@@ -25,13 +26,14 @@ len_loop_idx = length(loop_idx);
 for l = 1:len_loop_idx
     disp(l)
     i = loop_idx(l);
-    file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed'), file_names{i});
+    file_path = fullfile(read_dir, file_names{i});
     save_path = fullfile(save_dir, file_names{i});
 
     trace_data = table2array(readtable(file_path));
     trace_data(:,2:3) = [];
     writematrix(trace_data, save_path);
 end
+
 %% plot data
 clc
 close all
