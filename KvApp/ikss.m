@@ -1,4 +1,4 @@
-function current_trc = ikss(p, hold_volt, volt, time_space, ek)
+function [current_trc,kv_pulse] = ikss(p, hold_volt, volt, time_space, ek)
     % constants & initial values
     gmax = p(7);
     act0 = 0.5091689794e-03;

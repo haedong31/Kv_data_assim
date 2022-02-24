@@ -1,4 +1,4 @@
-function current_trc = ikslow1(p, hold_volt, volt, time_space, ek)
+function [current_trc,kv_pulse] = ikslow1(p, hold_volt, volt, time_space, ek)
     % constants & initial values
     gmax = p(11);
     act0 = 0.5091689794e-03;
@@ -26,7 +26,7 @@ function current_trc = ikslow1(p, hold_volt, volt, time_space, ek)
 end
 
 function kv = ikslow1_kinetic_variables(p, V)
-    kv = NaN(4, 1);
+    kv = NaN(4,1);
     kv(1) = 1.0./(1.0+exp(-(p(1)+V)./p(4))); % ass
     kv(2) = 1.0./(1.0+exp((p(2)+V)./p(5))); % iss
     kv(3) = p(7)./(exp(p(6)*(V+p(3))) + exp(-p(6)*(V+p(3))))+p(9); % taua

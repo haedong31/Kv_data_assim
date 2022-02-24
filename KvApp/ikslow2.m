@@ -1,4 +1,4 @@
-function current_trc = ikslow2(p, hold_volt, volt, time_space, ek)
+function [current_trc,kv_pulse] = ikslow2(p, hold_volt, volt, time_space, ek)
     % constants & initial values
     gmax = p(11); 
     act0 = 0.5091689794e-03;

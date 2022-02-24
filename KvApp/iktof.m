@@ -1,4 +1,4 @@
-function current_trc = ikto(p, hold_volt, volt, time_space, ek)
+function [current_trc,kv_pulse] = iktof(p, hold_volt, volt, time_space, ek)
     % constants & initial values
     gmax = p(13);
     act0 = 0.4139033547E-02;
@@ -26,7 +26,7 @@ function current_trc = ikto(p, hold_volt, volt, time_space, ek)
 end
 
 function kv = ikto_kinetic_variables(p, V)
-    kv = NaN(4,1);
+    kv = NaN(8,1);
     
     alpha1 = p(7).*exp(p(5).*(V+p(1)));
     beta1 = p(8).*exp(-p(6).*(V+p(1)));
@@ -43,6 +43,10 @@ function kv = ikto_kinetic_variables(p, V)
     kv(2) = alpha2./(alpha2+beta2);
     kv(3) = 1./(alpha1+beta1);
     kv(4) = 1./(alpha2+beta2);
+    kv(5) = alpha1;
+    kv(6) = beta1;
+    kv(7) = alpha2;
+    kv(8) = beta2;
 end
 
 function y = hh_model(t, ss0, ss, tau)
