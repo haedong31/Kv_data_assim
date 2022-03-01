@@ -1,3 +1,33 @@
+%% add RMSE to the file names of calibration results
+clc
+close all
+clearvars
+
+group = "ko";
+exp_num = "exp27";
+
+exp_dir = fullfile(pwd,strcat("calib_",exp_num,"_",group));
+rmse_tbl = readtable(fullfile(pwd,"log",strcat(exp_num,"_",group,".csv")));
+
+exp_files = dir(exp_dir);
+exp_files = exp_files(~ismember({exp_files.name},{'.','..'}));
+exp_files = string({exp_files.name});
+
+file_names = string(rmse_tbl.File);
+rmse = rmse_tbl.RMSE;
+
+for i=1:numel(exp_files)
+    f = exp_files(i);
+    df = readtable(fullfile(exp_dir,f));
+    df.Properties.VariableNames(1) = {'iktof'};
+
+    f = erase(f,".xlsx");
+    idx = find(file_names == f);
+   
+    newf = strcat(f,"_",string(rmse(idx)),".xlsx");
+    writetable(df,fullfile(exp_dir,newf));
+end
+
 %% run kcurrent_model2 with default parameter values
 clc
 close all
