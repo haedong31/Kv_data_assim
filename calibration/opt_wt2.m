@@ -111,7 +111,9 @@ global lb_k1
 
 lb_kto = NaN(1,length(kto_default));
 lb_kto([1:4, 13]) = [-70, -70, eps, 1, eps];
-lb_kto(5:12) = kto_default(5:12)*0.05;
+lb_kto([5,6,10,12]) = lb_kto([5,6,10,12])*0.15;
+lb_kto([7,8]) = lb_kto([7,8])*0.1;
+lb_kto([9,11]) = lb_kto([9,11])*0.7;
 lb_kslow1 = [-70, -70, -70, 1, 1, eps, eps, eps, eps, 50+eps, eps];
 lb_kslow2 = [eps, 5000, eps];
 lb_kss = [eps, eps, eps, eps];
