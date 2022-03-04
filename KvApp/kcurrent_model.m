@@ -1,11 +1,11 @@
-function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info)
+function [yksum, comp_currents] = kcurrent_model2(p, model_info, protocol_info)
     global param_kslow1
     
-    num_currents = length(model_struct);
+    num_currents = length(model_info);
     current_names = cell(num_currents, 1);
     
     for i = 1:num_currents
-        current_names{i} = model_struct(i).name;
+        current_names{i} = model_info(i).name;
     end
     
     % declare shared parameters of ikslow1 as global variable
@@ -15,8 +15,8 @@ function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info
         kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, ...
             6.1, 18.0, 2.058, 803.0, 0.16];
         
-        tune_idx1 = model_struct(matching_idx).idx1;
-        tune_idx2 = model_struct(matching_idx).idx2;
+        tune_idx1 = model_info(matching_idx).idx1;
+        tune_idx2 = model_info(matching_idx).idx2;
         fixed_idx = setdiff(1:num_kslow1_param, tune_idx1);
 
         param_kslow1 = zeros(num_kslow1_param, 1);
@@ -28,7 +28,7 @@ function [yksum, comp_currents] = kcurrent_model2(p, model_struct, protocol_info
     yksum = zeros(length(time_space{1}), 1);
     comp_currents = cell(num_currents, 1);
     for i = 1:num_currents
-        comp_currents{i} = gen_matching_current(p, model_struct(i), protocol_info);
+        comp_currents{i} = gen_matching_current(p, model_info(i), protocol_info);
         yksum = yksum + comp_currents{i};
     end
 end
