@@ -10,7 +10,7 @@ function [current_trc,kv_pulse] = iktof(p, hold_volt, volt, time_space, ek)
     pulse_t = time_space{3};
     hold_idx = length(hold_t);
 
-    current_trc = zeros(length(t), 1);
+    current_trc = NaN(length(t), 1);
 
     % current equation at holding 
     kv_hold = ikto_kinetic_variables(p, hold_volt);
