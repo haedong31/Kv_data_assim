@@ -6,10 +6,11 @@ warning('off', 'all')
 
 %----- model information %-----
 group_name = "ko";
-save_dir = strcat("calib_exp34_", group_name);
+exp_num = "exp35";
+save_dir = strcat("calib_",exp_num,"_",group_name);
 
 % currents to be included
-current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
+current_names = {'iktof', 'ikslow1', 'ikss'};
 num_currents = length(current_names);
 
 % tunning index in individual current models
@@ -184,11 +185,8 @@ for l = 1:len_loop_idx
     time_space{3} = pulse_t_adj;
     
     % objective function
-%     obj_rmse(p0, @kcurrent_model1, model_struct, volt_space, time_space, yksum);
-%     obj_rmse_grad(p0, model_struct, volt_space, time_space, yksum)
+%     obj_rmse(p0, @kcurrent_model2, model_struct, volt_space, time_space, yksum)
     opt_fun = @(p) obj_rmse(p, @kcurrent_model2, model_struct, volt_space, time_space, yksum);
-%     opt_fun = @(p) obj_rmse_grad(p, model_struct, volt_space, time_space, yksum);
-
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
@@ -199,8 +197,11 @@ for l = 1:len_loop_idx
     sol_list{1} = sol;
     rmse_list(1) = fval;
 
-    fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
-    
+    outf = fopen(strcat(exp_num,"_",group_name,".txt"), 'w');
+    outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
+    fprintf(outf, '%s\n', outs);
+    disp(outs)
+
     % random intialization
     running_p0 = lhsdesign(num_iters, cul_idx_len);
     running_p0 = scale_param(running_p0, model_struct);
@@ -213,8 +214,11 @@ for l = 1:len_loop_idx
         catch
             rmse_list(j) = 1e+3;
         end
-        fprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f \n', l, len_loop_idx, file_names{i}, j, num_iters, fval);
+        outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', l, len_loop_idx, file_names{i}, j, num_iters, fval);
+        fprintf(outf, '%s\n', outs);
+        disp(outs)
     end
+    fclose(outf);
 
     [~, best_fit_idx] = min(rmse_list);
     best_sol = sol_list{best_fit_idx};

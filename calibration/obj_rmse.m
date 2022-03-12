@@ -1,5 +1,4 @@
 function z = obj_rmse(p, kcurrent_model, model_struct, volt_space, time_space, yksum)
-    hold_idx = time_space{4};
     volts = volt_space{2};
     num_volts = length(volts);
 
@@ -7,6 +6,7 @@ function z = obj_rmse(p, kcurrent_model, model_struct, volt_space, time_space, y
     protocol{1} = volt_space{1};
     protocol{3} = time_space;
     protocol{4} = volt_space{3};
+    hold_idx = length(time_space{2});
 
     rmse_list = zeros(num_volts, 1);
     for i = 1:num_volts

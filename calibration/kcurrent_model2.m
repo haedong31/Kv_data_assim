@@ -49,7 +49,7 @@ function current_trace = gen_matching_current(p, model_info, protocol_info)
 
     % generate current
     switch current_name
-    case 'ikto'
+    case 'iktof'
         % generate ikto
         num_param = 13;
 
