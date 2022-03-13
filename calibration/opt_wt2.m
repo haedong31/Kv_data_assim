@@ -6,11 +6,11 @@ warning('off', 'all')
 
 %----- model information %-----
 group_name = "wt";
-exp_num = "exp35";
+exp_num = "exp41";
 save_dir = strcat("calib_",exp_num,"_",group_name);
 
 % currents to be included
-current_names = {'iktof', 'ikslow1', 'ikss'};
+current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
 num_currents = length(current_names);
 
 % tunning index in individual current models
@@ -29,12 +29,12 @@ options = optimoptions(@fmincon, ...
 
 %----- protocol information -----%
 % voltages
-volt_range = 3:11;
+volt_range = 1;
 hold_volt = -70;
-min_volt = -50;
+min_volt = 50;
 ek = -91.1;
-ideal_hold_time = 120;
-ideal_end_time = 4.6*1000;
+ideal_hold_time = 450;
+ideal_end_time = 25*1000;
 
 %% main
 %----- model structre -----%
@@ -135,12 +135,15 @@ volt_space{3} = ek;
 
 %----- experimenta data information -----%
 % matching table
-matching_table = readtable(fullfile(pwd, 'data', strcat('matching-table-', group_name, '.xlsx')));
+matching_table = readtable(fullfile(pwd, "data", strcat("matching-table-", group_name, ".xlsx")));
 [num_files, ~] = size(matching_table);
 mkdir(fullfile(pwd, save_dir));
 
 % file names and capacitance values
-file_names = matching_table.trace_file_name_4half;
+% file_names = matching_table.trace_file_name_4half;
+% file_dir = strcat(group_name, "-preprocessed");
+file_names = matching_table.trace_file_name_25;
+file_dir = strcat(group_name, "-preprocessed-25s");
 
 % exclude row not having 4.5-sec data
 loop_idx = [];
@@ -152,7 +155,7 @@ for i = 1:num_files
 end
 len_loop_idx = length(loop_idx);
 
-%----- optimization loop -----%
+%% optimization loop
 % optimization constraints 
 A = [];
 b = [];
@@ -163,7 +166,7 @@ for l = 1:len_loop_idx
     i = loop_idx(l);
 
     % read data
-    file_path = fullfile(pwd, 'data', strcat(group_name, '-preprocessed'), file_names{i});
+    file_path = fullfile(pwd, "data", file_dir, file_names{i});
     trace_data = table2array(readtable(file_path));
 
     t = trace_data(:, 1);
@@ -198,7 +201,7 @@ for l = 1:len_loop_idx
     rmse_list(1) = fval;
 
     outf = fopen(strcat(exp_num,"_",group_name,".txt"), 'w');
-    outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', l, len_loop_idx, file_names{i}, 1, num_iters, fval);
+    outs = sprintf("[File %i/%i] %s [Reps %i/%i] Min RMSE: %f", l, len_loop_idx, file_names{i}, 1, num_iters, fval);
     fprintf(outf, '%s\n', outs);
     disp(outs)
 
