@@ -21,7 +21,7 @@ tune_idx1_kss = [1, 2, 3, 4];
 
 %----- optimization options -----%
 max_evals = 1e+6;
-num_iters = 30;
+num_iters = 5;
 options = optimoptions(@fmincon, ...
     'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
@@ -33,7 +33,7 @@ volt_range = 1;
 hold_volt = -70;
 min_volt = 50;
 ek = -91.1;
-ideal_hold_time = 450;
+ideal_hold_time = 470;
 ideal_end_time = 25*1000;
 
 %% main
@@ -77,7 +77,7 @@ global lb_kslow1
 global lb_kslow2
 global lb_kss
 lb_ktof = NaN(1,length(ktof_default));
-lb_ktof([1:4, 13]) = [-70, -70, eps, 1, eps];
+lb_ktof([1:4, 13]) = [-70, eps, eps, 1, eps];
 lb_ktof([5,6,10,12]) = ktof_default([5,6,10,12])*0.15;
 lb_ktof([7,8]) = ktof_default([7,8])*0.1;
 lb_ktof([9,11]) = ktof_default([9,11])*0.7;
@@ -90,7 +90,7 @@ global ub_kslow1
 global ub_kslow2
 global ub_kss
 ub_ktof = NaN(1,length(ktof_default));
-ub_ktof([1:4, 13]) = [70, 40, 40, 30, 1];
+ub_ktof([1:4, 13]) = [70, 40, 40, 14, 1];
 ub_ktof(5:12) = ktof_default(5:12)*1.95;
 ub_kslow1 = [50, 50, 50, 20, 20, 1, 30, 50, 20, 2000, 1];
 ub_kslow2 = [5000, 10000, 1];
@@ -162,6 +162,7 @@ b = [];
 Aeq = [];
 beq = [];
 nonlcon = [];
+outf = fopen(strcat(exp_num,"_",group_name,".txt"), 'w');
 for l = 1:len_loop_idx
     i = loop_idx(l);
 
@@ -200,7 +201,6 @@ for l = 1:len_loop_idx
     sol_list{1} = sol;
     rmse_list(1) = fval;
 
-    outf = fopen(strcat(exp_num,"_",group_name,".txt"), 'w');
     outs = sprintf("[File %i/%i] %s [Reps %i/%i] Min RMSE: %f", l, len_loop_idx, file_names{i}, 1, num_iters, fval);
     fprintf(outf, '%s\n', outs);
     disp(outs)
@@ -221,7 +221,6 @@ for l = 1:len_loop_idx
         fprintf(outf, '%s\n', outs);
         disp(outs)
     end
-    fclose(outf);
 
     [~, best_fit_idx] = min(rmse_list);
     best_sol = sol_list{best_fit_idx};
@@ -267,6 +266,7 @@ for l = 1:len_loop_idx
     writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
     writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
 end
+fclose(outf);
 
 function scaledp = scale_param(unitp, model_struct)
     global lb_ktof
