@@ -30,7 +30,7 @@ function kv = iktos_kinetic_variables(p, V)
     kv(1) = 1.0./(1.0+exp(-(p(1)+V)./p(4))); % ass
     kv(2) = 1.0./(1.0+exp((p(2)+V)./p(5))); % iss
     kv(3) = p(7)./(exp(p(6)*(V+p(3))) + exp(-p(6)*(V+p(3))))+p(9); % taua
-    kv(4) = p(10) - p(8)./(1.0+exp((p(2)+V)./p(5))); % taui 
+    kv(4) = p(10) + p(8)./(1.0+exp((p(2)+V)./p(5))); % taui 
 end
 
 function y = hh_model(t, ss0, ss, tau)
