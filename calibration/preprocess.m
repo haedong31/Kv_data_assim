@@ -1,3 +1,37 @@
+%% data preprocessing for 25s data: remove negative currents
+clc
+close all
+clearvars
+
+group = "ko";
+read_dir = strcat(group, "-preprocessed-25s");
+save_dir = strcat(group, "-preprocessed-25s-new");
+
+matching_table = readtable(fullfile(pwd,"data",strcat("matching-table-",group,".xlsx")));
+file_names = matching_table.trace_file_name_25;
+
+loop_idx = [];
+num_files = size(matching_table,1);
+for i = 1:num_files
+    if isempty(file_names{i})
+        continue
+    end
+    loop_idx = [loop_idx, i];
+end
+
+for i = loop_idx
+    read_path = fullfile(pwd,"data",read_dir,file_names{i});
+    save_path = fullfile(pwd,"data",save_dir,file_names{i});
+
+    df = table2array(readtable(read_path));
+    y = df(:,2);
+    y(y<0) = 0;
+    df(:,2) = y;
+    
+    df = array2table(df,'VariableNames',{'time','current'});
+    writetable(df,save_path);
+end
+
 %% data preprocessing 25s data: downsample & normalization
 clc
 close all
