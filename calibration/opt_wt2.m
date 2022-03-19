@@ -23,7 +23,7 @@ tune_idx1_kss = [1, 2, 3, 4];
 max_evals = 1e+6;
 num_iters = 10;
 options = optimoptions(@fmincon, ...
-    'Algorithm','interior-point', 'Display','off', ...
+    'Algorithm','active-set', 'Display','off', ...
     'MaxFunctionEvaluations',max_evals, ...
     'SpecifyObjectiveGradient',false);
 
@@ -164,6 +164,7 @@ beq = [];
 nonlcon = [];
 outf = fopen(strcat(exp_num,"_",group_name,".txt"), 'w');
 for l = 1:len_loop_idx
+    tic
     i = loop_idx(l);
 
     % read data
@@ -208,6 +209,7 @@ for l = 1:len_loop_idx
     % random intialization
     running_p0 = lhsdesign(num_iters, cul_idx_len);
     running_p0 = scale_param(running_p0, model_struct);
+    toc
     for j = 2:num_iters
         % optimization
         try

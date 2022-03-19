@@ -3,29 +3,33 @@ clc
 clearvars
 close all
 
-exp_num1 = 'exp24';
-exp_num2 = 'exp26';
+exp_num1 = "exp35";
+exp_num2 = "exp36";
+exp_num3 = "exp37";
+group = "wt";
 
-rmse_df1 = readtable(fullfile(pwd,'log',strcat(exp_num1,'_','wt','.csv')));
-rmse_df2 = readtable(fullfile(pwd,'log',strcat(exp_num2,'_','wt','.csv')));
-rmse_df_wt = join(rmse_df1,rmse_df2,'Keys','File');
+rmse_df1 = readtable(fullfile(pwd,"log",strcat(exp_num1,"_",group,".csv")));
+rmse_df2 = readtable(fullfile(pwd,"log",strcat(exp_num2,"_",group,".csv")));
+rmse_df3 = readtable(fullfile(pwd,"log",strcat(exp_num3,"_",group,".csv")));
+rmse_df_comb = join(rmse_df1,rmse_df2, 'Keys','File');
+rmse_df_comb = join(rmse_df_comb,rmse_df3, 'Keys','File');
 
-file_names = categorical(rmse_df_wt.File);
-rmse = table2array(rmse_df_wt(:,2:3));
+file_names = categorical(rmse_df_comb.File);
+rmse = table2array(rmse_df_comb(:,2:end));
 
-figure('Color','w', 'Position',[100,100,1000,850])
+figure('Color','w', 'Position',[50,50,900,770])
 barh(file_names,rmse)
-legend(exp_num1,exp_num2)
+legend("Interior point","SQP","Active set")
 set(gca, 'FontName','Arial', 'FontSize',11, 'FontWeight','bold')
 
 %% bar graph of RMSE
 clc
 close all
 
-file_group = 'wt';
-exp_num = 'exp26';
+file_group = "wt";
+exp_num = "exp35";
 
-rmse_df = readtable(fullfile(pwd,'log',strcat(exp_num,'_',file_group,'.csv')));
+rmse_df = readtable(fullfile(pwd,"log",strcat(exp_num,"_",file_group,".csv")));
 file_names = categorical(rmse_df.File);
 rmse = rmse_df.RMSE;
 
