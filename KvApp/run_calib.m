@@ -1,8 +1,8 @@
 function [sol,fval] = run_calib(y, model_info, protocol_info, init_pts, pdefault, lb, ub)            
     % optimization options
     options = optimoptions(@fmincon, ...
-        'Algorithm','sqp', 'Display','off', ...
-        'MaxFunctionEvaluations',1e+7, ...
+        'Algorithm','interior-point', 'Display','off', ...
+        'MaxFunctionEvaluations',1e+6, ...
         'SpecifyObjectiveGradient',false);
     A = [];
     b = [];
@@ -10,7 +10,6 @@ function [sol,fval] = run_calib(y, model_info, protocol_info, init_pts, pdefault
     beq = [];
     nonlcon = [];
     
-    obj_rmse(init_pts, y, model_info, protocol_info, pdefault)
     opt_fun = @(p) obj_rmse(p, y, model_info, protocol_info, pdefault);
     [sol,fval] = fmincon(opt_fun, init_pts, A, b, Aeq, beq, lb, ub, nonlcon, options);
 end
