@@ -1,0 +1,25 @@
+---
+title: "User Guide for K~v~App"
+author: "Haedong Kim"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Getting Started
+
+K~v~App 
+
+Although K~v~App is developed in MATLAB, it does not require MATLAB installed on the machine. Instead, running `MyAppInstaller_web` will install the packaged application and MATLAB Runtime from the Internet, which enables the application to run without MATLAB. Your computer needs to be connected to the Internet to complete the installation. You will get the error message below if the right version of MATLAB Runtime.
+![]()
+
+## Modules and Functions
+
+KvApp
+
+## Example
+
+example with 4.5-sec dat and 25-sec data
