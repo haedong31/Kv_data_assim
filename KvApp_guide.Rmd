@@ -11,14 +11,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Getting Started
 
-K~v~App 
+K~v~App consists of five files as shown in Figure 1 below: KvAppBeta, MyAppInstaller_mcr, MyAppInstaller_web, readme, and splash.
 
-Although K~v~App is developed in MATLAB, it does not require MATLAB installed on the machine. Instead, running `MyAppInstaller_web` will install the packaged application and MATLAB Runtime from the Internet, which enables the application to run without MATLAB. Your computer needs to be connected to the Internet to complete the installation. You will get the error message below if the right version of MATLAB Runtime.
-![]()
+![Consisting files of the applications](KvApp_guide_img/folder_struct.png){width=50%}
+
+KvAppBeta is the file that runs the application, but you will get the error message in Figure 2 if the correct version of MATLAB is not on the machine.
+
+![Consisting files of the applications](KvApp_guide_img/folder_struct.png){width=50%}
+
+Although K~v~App is developed in MATLAB, it does not require MATLAB installed on the machine. Instead, running `MyAppInstaller_web` will install the packaged application and MATLAB Runtime from the Internet, which enables the application to run without MATLAB. Your computer needs to be connected to the Internet to complete the installation. If 
+You will get the error message below if the right version of MATLAB Runtime.
 
 ## Modules and Functions
 
-KvApp
+K~v~App 
 
 ## Example
 
