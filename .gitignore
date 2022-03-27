@@ -1,11 +1,12 @@
 # folders
 /literature/
-/code_reference/fickleheart-method-tutorials-master/
 /calibration/data/
 /calibration/fig/
 /calibration/calib*
 /KvApp/mgat1ko_data/
 /KvApp/calib*
+/KvApp/KvAppBeta/
+/KvApp/KvAppBeta_resources/
 /saved_results/
 /.vs/
 
@@ -14,8 +15,10 @@
 **.mat
 **.psd
 **.asv
+/KvApp_guide.pdf
 /Kv_app/*.csv
 /Kv_app/*.xlsx
+/KvApp/KvAppBeta.prj
 /sensitivity_analysis/*.pdf2
 /writing/*.pdf
 

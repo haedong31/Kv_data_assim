@@ -1,5 +1,5 @@
 ---
-title: "User Guide for K~v~App"
+title: "User Guide for KvApp"
 author: "Haedong Kim"
 date: "`r Sys.Date()`"
 output: pdf_document
@@ -11,20 +11,24 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Getting Started
 
-K~v~App consists of five files as shown in Figure 1 below: KvAppBeta, MyAppInstaller_mcr, MyAppInstaller_web, readme, and splash.
+There are four associated files as shown in Figure 1 below: `KvAppBeta`, `MyAppInstaller_mcr`, `MyAppInstaller_web`, and `splash`.
 
-![Consisting files of the applications](KvApp_guide_img/folder_struct.png){width=50%}
+![Consisting files of the applications.](KvApp_guide_img/folder_struct.png){width=50%}
 
-KvAppBeta is the file that runs the application, but you will get the error message in Figure 2 if the correct version of MATLAB is not on the machine.
+`KvAppBeta` is the file that runs the application, but you will get the error message in Figure 2 if the correct version of MATLAB is not installed on the machine.
 
-![Consisting files of the applications](KvApp_guide_img/folder_struct.png){width=50%}
+![Error message when the right version of MATLAB is not installed on the target machine.](KvApp_guide_img/runtime_error.png){width=50%}
 
-Although K~v~App is developed in MATLAB, it does not require MATLAB installed on the machine. Instead, running `MyAppInstaller_web` will install the packaged application and MATLAB Runtime from the Internet, which enables the application to run without MATLAB. Your computer needs to be connected to the Internet to complete the installation. If 
-You will get the error message below if the right version of MATLAB Runtime.
+`MyAppInstaller_web` will install the packaged application and MATLAB Runtime from the Internet, which enables the application to run without having MATLAB installed. Your computer needs to be connected to the Internet to complete the installation. If the Internet connection is not available, `MyAppInstaller_mcr` will install the necessary programs locally. A few screenshots below show the installation process.
+
+![](KvApp_guide_img/install1.png){width=50%} ![](KvApp_guide_img/install4.png){width=50%}
+![](KvApp_guide_img/install5.png){width=50%} ![](KvApp_guide_img/install6.png){width=50%}
+
+The other file `splash` is just an image file for the application icon.
 
 ## Modules and Functions
 
-K~v~App 
+KvApp 
 
 ## Example
 
