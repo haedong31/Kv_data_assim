@@ -120,11 +120,11 @@ clc
 close all 
 clearvars
 
-file_group = 'ko';
-exp_num = 'exp27';
+file_group = "wt";
+exp_num = "exp45";
 
 % specify result files and voltages to check
-file_name = '15o29024.xlsx';
+file_name = '15o29015.xlsx';
 % file_name = file_names(1);
 save_dir = strcat('calib_', exp_num);
 
@@ -141,8 +141,7 @@ calib1 = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), 
 
 % specify model structure
 % field 1: selection of currents
-current_names = {'ikto', 'ikslow1', 'ikslow2', 'ikss'};
-num_currents = length(current_names);
+current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
 
 % field 2: tunning index in individual current models
 tune_idx1{1} = [1, 2, 4, 5, 7, 11, 13];
@@ -153,7 +152,6 @@ tune_idx1{5} = [1, 3];
 tune_idx1{6} = [1, 3, 5, 7];
 
 [model_struct1, psize1] = gen_mdl_struct(current_names, tune_idx1);
-
 sol1 = gen_sol_vec(calib1, model_struct1, psize1);
 
 % experimental data to be compared
