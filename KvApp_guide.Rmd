@@ -19,17 +19,20 @@ There are four associated files as shown in Figure 1 below: `KvAppBeta`, `MyAppI
 
 ![Error message when the right version of MATLAB is not installed on the target machine.](KvApp_guide_img/runtime_error.png){width=50%}
 
-`MyAppInstaller_web` will install the packaged application and MATLAB Runtime from the Internet, which enables the application to run without having MATLAB installed. Your computer needs to be connected to the Internet to complete the installation. If the Internet connection is not available, `MyAppInstaller_mcr` will install the necessary programs locally. A few screenshots below show the installation process.
+`MyAppInstaller_web` will install the packaged application and MATLAB Runtime from the Internet, which enables the application to run without having MATLAB installed. Your computer needs to be connected to the Internet to complete the installation. If the Internet connection is not available, `MyAppInstaller_mcr` will install the necessary programs locally. A few screenshots below in Figure 3 show the installation process. The other file `splash` is just an image file for the application icon.
 
-![](KvApp_guide_img/install1.png){width=50%} ![](KvApp_guide_img/install4.png){width=50%}
-![](KvApp_guide_img/install5.png){width=50%} ![](KvApp_guide_img/install6.png){width=50%}
-
-The other file `splash` is just an image file for the application icon.
+![Screenshots of the installation process.](KvApp_guide_img/install.png)
 
 ## Modules and Functions
 
-KvApp 
+KvApp consists of three modules: Experimental Data, Computer Model, and Calibration. Steps follows the same order. There are two panels in this module: Experimental Protocol and Experimental Data. Need to specify protocol first that matches experimental data to be investigated. If the defined protocol does not compatible with the imported experiemntal data, it will give error or does not show the data properly. Below the example - example 1: voltages not matching, exmaple 2: time not matching. This module has Update and Data upload functions. Use it appropriately.
+
+The Computer Model module shows equations and kinetic parameters in it that controls the behavior of the model. Computer models for different K+ isoforms are separated and grouped by tabs. Kv4.2 tab contanes IKto,f, the sencond tab (Kv1.5, Kv2.1, K2P) has three models as they are closed connected. They share some parameters and variables. The thrid tab (Kv1.4) has a model of IKto,s it is not included in default. You can select the currents you want to include in IKsum. You can manually change the kinetic parameters if you want. The kinetic parameters in red color have more significant impacts on the model kineics and can be calibrated via optimization methods in the thrid module.
+
+The previous discussion naturally brings us to the third module. It shows the model output of current, kinetics variables such as steady states, time constants, or transition rates. The first tab shows the sum current, while the other tabs illustrate kinetics modeling of each Kv isoforms. In the Model Output tab, tou can select a voltage of interest using the drop-down button that has voltage steps spcified in the Experimental Protocol. There should be some discrepancies between the model out of IKsum and the experimental recordings uploaded on the app. Rather than manually explore appropriate kinetic parameters, Run Calibration button provides an automatic calibration function. Once you finish the calibration and want to save the result, Model Parameters Save function gets the job done. 
 
 ## Example
 
-example with 4.5-sec dat and 25-sec data
+example with 9 voltage steps rather than the full data.
+
+example with 25-sec data
