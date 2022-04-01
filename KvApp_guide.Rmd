@@ -25,14 +25,26 @@ There are four associated files as shown in Figure 1 below: `KvAppBeta`, `MyAppI
 
 ## Modules and Functions
 
-KvApp consists of three modules: Experimental Data, Computer Model, and Calibration. Steps follows the same order. There are two panels in this module: Experimental Protocol and Experimental Data. Need to specify protocol first that matches experimental data to be investigated. If the defined protocol does not compatible with the imported experiemntal data, it will give error or does not show the data properly. Below the example - example 1: voltages not matching, exmaple 2: time not matching. This module has Update and Data upload functions. Use it appropriately.
+KvApp consists of three modules, as shown in Figure 4: Experimental Protocol & Data, Computer Model, and Model Outputs & Kinetics Modeling Results. 
 
-The Computer Model module shows equations and kinetic parameters in it that controls the behavior of the model. Computer models for different K+ isoforms are separated and grouped by tabs. Kv4.2 tab contanes IKto,f, the sencond tab (Kv1.5, Kv2.1, K2P) has three models as they are closed connected. They share some parameters and variables. The thrid tab (Kv1.4) has a model of IKto,s it is not included in default. You can select the currents you want to include in IKsum. You can manually change the kinetic parameters if you want. The kinetic parameters in red color have more significant impacts on the model kineics and can be calibrated via optimization methods in the thrid module.
+![Startup window of KvApp.](KvApp_guide_img/window.png){width=50%}
 
-The previous discussion naturally brings us to the third module. It shows the model output of current, kinetics variables such as steady states, time constants, or transition rates. The first tab shows the sum current, while the other tabs illustrate kinetics modeling of each Kv isoforms. In the Model Output tab, tou can select a voltage of interest using the drop-down button that has voltage steps spcified in the Experimental Protocol. There should be some discrepancies between the model out of IKsum and the experimental recordings uploaded on the app. Rather than manually explore appropriate kinetic parameters, Run Calibration button provides an automatic calibration function. Once you finish the calibration and want to save the result, Model Parameters Save function gets the job done. Model Calibration Import do the opposite function.
+The data to be investigated *in silico* should be stored in an Excel file, with the first column corresponding to time and the other columns normalized currents for voltage steps in increasing order. This is a default format when I~Ksum~ traces are transferred to a tabular format in ClampFit. Figure 5 is an example of I~Ksum~ recordings. To import a dataset, we need to specify the experimental protocol of the voltage-clamp method used to generate that dataset. If the defined protocol does not match the data, it will give an error or does not display the data correctly.
 
-## Example
+![Example of raw I~Ksum~ data in ClampFit.](KvApp_guide_img/pClamp.png)
+
+The Computer Model module shows equations and kinetics parameters of computers models of K~v~ isoforms separated by tabs. The Computer Model module shows equations and kinetics parameters of computers models of potassium isoforms, separated and grouped by tabs. The Kv4.2 model in the first tab is the only stand-alone model in which every kinetic variables and parameter are independent of other models. The second tab contains three closely connected models. Each model can be chosen to be or not be included in calculating the total potassium current by checking or unchecking the Include boxes. The kinetic parameters can be adjusted manually by entering the number in the corresponding box and pressing the enter/return key. Parameters in red are identified as having significant impacts on the model behavior.
+
+These parameters in red can be calibrated automatically using the Turn Calibration button in the Model Output tab of the third module. This function calibrates the models by minimizing discrepancies between model prediction and experimental I~Ksum~ traces. The fitness of calibration results is visualized, and the drop-down button allows to select different voltage steps. The calibrated parameter values can be saved using the Model Parameters Save button in an Excel file. It is desirable to perform model calibration separately, utilizing more computing power and time for better results. Other tabs named after the K~v~ isoforms show kinetic variables such as steady states, time constants, and transition rates as shown on Figure 6.
+
+![Kinetics modeling results.](KvApp_guide_img/kvoutput.png)
+
+## Examples
+
+### Example 1: 4.5-sec Data
 
 example with 9 voltage steps rather than the full data.
+
+### Example 2: 25-sec Data
 
 example with 25-sec data
