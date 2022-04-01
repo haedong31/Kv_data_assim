@@ -2,7 +2,7 @@
 title: "User Guide for KvApp"
 author: "Haedong Kim"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: word_document
 ---
 
 ```{r setup, include=FALSE}
@@ -39,12 +39,16 @@ These parameters in red can be calibrated automatically using the Turn Calibrati
 
 ![Kinetics modeling results.](KvApp_guide_img/kvoutput.png)
 
-## Examples
+## Example
 
-### Example 1: 4.5-sec Data
+This section provides an example of using the application. A data set will be used having voltage steps from -30 to 50 mV lasting 4.5 s from holding voltage -70 mV. The data is saved in the provided file, `15o27010.xlsx`. First update the protocol accordingly and upload the data as in Figure 7.
 
-example with 9 voltage steps rather than the full data.
+![Data upload.](KvApp_guide_img/exp1-1.png)
 
-### Example 2: 25-sec Data
+Discrepancies between the model prediction and exerrmental I~Ksum~ traces can be observed in the bottom right figure. To calibrate the models according to the data, click the Run Calibration button. It will change to a progress bar as in Figure 8.
 
-example with 25-sec data
+![Run calibration.](KvApp_guide_img/ex1-2.png)
+
+Once the calibration is completed, the model outputs and kinetics are updated as in Figure 9.
+
+![Calibration results.](KvApp_guide_img/ex1-3.png)
