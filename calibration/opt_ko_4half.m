@@ -30,14 +30,12 @@ pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
 [p0, lb, ub] = gen_param_bounds(mdl_struct, psize, pdefault);
 
 %----- Protocol -----%
-% voltage
 holdv = -70;
-minv = 50;
+minv = -30;
 vstep = 10;
-num_steps = 1;
+num_steps = 9;
 ek = -91.1;
 
-% time
 ideal_hold_time = 470;
 ideal_end_time = 25*1000;
 
@@ -50,7 +48,7 @@ protocol{3} = minv:vstep:(minv+vstep*(num_steps-1));
 % meta data of experimental datasets
 matching_table = readtable(fullfile(pwd,"mgat1ko_data",strcat("matching-table-",group,".xlsx")));
 file_names = matching_table.trace_file_name_4half;
-data_dir = fullfile("mgat1ko_data",strcat(group,"-preprocessed-25s"));
+data_dir = fullfile("mgat1ko_data",strcat(group,"-preprocessed"));
 
 % exclude null rows
 loop_idx = [];
@@ -95,7 +93,8 @@ for i = 1:num_files
     protocol{6} = pulset - pulset(1);
     
     % objective function
-    opt_fun = @(p) obj_rmse(p, @kcurrent_model2, mdl_struct, pdefault, protocol, yksum);
+    obj_rmse(p0, @kcurrent_basic, mdl_struct, pdefault, protocol, yksum)
+    opt_fun = @(p) obj_rmse(p, @kcurrent_basic, mdl_struct, pdefault, protocol, yksum);
 
     % run optimization
     rmse_list = zeros(num_iters, 1);
@@ -103,9 +102,12 @@ for i = 1:num_files
 
     % first run with p0
     try
-    [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
-    sol_list{1} = sol;
-    rmse_list(1) = fval;
+        [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
+        sol_list{1} = sol;
+        rmse_list(1) = fval;
+    catch
+        rmse_list(1) = 1e+3;
+    end
 
     outs = sprintf("[File %i/%i] %s [Reps %i/%i] Min RMSE: %f", l, len_loop_idx, file_names{i}, 1, num_iters, fval);
     fprintf(outf, '%s\n', outs);
@@ -176,6 +178,40 @@ end
 fclose(outf);
 
 %% ----- Custom functions ----- %%
+function [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx)
+    num_currents = length(current_names);
+    
+    % index 1
+    idx_info1 = cell(1,num_currents);
+    for i = 1:num_currents
+        switch current_names{i}
+            case 'iktof'
+                idx_info1{i} = tune_idx{1};
+            case 'iktos'
+                idx_info1{i} = tune_idx{2};
+            case 'ikslow1'
+                idx_info1{i} = tune_idx{3};
+            case 'ikslow2'
+                idx_info1{i} = tune_idx{4};
+            case 'ikss'
+                idx_info1{i} = tune_idx{5};
+        end
+    end
+
+    % index 2
+    idx_info2 = cell(1,num_currents);
+    psize = 0;
+    for i = 1: num_currents
+        psize_old = psize;
+        psize = psize + length(idx_info1{i});
+        idx_info2{i} = (1+psize_old):(psize);
+    end
+
+    model_info = [current_names; idx_info1; idx_info2];
+    field_names = ["name","idx1","idx2"];
+    mdl_struct = cell2struct(model_info, field_names, 1);    
+end
+
 function [p0, lb, ub] = gen_param_bounds(mdl_struct, psize, pdefault)
     p0 = NaN(psize,1);
     lb = NaN(psize,1);
