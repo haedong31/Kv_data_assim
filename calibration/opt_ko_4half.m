@@ -5,7 +5,7 @@ warning('off', 'all')
 
 %----- Code arguments & Model information %-----
 group = "ko";
-exp_num = "exp41";
+exp_num = "exp45";
 save_dir = strcat("calib_",exp_num,"_",group);
 mkdir(fullfile(pwd,save_dir))
 
@@ -52,17 +52,12 @@ file_names = matching_table.trace_file_name_4half;
 data_dir = fullfile("mgat1ko_data",strcat(group,"-preprocessed"));
 
 % exclude null rows
-loop_idx = [];
-for i = 1:size(file_names,1)
-    if isempty(file_names{i})
-        continue
-    end
-    loop_idx = [loop_idx, i];
-end
-num_files = length(loop_idx);
+file_names(cellfun(@isempty,file_names)) = [];
+file_names = string(file_names);
+num_files = length(file_names);
 
 %----- Optimization loop -----%
-num_iters = 5;
+num_iters = 30;
 options = optimoptions(@fmincon, ...
     'Algorithm','interior-point', 'Display','off', ...
     'MaxFunctionEvaluations',1e+6, ...
@@ -77,7 +72,8 @@ outf = fopen(strcat(exp_num,"_",group,".txt"), 'w');
 for i = 1:num_files
     tic
     % read data
-    file_path = fullfile(pwd,data_dir,file_names{loop_idx(i)});
+    running_file = file_names(i);
+    file_path = fullfile(pwd,data_dir,running_file);
     trace_data = table2array(readtable(file_path));
     t = trace_data(:, 1);
     yksum = trace_data(:,2:end);
@@ -97,45 +93,40 @@ for i = 1:num_files
     % objective function
     opt_fun = @(p) obj_rmse(p, @kcurrent_basic, mdl_struct, pdefault, protocol, yksum);
 
-    % first run with p0
+    % initial points
+    init_pts = lhsdesign(num_iters, psize);
+    init_pts = scale_param(init_pts, lb, ub);
+    init_pts(1,:) = p0';
+
     sol_mx = NaN(num_iters,psize);
     rmse_list = NaN(num_iters, 1);
-    try
-        [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
-        sol_mx(1,:) = sol;
-        rmse_list(1) = fval;
-    catch
-        rmse_list(1) = 1e+3;
-    end
-    outs = sprintf("[File %i/%i] %s [Reps %i/%i] Min RMSE: %f", ...
-        i, num_files, file_names{loop_idx(i)}, 1, num_iters, rmse_list(1));
-    fprintf(outf, '%s\n', outs);
-    disp(outs)
-
-    % random intialization
-    init_pts = lhsdesign(num_iters-1, psize);
-    init_pts = scale_param(init_pts, lb, ub);
-    for j = 2:num_iters
+    parfor j = 1:num_iters
         try
-            [sol, fval] = fmincon(opt_fun, init_pts(j-1,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
+            [sol, fval] = fmincon(opt_fun, init_pts(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
             sol_mx(j,:) = sol;
             rmse_list(j) = fval;
         catch
             rmse_list(j) = 1e+3;
         end
-        outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', i, num_files, file_names{loop_idx(i)}, j, num_iters, fval);
-        fprintf(outf, '%s\n', outs);
-        disp(outs)
     end
-    save_path1 = fullfile(pwd, save_dir, strcat("raw_sol_",file_names{i}));
+
+    % print optimization results for the current file
+    for j = 1:num_iters
+        outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', i, num_files, running_file, j, num_iters, rmse_list(j));
+        fprintf(outf, '%s\n', outs);
+        disp(outs)        
+    end
+    
+    % save the entire solution matrix
+    save_path1 = fullfile(pwd, save_dir, strcat("raw_sol_",file_names(i)));
     writematrix(sol_mx, save_path1);
     
     % best solution in terms of minimum RMSE
     [~,best_fit_idx] = min(rmse_list);
     best_sol = sol_mx(best_fit_idx,:);
 
-    % save calibrated solution
-    save_path2 = fullfile(pwd, save_dir, file_names{i});
+    % save the best solution
+    save_path2 = fullfile(pwd, save_dir, running_file);
     writematrix(string(current_names), save_path2, "Sheet","Parameters", "Range","A1");
     
     plens = cellfun(@length,pdefault);
