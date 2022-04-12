@@ -1,20 +1,14 @@
-function z = obj_rmse(p, kcurrent_model, model_struct, volt_space, time_space, yksum)
-    volts = volt_space{2};
+function z = obj_rmse(p, kcurrent_model, mdl_struct, pdefault, protocol, yksum)
+    volts = protocol{3};
     num_volts = length(volts);
+    hold_idx = length(protocol{5});
 
-    protocol = cell(4, 1);
-    protocol{1} = volt_space{1};
-    protocol{3} = time_space;
-    protocol{4} = volt_space{3};
-    hold_idx = length(time_space{2});
-
-    rmse_list = zeros(num_volts, 1);
+    rmse_list = NaN(num_volts,1);
     for i = 1:num_volts
-        yksum_i = yksum(:, i);
-        protocol{2} = volts(i);
-
-        [yksum_hat, ~] = kcurrent_model(p, model_struct, protocol);
-        rmse_list(i) = sqrt(mean((yksum_i((hold_idx + 1):end) - yksum_hat((hold_idx + 1):end)).^2));
+        yi = yksum(:,i);
+        ymx = kcurrent_model(p, mdl_struct, pdefault, protocol, volts(i));
+        yhat = sum(ymx,2);
+        rmse_list(i) = sqrt(mean((yi(hold_idx+1:end) - yhat(hold_idx+1:end)).^2));
     end
     z = sum(rmse_list);
 end
