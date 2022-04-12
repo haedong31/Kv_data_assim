@@ -1,4 +1,4 @@
-function ymx = kcurrent_basic(p, mdl_struct, pdefault, protocol, yksum)
+function ymx = kcurrent_basic(p, mdl_struct, pdefault, protocol, volt)
     current_names = {mdl_struct.name};
     idx_info1 = {mdl_struct.idx1};
     idx_info2 = {mdl_struct.idx2};

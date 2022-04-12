@@ -115,16 +115,16 @@ hold off
 set(gca, 'XLimSpec','tight')
 legend("I_{Kto,f}","I_{Kslow1}","I_{Kslow2}","I_{Kss}")
 
-%% compare with experimental data (kcurrent_model2)
+%% compare with experimental data (4.5-sec data)
 clc
 close all 
 clearvars
 
-file_group = "wt";
-exp_num = "exp45";
+file_group = "ko";
+exp_num = "exp41";
 
 % specify result files and voltages to check
-file_name = '15o29015.xlsx';
+file_name = '15o27002.xlsx';
 % file_name = file_names(1);
 save_dir = strcat('calib_', exp_num);
 
@@ -144,64 +144,61 @@ calib1 = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), 
 current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
 
 % field 2: tunning index in individual current models
-tune_idx1{1} = [1, 2, 4, 5, 7, 11, 13];
-tune_idx1{2} = [1, 2, 4, 5, 9, 10, 11];
-tune_idx1{3} = [2, 3];
-tune_idx1{4} = [3, 4];
-tune_idx1{5} = [1, 3];
-tune_idx1{6} = [1, 3, 5, 7];
+tune_idx = cell(5,1); % iktof, iktos, ikslow1, ikslow2, ikss
+tune_idx{1} = [1, 2, 4, 5, 7, 11, 13];
+% tune_idx{2} = [2, 3];
+tune_idx{3} = [1, 2, 4, 5, 9, 10, 11];
+tune_idx{4} = [2, 3];
+tune_idx{5} = [1, 2, 3, 4];
 
-[model_struct1, psize1] = gen_mdl_struct(current_names, tune_idx1);
+[model_struct1, psize1] = gen_mdl_struct(current_names, tune_idx);
 sol1 = gen_sol_vec(calib1, model_struct1, psize1);
 
+pdefault = cell(5,1);
+pdefault{1} = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+    0.000152, 0.067083, 0.00095, 0.051335, 0.3846];
+pdefault{2} = [-1050, 270, 0.0629];
+pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
+pdefault{4} = [4912, 5334, 0.16];
+pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
+
 % experimental data to be compared
-exp_data = table2array(readtable(fullfile(pwd,'data', strcat(file_group, '-preprocessed'), file_name)));
+exp_data = table2array(readtable(fullfile(pwd,'mgat1ko_data', strcat(file_group, '-preprocessed'), file_name)));
 t = exp_data(:, 1);
-yksum = exp_data(:, (volt_range+1));
+yksum = exp_data(:,2:end);
 
 % protocol
-protocol = cell(4, 1);
-
+protocol = cell(6,1);
 hold_volt = -70;
+volts = -30:10:50;
 ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
 ek = -91.1;
-
 [~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
 [~, ideal_end_idx] = min(abs(t - ideal_end_time));
 
 t = t(1:ideal_end_idx);
 yksum = yksum(1:ideal_end_idx, :);
 
-time_space = cell(1, 3);
-time_space{1} = t;
-time_space{2} = t(1:ideal_hold_idx);
+protocol{1} = hold_volt;
+protocol{2} = ek;
+protocol{3} = volts;
+protocol{4} = t;
+protocol{5} = t(1:ideal_hold_idx);
 pulse_t = t(ideal_hold_idx+1:end);
 pulse_t_adj = pulse_t - pulse_t(1);
-time_space{3} = pulse_t_adj;
-time_space{4} = ideal_hold_idx;
-time_space{5} = ideal_end_idx;
-
-volt_space = cell(3, 1);
-volt_space{1} = hold_volt;
-volt_space{2} = volts;
-volt_space{3} = ek;
-
-protocol{1} = hold_volt;
-protocol{3} = time_space;
-protocol{4} = ek;
+protocol{6} = pulse_t_adj;
 
 % generate yksum_hat
-r = obj_rmse(sol1, @kcurrent_model2, model_struct1, volt_space, time_space, yksum);
-fprintf('File %s Min RMSE: %f \n', file_name, r)
+% r = obj_rmse(sol1, @kcurrent_basic, model_struct1, volt_space, time_space, yksum);
+% fprintf('File %s Min RMSE: %f \n', file_name, r)
 
 figure('Position',[50,50,800,800])
 for i=1:length(volts)
-    protocol{2} = volts(i);
     yksum_i = yksum(:, i);
+    ymx = kcurrent_basic(sol1, model_struct1, pdefault, protocol, volts(i));
+    yksum_hat1 = sum(ymx,2);
 
-    [yksum_hat1, ~] = kcurrent_model2(sol1, model_struct1, protocol);
-    
     subplot(3, 3, i)
     plot(t, yksum_i, 'Color','red')
     hold on
@@ -349,26 +346,28 @@ end
 hold off
 
 %% custom functions
-function [model_struct, psize] = gen_mdl_struct(current_names, tune_idx)
+function [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx)
     num_currents = length(current_names);
     
-    % current model strcuture index 1
-    idx_info1 = cell(1, num_currents);
+    % index 1
+    idx_info1 = cell(1,num_currents);
     for i = 1:num_currents
         switch current_names{i}
             case 'iktof'
                 idx_info1{i} = tune_idx{1};
-            case 'ikslow1'
+            case 'iktos'
                 idx_info1{i} = tune_idx{2};
-            case 'ikslow2'
+            case 'ikslow1'
                 idx_info1{i} = tune_idx{3};
-            case 'ikss'
+            case 'ikslow2'
                 idx_info1{i} = tune_idx{4};
+            case 'ikss'
+                idx_info1{i} = tune_idx{5};
         end
     end
 
-    % current model strcuture index 2
-    idx_info2 = cell(1, num_currents);
+    % index 2
+    idx_info2 = cell(1,num_currents);
     psize = 0;
     for i = 1: num_currents
         psize_old = psize;
@@ -377,8 +376,8 @@ function [model_struct, psize] = gen_mdl_struct(current_names, tune_idx)
     end
 
     model_info = [current_names; idx_info1; idx_info2];
-    field_names = {'name', 'idx1', 'idx2'};
-    model_struct = cell2struct(model_info, field_names, 1);
+    field_names = ["name","idx1","idx2"];
+    mdl_struct = cell2struct(model_info, field_names, 1);    
 end
 
 function sol = gen_sol_vec(sol_mx, model_struct, psize)

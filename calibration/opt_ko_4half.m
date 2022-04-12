@@ -7,6 +7,7 @@ warning('off', 'all')
 group = "ko";
 exp_num = "exp41";
 save_dir = strcat("calib_",exp_num,"_",group);
+mkdir(fullfile(pwd,save_dir))
 
 % currents to be included
 current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
@@ -36,8 +37,8 @@ vstep = 10;
 num_steps = 9;
 ek = -91.1;
 
-ideal_hold_time = 470;
-ideal_end_time = 25*1000;
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
 
 % save time information later when experimental data imlported
 protocol = cell(6,1);
@@ -74,6 +75,7 @@ nonlcon = [];
 
 outf = fopen(strcat(exp_num,"_",group,".txt"), 'w');
 for i = 1:num_files
+    tic
     % read data
     file_path = fullfile(pwd,data_dir,file_names{loop_idx(i)});
     trace_data = table2array(readtable(file_path));
@@ -93,87 +95,83 @@ for i = 1:num_files
     protocol{6} = pulset - pulset(1);
     
     % objective function
-    obj_rmse(p0, @kcurrent_basic, mdl_struct, pdefault, protocol, yksum)
     opt_fun = @(p) obj_rmse(p, @kcurrent_basic, mdl_struct, pdefault, protocol, yksum);
 
-    % run optimization
-    rmse_list = zeros(num_iters, 1);
-    sol_list = cell(num_iters, 1);
-
     % first run with p0
+    sol_mx = NaN(num_iters,psize);
+    rmse_list = NaN(num_iters, 1);
     try
         [sol, fval] = fmincon(opt_fun, p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
-        sol_list{1} = sol;
+        sol_mx(1,:) = sol;
         rmse_list(1) = fval;
     catch
         rmse_list(1) = 1e+3;
     end
-
-    outs = sprintf("[File %i/%i] %s [Reps %i/%i] Min RMSE: %f", l, len_loop_idx, file_names{i}, 1, num_iters, fval);
+    outs = sprintf("[File %i/%i] %s [Reps %i/%i] Min RMSE: %f", ...
+        i, num_files, file_names{loop_idx(i)}, 1, num_iters, rmse_list(1));
     fprintf(outf, '%s\n', outs);
     disp(outs)
 
     % random intialization
-    running_p0 = lhsdesign(num_iters, psize);
-    running_p0 = scale_param(running_p0, lb, ub);
-    
+    init_pts = lhsdesign(num_iters-1, psize);
+    init_pts = scale_param(init_pts, lb, ub);
     for j = 2:num_iters
-        % optimization
         try
-            [sol, fval] = fmincon(opt_fun, running_p0(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
-            sol_list{j} = sol;
+            [sol, fval] = fmincon(opt_fun, init_pts(j-1,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
+            sol_mx(j,:) = sol;
             rmse_list(j) = fval;
         catch
             rmse_list(j) = 1e+3;
         end
-        outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', l, len_loop_idx, file_names{i}, j, num_iters, fval);
+        outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', i, num_files, file_names{loop_idx(i)}, j, num_iters, fval);
         fprintf(outf, '%s\n', outs);
         disp(outs)
     end
-
-    [~, best_fit_idx] = min(rmse_list);
-    best_sol = sol_list{best_fit_idx};
+    save_path1 = fullfile(pwd, save_dir, strcat("raw_sol_",file_names{i}));
+    writematrix(sol_mx, save_path1);
+    
+    % best solution in terms of minimum RMSE
+    [~,best_fit_idx] = min(rmse_list);
+    best_sol = sol_mx(best_fit_idx,:);
 
     % save calibrated solution
-    save_path = fullfile(pwd, save_dir, file_names{i});
-    sol_mx = zeros(max_param_len, num_currents);
-    for j = 1:num_currents
+    save_path2 = fullfile(pwd, save_dir, file_names{i});
+    writematrix(string(current_names), save_path2, "Sheet","Parameters", "Range","A1");
+    
+    plens = cellfun(@length,pdefault);
+    max_plen = max(plens);
+    best_sol_mx = NaN(max_plen,length(current_names));
+    for j = 1:length(current_names)
         switch current_names{j}
-        case 'iktof'
-            sol_kto = ktof_default;
-            sol_kto(tune_idx1_ktof) = best_sol(idx_info2{j});
-            sol_kto = [sol_kto, NaN(1, (max_param_len-length(sol_kto)))];
-            sol_mx(:, j) = sol_kto;
-        case 'ikslow1'
-            sol_kslow1 = kslow1_default;
-            sol_kslow1(tune_idx1_kslow1) = best_sol(idx_info2{j});
-            sol_kslow1 = [sol_kslow1, NaN(1, (max_param_len-length(sol_kslow1)))];
-            sol_mx(:, j) = sol_kslow1;
-        case 'ikslow2'
-            sol_kslow2 = kslow2_default;
-            sol_kslow2(tune_idx1_kslow2) = best_sol(idx_info2{j});
-            sol_kslow2 = [sol_kslow2, NaN(1, (max_param_len-length(sol_kslow2)))];
-            sol_mx(:, j) = sol_kslow2;
-        case 'ikss'
-            sol_kss = kss_default;
-            sol_kss(tune_idx1_kss) = best_sol(idx_info2{j});
-            sol_kss = [sol_kss, NaN(1, (max_param_len-length(sol_kss)))];
-            sol_mx(:, j) = sol_kss;
-        case 'ikur'
-            sol_kur = kur_default;
-            sol_kur(tune_idx1_kur) = best_sol(idx_info2{j});
-            sol_kur = [sol_kur, NaN(1, (max_param_len-length(sol_kur)))];
-            sol_mx(:, j) = sol_kur;
-        case 'ik1'
-            sol_k1 = k1_default;
-            sol_k1(tune_idx1_k1) = best_sol(idx_info2{j});
-            sol_k1 = [sol_k1, NaN(1, (max_param_len-length(sol_k1)))];
-            sol_mx(:, j) = sol_k1;
+            case 'iktof'
+                sol_kto = NaN(max_plen,1);
+                sol_kto(1:plens(1)) = pdefault{1};
+                sol_kto(mdl_struct(j).idx1) = best_sol(mdl_struct(j).idx2);
+                best_sol_mx(:,j) = sol_kto;
+            case 'iktos'
+                sol_ktos = NaN(max_plen,1);
+                sol_ktos(1:plens(2)) = pdefault{2};
+                sol_ktos(mdl_struct(j).idx1) = best_sol(mdl_struct(j).idx2);
+                best_sol_mx(:,j) = sol_ktos;
+            case 'ikslow1'
+                sol_kslow1 = NaN(max_plen,1);
+                sol_kslow1(1:plens(3)) = pdefault{3};
+                sol_kslow1(mdl_struct(j).idx1) = best_sol(mdl_struct(j).idx2);
+                best_sol_mx(:,j) = sol_kslow1;
+            case 'ikslow2'
+                sol_kslow2 = NaN(max_plen,1);
+                sol_kslow2(1:plens(4)) = pdefault{4};
+                sol_kslow2(mdl_struct(j).idx1) = best_sol(mdl_struct(j).idx2);
+                best_sol_mx(:,j) = sol_kslow2;
+            case 'ikss'
+                sol_kss = NaN(max_plen,1);
+                sol_kss(1:plens(5)) = pdefault{5};
+                sol_kss(mdl_struct(j).idx1) = best_sol(mdl_struct(j).idx2);
+                best_sol_mx(:,j) = sol_kss;
         end
     end
-%     obj_rmse(best_sol, 'all', @kcurrent_model1, model_struct, volt_space, time_space, yksum)
-    writematrix(string(current_names) , save_path, "Sheet","Parameters", "Range","A1");
-    writematrix(sol_mx, save_path, "Sheet","Parameters", "Range","A2");
+    writematrix(best_sol_mx, save_path2, "Sheet","Parameters", "Range","A2");
+    toc
 end
 fclose(outf);
 
@@ -275,7 +273,7 @@ function scaledp = scale_param(unitp, lb, ub)
     [num_pt, num_var] = size(unitp);
     scaledp = NaN(num_pt, num_var);
     for i = 1:num_pt
-        scaledp(i, :) = unitp(i,:).*(ub-lb) + lb;
+        scaledp(i, :) = unitp(i,:).*(ub-lb)' + lb';
     end
 end
 
@@ -287,7 +285,7 @@ function z = obj_rmse(p, kcurrent_model, mdl_struct, pdefault, protocol, yksum)
     rmse_list = NaN(num_volts,1);
     for i = 1:num_volts
         yi = yksum(:,i);
-        ymx = kcurrent_model(p, mdl_struct, protocol, volts(i), pdefault);
+        ymx = kcurrent_model(p, mdl_struct, pdefault, protocol, volts(i));
         yhat = sum(ymx,2);
         rmse_list(i) = sqrt(mean((yi(hold_idx+1:end) - yhat(hold_idx+1:end)).^2));
     end
