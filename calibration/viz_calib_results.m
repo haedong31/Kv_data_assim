@@ -120,16 +120,16 @@ clc
 close all 
 clearvars
 
-file_group = "ko";
+file_group = "wt";
 exp_num = "exp45";
-file_name = '15o27002.xlsx';
+file_name = "15n23008.xlsx";
 save_dir = strcat('calib_', exp_num);
 
 % import calibration results
 calib = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), file_name)));
 
 %----- Model structure -----%
-current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
+current_names = {'iktof','ikslow1','ikslow2','ikss'};
 
 tune_idx = cell(5,1); % iktof, iktos, ikslow1, ikslow2, ikss
 tune_idx{1} = [1, 2, 4, 5, 7, 11, 13];
