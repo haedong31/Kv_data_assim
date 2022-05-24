@@ -4,7 +4,7 @@ clearvars
 warning('off', 'all')
 
 %----- Code arguments & Model information %-----
-group = "wt";
+group = "ko";
 exp_num = "exp_48";
 save_dir = strcat("calib_",exp_num,"_",group);
 mkdir(fullfile(pwd,save_dir))
