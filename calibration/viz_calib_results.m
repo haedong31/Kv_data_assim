@@ -121,8 +121,8 @@ close all
 clearvars
 
 file_group = "wt";
-exp_num = "exp45";
-file_name = "15n23008.xlsx";
+exp_num = "exp48";
+file_name = "15o26002.xlsx";
 save_dir = strcat('calib_', exp_num);
 
 % import calibration results
@@ -374,4 +374,19 @@ function sol = gen_sol_vec(sol_mx, mdl_struct, psize)
         running_sol = running_sol(~isnan(running_sol));
         sol(mdl_struct(i).idx2) = running_sol(mdl_struct(i).idx1);
     end
+end
+
+function z = obj_rmse(p, kcurrent_model, mdl_struct, pdefault, protocol, yksum)
+    volts = protocol{3};
+    num_volts = length(volts);
+    hold_idx = length(protocol{5});
+
+    rmse_list = NaN(num_volts,1);
+    for i = 1:num_volts
+        yi = yksum(:,i);
+        ymx = kcurrent_model(p, mdl_struct, pdefault, protocol, volts(i));
+        yhat = sum(ymx,2);
+        rmse_list(i) = sqrt(mean((yi(hold_idx+1:end) - yhat(hold_idx+1:end)).^2));
+    end
+    z = sum(rmse_list);
 end
