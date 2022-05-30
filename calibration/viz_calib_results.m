@@ -44,28 +44,42 @@ clearvars
 
 group = "ko";
 exp_num = "exp41";
-file_name = "15o27006.xlsx";
+file_name = "15n03018.xlsx";
 
-data_path = fullfile(pwd,"data",strcat(group,"-preprocessed-25s"),file_name);
+data_path = fullfile(pwd,"mgat1ko_data",strcat(group,"-preprocessed-25s"),file_name);
 calib_path = fullfile(pwd,strcat("calib_",exp_num,"_",group),file_name);
 
-current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
-tune_idx1{1} = [1, 2, 4, 5, 7, 11, 13];
-tune_idx1{2} = [1, 2, 4, 5, 9, 10, 11];
-tune_idx1{3} = [2, 3];
-tune_idx1{4} = [1, 2, 3, 4];
+calib = table2array(readtable(calib_path));
 
-% import the experimental data and calibration results
+%----- Model structure -----%
+current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
+tune_idx = cell(5,1); % iktof, iktos, ikslow1, ikslow2, ikss
+tune_idx{1} = [1, 2, 4, 5, 7, 11, 13];
+tune_idx{2} = [2, 3];
+tune_idx{3} = [1, 2, 4, 5, 9, 10, 11];
+tune_idx{4} = [2, 3];
+tune_idx{5} = [1, 2, 3, 4];
+
+[mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx);
+sol = gen_sol_vec(calib, mdl_struct, psize);
+
+pdefault = cell(5,1);
+pdefault{1} = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+    0.000152, 0.067083, 0.00095, 0.051335, 0.3846];
+pdefault{2} = [-1050, 270, 0.0629];
+pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
+pdefault{4} = [4912, 5334, 0.16];
+pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
+
+%----- Protocol & Experimental data -----%
 exp_mx = table2array(readtable(data_path));
-sol_mx = table2array(readtable(calib_path));
 t = exp_mx(:,1);
 yksum = exp_mx(:,2);
 
-% protocol
 ideal_hold_time = 470;
 ideal_end_time = 25*1000;
 hold_volt = -70;
-volt = 50;
+volts = 50;
 ek = -91.1;
 
 % estimate the critical time points
@@ -74,46 +88,56 @@ ek = -91.1;
 t = t(1:ideal_end_idx);
 yksum = yksum(1:ideal_end_idx);
 
-% time space
-time_space = cell(1,3);
-time_space{1} = t;
-time_space{2} = t(1:ideal_hold_idx);
-pulse_t = t(ideal_hold_idx+1:end);
-pulse_t_adj = pulse_t - pulse_t(1);
-time_space{3} = pulse_t_adj;
-
-% protocol
-protocol = cell(1,4);
+protocol = cell(6,1);
 protocol{1} = hold_volt;
 protocol{2} = ek;
-protocol{3} = volt;
-protocol{4} = time_space;
+protocol{3} = volts;
+protocol{4} = t;
+protocol{5} = t(1:ideal_hold_idx);
+pulse_t = t(ideal_hold_idx+1:end);
+pulse_t_adj = pulse_t - pulse_t(1);
+protocol{6} = pulse_t_adj;
 
 % prediction from the calibration resukt
-[model_info, psize] = gen_mdl_struct(current_names, tune_idx1);
-sol = gen_sol_vec(sol_mx, model_info, psize);
-[z,yksum_hat,comp_hat] = rmsey(sol, yksum, model_info, protocol);
+r = obj_rmse(sol, @kcurrent_basic, mdl_struct, pdefault, protocol, yksum);
+fprintf('File %s Min RMSE: %f \n', file_name, r)
 
 % figure 1: yksum
 figure('Color','w', 'Position',[100,100,560,420])
-plot(t,yksum, 'Color','black')
+
+ymx = kcurrent_basic(sol, mdl_struct, pdefault, protocol, volts);
+yksum_hat1 = sum(ymx,2);
+
+plot(t,yksum, 'Color','red','LineWidth',1.5)
 hold on
-plot(t, yksum_hat{1}, '--', 'Color','red');
+plot(t, yksum_hat1, '--', 'Color','green','LineWidth',1.5);
 hold off
+grid on
 set(gca, 'XLimSpec','tight')
 legend("Experimental Data","Model Prediction")
+title(strcat(file_name,'/',string(volts), ' mV'), 'FontSize',10);
+xlabel('Time (ms)');
+ylabel('Current (pA/pF)');
+set(gca,'LineWidth',1.5, 'FontSize',10, 'FontWeight','bold');
+set(gca,'GridLineStyle','--')
+
 
 % figure 2: individual K+ currents
-comp_hat = comp_hat{1};
 figure('Color','w', 'Position',[600,100,560,420])
-plot(t,comp_hat{1})
+plot(t,ymx(:,1))
 hold on
-plot(t,comp_hat{2})
-plot(t,comp_hat{3})
-plot(t,comp_hat{4})
+plot(t,ymx(:,2))
+plot(t,ymx(:,3))
+plot(t,ymx(:,4))
 hold off
+grid on
 set(gca, 'XLimSpec','tight')
 legend("I_{Kto,f}","I_{Kslow1}","I_{Kslow2}","I_{Kss}")
+title(strcat(file_name,'/',string(volts), ' mV'), 'FontSize',10);
+xlabel('Time (ms)', 'FontSize',10, 'FontWeight','bold');
+ylabel('Current (pA/pF)', 'FontSize',10, 'FontWeight','bold');
+set(gca,'LineWidth',1.5, 'FontSize',10, 'FontWeight','bold');
+set(gca,'GridLineStyle','--')
 
 %% compare with experimental data (4.5-sec data)
 clc
@@ -121,7 +145,7 @@ close all
 clearvars
 
 file_group = "wt";
-exp_num = "exp48";
+exp_num = "exp42";
 file_name = "15o26002.xlsx";
 save_dir = strcat('calib_', exp_num);
 
@@ -129,7 +153,7 @@ save_dir = strcat('calib_', exp_num);
 calib = table2array(readtable(fullfile(pwd, strcat(save_dir, '_', file_group), file_name)));
 
 %----- Model structure -----%
-current_names = {'iktof','ikslow1','ikslow2','ikss'};
+current_names = {'iktof','ikslow1','ikss'};
 
 tune_idx = cell(5,1); % iktof, iktos, ikslow1, ikslow2, ikss
 tune_idx{1} = [1, 2, 4, 5, 7, 11, 13];
@@ -202,6 +226,8 @@ for i=1:length(volts)
     set(gca,'LineWidth',2, 'FontSize',10, 'FontWeight','bold');
     set(gca,'GridLineStyle','--')
 end
+title(strcat(file_name,'/Clamp Voltage: ', string(volts(i)), ' mV'), 'FontSize',10, 'FontWeight','bold');
+hold off
 
 figure('Color','w')
 plot(t, yksum(:, 1))
@@ -209,6 +235,34 @@ hold on
 for i = 2:length(volts)
     plot(t, yksum(:, i))
 end
+hold off
+
+figure('Color','w', 'Position',[50,50,800,800])
+for i=1:length(volts)
+    yksum_i = yksum(:, i);
+    ymx = kcurrent_basic(sol, mdl_struct, pdefault, protocol, volts(i));
+    yksum_hat1 = sum(ymx,2);
+
+    subplot(3, 3, i)
+    plot(t, yksum_i, 'Color','red')
+    hold on
+    plot(t,ymx(:,1))
+    plot(t,ymx(:,2))
+    plot(t,ymx(:,3))
+%     plot(t,ymx(:,4))
+    hold off
+    axis tight
+    grid on
+%    legend('Experimental Data','Model Prediction 1', 'Model Prediction 2', 'Location','best')
+    title(strcat('Clamp Voltage: ', string(volts(i)), ' mV'), 'FontSize',10, 'FontWeight','bold');
+    xlabel('Time (ms)', 'FontSize',10, 'FontWeight','bold');
+    ylabel('Current (pA/pF)', 'FontSize',10, 'FontWeight','bold');
+    get(gcf,'CurrentAxes');
+    set(gca,'YDir','normal');
+    set(gca,'LineWidth',2, 'FontSize',10, 'FontWeight','bold');
+    set(gca,'GridLineStyle','--')
+end
+title(strcat(file_name,'/Clamp Voltage: ', string(volts(i)), ' mV'), 'FontSize',10, 'FontWeight','bold');
 hold off
 
 %% compare with experimental data (kcurrent_model1)
