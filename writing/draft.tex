@@ -166,13 +166,7 @@ The rapidly inactivating transient outward current I\textsubscript{Kto}, conduct
     &\alpha_{i} = \frac{p_{9}e^{-(V+p_{2})/p_{4}}}{1+p_{10}e^{-(V+p_{2}+p_{3})/p_{4}}} \\
     & \beta_{i} = \frac{p_{11}e^{(V+p_{2}+p{3})/p_{4}}}{1+p_{12}e^{(V+p_{2}+p_{3})/p_{4}}} \label{eq:ikto_beta2}
 \end{align}
-There are two gating variables $a_{\mathrm{Kto}}$ and $i_{\mathrm{Kto}}$ responsible for activation and inactivation, respectively. Their kinetics are governed by transition-rate functions from Equation~\ref{eq:ikto_alpha1} to Equation~\ref{eq:ikto_beta2}. Parameters $p_{i}$ for $i=\{1, 2, \dots, 12\}$ in these equations act like ``knobs'', allowing to control the behavior of the I\textsubscript{Kto} model. \textbf{Figure~\ref{fig:kinetic_iktof}} shows a representative example of the relationship between the transition-rate functions and the channel kinetics, given the specific value of $p_{i}$. In general, the transition rates for inactivation gates change more rapidly and have smaller ranges than for activation, which results in a drastic slope in the steady-state curve and a large time constant.
-\begin{figure}[!ht]
-    \centering
-    \includegraphics{figs/kinetic_iktof.pdf}
-    \caption{Example of the behavior of the transition-rate functions with changes in voltage, given specific values of parameters that govern kinetics of I\textsubscript{Kto}.}
-    \label{fig:kinetic_iktof}
-\end{figure}
+There are two gating variables $a_{\mathrm{Kto}}$ and $i_{\mathrm{Kto}}$ responsible for activation and inactivation, respectively. Their kinetics are governed by transition-rate functions from Equation~\ref{eq:ikto_alpha1} to Equation~\ref{eq:ikto_beta2}. Parameters $p_{i}$ for $i=\{1, 2, \dots, 12\}$ in these equations act like ``knobs'', allowing to control the behavior of the I\textsubscript{Kto} model.
 
 \subsubsection{In-silico Modeling of K\textsubscript{v}1.5 (I\textsubscript{Kslow1}), K\textsubscript{v}2.1 (I\textsubscript{Kslow2}) and K\textsubscript{2P} (I\textsubscript{Kss})}
 There are two major delayed rectifier currents in mouse ventricular cardiomyocytes that are very rapidly activating: I\textsubscript{Kslow1} and I\textsubscript{Kslow2}, which are conducted through K\textsubscript{v}1.5 and K\textsubscript{v}2.1, respectively. As shown in \textbf{Figure~\ref{fig:kcurrent_example}}, both rectifier currents inactivate slower and have smaller magnitude than I\textsubscript{Kto}, but I\textsubscript{Kslow2} decays more gradually than I\textsubscript{Kslow1}. The non-inactivating steady-state current, which conducted through K\textsubscript{2P} family, remains constant during the voltage-clamp recording. These three currents collectively address the most part of the decaying phase of I\textsubscript{Ksum}. We assume that I\textsubscript{Kslow1} and I\textsubscript{Kslow2} have the same activation gating variable, and I\textsubscript{Kss} has similar activation behavior with a slightly different rate to keep the model as simple as possible to reduce the structural risk of overfitting.
@@ -202,13 +196,7 @@ I\textsubscript{Kss} does not have an inactivation variable as it is non-inactiv
     &\frac{da_{\mathrm{Kss}}}{dt} = \frac{a_{ss}-a_{\mathrm{Kss}}}{\tau_{a}^{(3)}} \\
     &\tau_{a}^{(3)}= \frac{p_{2}}{e^{p_{1}(V+p_{3}^\prime)}+e^{-p_{1}(V+p_{3}^\prime)}} + p_{3}
 \end{align}
-Note that $p_{3}^\prime$ is equal to $p_{3}$ in I\textsubscript{Kslow1}. \textbf{Figure~\ref{fig:kinetic_rectifiers}} illustrates general trends of the relationship of kinetic variables and voltage of the rectifier currents. 
-\begin{figure}[!ht]
-    \centering
-    \includegraphics{figs/kinetic_rectifiers.pdf}
-    \caption{Example of the voltage dependence of kinetic variables of the rectifier currents.}
-    \label{fig:kinetic_rectifiers}
-\end{figure}
+Note that $p_{3}^\prime$ is equal to $p_{3}$ in I\textsubscript{Kslow1}. 
 
 \subsection{\emph{Data Assimilation and Model Calibration}} \label{s:methods.2}
 \textit{Data assimilation} is a method to find the optimal configuration and state of computational models by coupling them with experimental data. Experimental data $\mathcal{D}$ are observations of a real process $\mathcal{R}$ that represents scientific phenomena under investigation. The output of physical experiments $y^{\mathcal{D}}(x)$, given input $x$, inevitably contains errors for various reasons, such as noise in measurement or experimental environment. Suppose $\mathcal{D}$ and $\mathcal{R}$ can be related as follows in Equation~\ref{eq:rd_relation}, where $\epsilon$ is the error term. 
@@ -277,33 +265,6 @@ case study with the in-vitro data of investigating the casuality between reduced
 
 \subsection{Experimental Results}
 case study results with the proposed data assimilation method
-\begin{figure}
-    \centering
-    \includegraphics{figs/pkto.pdf}
-    \caption{parameter distribution}
-    \label{fig:pkto}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics{figs/pkslow1.pdf}
-    \caption{parameter distribution}
-    \label{fig:pkslow1}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics{figs/pkslow2.pdf}
-    \caption{parameter distribution}
-    \label{fig:pkslow2}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics{figs/pkss.pdf}
-    \caption{parameter distribution}
-    \label{fig:pkss}
-\end{figure}
 
 Perhaps numerical analysis of performance, comparison, and demonstration of applicability and impact using real data.
 
