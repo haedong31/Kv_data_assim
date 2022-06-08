@@ -40,8 +40,8 @@ def compare_param_dist(pdf_wt, pdf_ko, idx):
     p = sns.displot(pdf, x=str(idx), hue='Group', kind='kde', fill=True)
     p.set_xlabels('Parameter '+str(idx), fontsize=12)
     
-exp_num =  '41'
-currents = ['iktof', 'ikslow1', 'ikslow2', 'ikss']
+exp_num =  '45'
+currents = ['iktof','ikslow1','ikslow2','ikss']
 idx_dict = {'iktof': [1, 2, 4, 5, 7, 11, 13],
     'iktos': [2, 3],
     'ikslow1': [1, 2, 4, 5, 9, 10, 11],
