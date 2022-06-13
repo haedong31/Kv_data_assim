@@ -46,50 +46,21 @@ find_min_rmse <- function(log_list) {
 log_dir <- "./calibration/log/"
 
 ## create data frame for bar plot -----
-num_files1 <- 34
-num_files2 <- 33
+num_files <- 33
 num_iters <- 30
+group <- "ko";
 log1_name <- "exp42"
-log2_name <- "exp36"
-log3_name <- "exp37"
-# log4_name <- "exp23"
+log2_name <- "exp43"
+log3_name <- "exp44"
 
-log1 <- read_log(str_c(log_dir,log1_name,"_wt",".txt"), num_files1, num_iters)
-log2 <- read_log(str_c(log_dir,log1_name,"_ko",".txt"), num_files2, num_iters)
-# log3 <- read_log(str_c(log_dir,log3_name,"_wt",".txt"), num_files1, num_iters)
-# log4 <- read_log(str_c(log_dir, log4_name, "_", group_name, ".txt"), num_files, 1)
+log1 <- read_log(str_c(log_dir,log1_name,"_",group,".txt"), num_files, num_iters)
+log2 <- read_log(str_c(log_dir,log1_name,"_",group,".txt"), num_files, num_iters)
+log3 <- read_log(str_c(log_dir,log3_name,"_",group,".txt"), num_files, num_iters)
 
 rmse_df1 <- find_min_rmse(log1)
 rmse_df2 <- find_min_rmse(log2)
-# rmse_df3 <- find_min_rmse(log3)
-# rmse_val4 <- find_min_rmse(log4)
+rmse_df3 <- find_min_rmse(log3)
 
-write_csv(rmse_df1, str_c(log_dir,log1_name,"_wt.csv"))
-write_csv(rmse_df2, str_c(log_dir,log1_name,"_ko.csv"))
-# write_csv(rmse_df3, str_c(log_dir,log3_name,"_wt.csv"))
-
-# file_names <- seq(1, num_files) %>% as.character()
-# extra_idx <- c(18, 19, 29, 31, 32)
-# rmse_val1[extra_idx]
-
-## create data frame for multiple bar plot -----
-bar_df <- tibble(
-  name = file_names,
-  mtd1 = rmse_val1,
-  mtd2 = rmse_val2,
-  mtd3 = rmse_val3,
-  mtd4 = rmse_val4)
-
-# export for MATLAB
-write_csv(bar_df, './calibration/bar_graph_norm.csv')
-
-bar_df <- bar_df %>% 
-  pivot_longer(c('mtd1','mtd2'), names_to = 'mtd', values_to = 'rmse')
-  
-ggplot(data = bar_df, mapping = aes(x = name, y = rmse, fill = mtd)) + 
-  geom_bar(stat = "identity", position = "dodge") + 
-  geom_hline(yintercept = mean(rmse_val1), col = 'red') +
-  geom_hline(yintercept = mean(rmse_val2), col = 'green') +
-  scale_fill_discrete(name = "Model",
-                      breaks = c("mtd1", "mtd2"),
-                      labels = c("Method 1", "Method 2"))
+write_csv(rmse_df1, str_c(log_dir,log1_name,"_",group,".csv"))
+write_csv(rmse_df2, str_c(log_dir,log2_name,"_",group,".csv"))
+write_csv(rmse_df3, str_c(log_dir,log3_name,"_",group,".csv"))
