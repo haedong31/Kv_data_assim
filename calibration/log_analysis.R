@@ -46,10 +46,10 @@ find_min_rmse <- function(log_list) {
 log_dir <- "./calibration/log/"
 
 ## create data frame for bar plot -----
-num_files <- 33
+num_files <- 35
 num_iters <- 30
-group <- "ko";
-log1_name <- "exp42"
+group <- "wt";
+log1_name <- "exp41"
 log2_name <- "exp43"
 log3_name <- "exp44"
 
