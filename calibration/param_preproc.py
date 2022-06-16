@@ -48,11 +48,13 @@ idx_dict = {'iktof': [1, 2, 4, 5, 7, 11, 13],
     'ikslow2': [2, 3],
     'ikss': [1, 2, 3, 4]}
 
-base_dir = Path.cwd().parent
-wt_dir = base_dir / ('calib_exp'+exp_num+'_wt')
-ko_dir = base_dir / ('calib_exp'+exp_num+'_ko')
-fpaths_wt = wt_dir.glob('*.xlsx')
-fpaths_ko = ko_dir.glob('*.xlsx')
+file_names = pd.read_excel('file_names_4half4.xlsx', index_col=None)
+
+wt_dir = Path.cwd() / ('calib_exp'+exp_num) / 'wt'
+ko_dir = Path.cwd() / ('calib_exp'+exp_num) / 'mgat1ko'
+
+fpaths_wt = [Path(wt_dir/(p+'.xlsx')) for p in file_names['WT'].tolist()]
+fpaths_ko = [Path(ko_dir/(p+'.xlsx')) for p in file_names['MGAT1KO'].tolist()]
 
 plist_wt = read_param_file(fpaths_wt, currents, idx_dict)
 plist_ko = read_param_file(fpaths_ko, currents, idx_dict)
