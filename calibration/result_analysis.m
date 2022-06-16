@@ -397,6 +397,193 @@ ylabel("\tau_{a}^{(4)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 %% parameter distribution
+clc
+clearvars
+close all
+load('file_names_4half4.mat')
+
+exp_num = "exp45";
+base_dir = fullfile(pwd,strcat("calib_",exp_num));
+
+% pktof
+pktof = readtable(fullfile(base_dir,"pktof.csv"));
+pidx = unique(pktof.param);
+
+fig = figure('Color','w','Position',[50,50,830,320]);
+orient(fig,'landscape')
+for i=1:length(pidx)
+    psub = pktof(pktof.param==pidx(i),:);
+    psub_wt = psub(string(psub.Group)=="WT",:);
+    psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
+
+    [f1,xi1] = ksdensity(psub_wt.value);
+    [f2,xi2] = ksdensity(psub_ko.value);
+    
+    subplot(2,4,i)
+    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    hold on
+    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    hold off
+    axis tight
+    grid on
+    xlabel(strcat('Parameter', num2str(pidx(i))))
+    ylabel('Density')
+    set(gca, 'FontName','Arial','FontWeight','bold')
+
+    if i==length(pidx)
+        legend(["WT","Mgat1KO"])
+        legend box off
+        xlabel("G_{Kto}")
+    end
+end
+nrow = size(pktof,1)/length(pidx);
+pktof2 = array2table(NaN(nrow,length(pidx)+2));
+
+pktof2.Properties.VariableNames(1:2) = {'Group','File'};
+pktof2.Group = pktof(pktof.param==pidx(1),:).Group;
+pktof2.File = pktof(pktof.param==pidx(1),:).file;
+
+for i=1:length(pidx)
+    pktof2.Properties.VariableNames(i+2) = {strcat('P',num2str(pidx(i)))};
+    pktof2(:,i+2)= pktof(pktof.param==pidx(i),'value');
+end
+
+% pkslow1
+pkslow1 = readtable(fullfile(base_dir,"pkslow1.csv"));
+pidx = unique(pkslow1.param);
+
+fig = figure('Color','w','Position',[100,100,830,640]);
+orient(fig,'landscape')
+for i=1:length(pidx)
+    psub = pkslow1(pkslow1.param==pidx(i),:);
+    psub_wt = psub(string(psub.Group)=="WT",:);
+    psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
+
+    [f1,xi1] = ksdensity(psub_wt.value);
+    [f2,xi2] = ksdensity(psub_ko.value);
+    
+    subplot(4,4,i)
+    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    hold on
+    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    hold off
+    axis tight
+    grid on
+    xlabel(strcat('Parameter', num2str(pidx(i))))
+    ylabel('Density')
+    set(gca, 'FontName','Arial','FontWeight','bold')
+    
+    if i==length(pidx)
+        xlabel("G_{Kslow1}")
+        legend('WT','Mgat1KO', 'Location','best')
+        legend box off
+    end
+end
+nrow = size(pkslow1,1)/length(pidx);
+pkslow12 = array2table(NaN(nrow,length(pidx)+1));
+pkslow12.Properties.VariableNames(1) = {'Group'};
+pkslow12.Group = pkslow1(pkslow1.param==pidx(1),:).Group;
+
+for i=1:length(pidx)
+    pkslow12.Properties.VariableNames(i+1) = {strcat('P',num2str(pidx(i)))};
+    pkslow12(:,i+1)= pkslow1(pkslow1.param==pidx(i),'value');
+end
+
+% pkslow2
+% figure('Color','w','Position',[150,150,610,320]);
+pkslow2 = readtable(fullfile(base_dir,"pkslow2.csv"));
+pidx = unique(pkslow2.param);
+
+for i=1:length(pidx)
+    psub = pkslow2(pkslow2.param==pidx(i),:);
+    psub_wt = psub(string(psub.Group)=="WT",:);
+    psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
+
+    [f1,xi1] = ksdensity(psub_wt.value);
+    [f2,xi2] = ksdensity(psub_ko.value);
+    
+
+    subplot(4,4,i+8)
+    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    hold on
+    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    hold off
+    axis tight
+    grid on
+    xlabel(strcat('Parameter', num2str(pidx(i))))
+    ylabel('Density')
+    set(gca, 'FontName','Arial', 'FontWeight','bold')
+    
+    if i==length(pidx)
+        xlabel("G_{kslow2}")
+    end
+end
+nrow = size(pkslow2,1)/length(pidx);
+g = categorical(pkslow2(pkslow2.param==pidx(1),:).Group);
+v1 = pkslow2(pkslow2.param==pidx(1),:).value;
+v2 = pkslow2(pkslow2.param==pidx(2),:).value;
+pkslow22 = table(g,v1,v2);
+
+
+% pkss
+pkss = readtable(fullfile(base_dir,"pkss.csv"));
+pidx = unique(pkss.param);
+for i=1:length(pidx)
+    psub = pkss(pkss.param==pidx(i),:);
+    psub_wt = psub(string(psub.Group)=="WT",:);
+    psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
+
+    [f1,xi1] = ksdensity(psub_wt.value);
+    [f2,xi2] = ksdensity(psub_ko.value);
+    
+    subplot(4,4,i+12)
+    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    hold on
+    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    hold off
+    axis tight
+    grid on
+    xlabel(strcat('Parameter', num2str(pidx(i))))
+    ylabel('Density')
+    set(gca, 'FontName','Arial','FontWeight','bold')
+
+    if i==length(pidx)
+        xlabel("G_{Kss}")
+    end
+end
+pkss2 = array2table(NaN(nrow,length(pidx)+1));
+pkss2.Properties.VariableNames(1) = {'Group'};
+pkss2.Group = pkss(pkss.param==pidx(1),:).Group;
+
+for i=1:length(pidx)
+    pkss2.Properties.VariableNames(i+1) = {strcat('P',num2str(pidx(i)))};
+    pkss2(:,i+1)= pkss(pkss.param==pidx(i),'value');
+end
+
+%% clustering
+clc
+close all
+
+g = NaN(size(pktof2,1),1);
+g(pktof2.Group=="Mgat1KO") = 1;
+g(pktof2.Group=="WT") = 2;
+c = brewermap(length(unique(g)),'Set1');
+pmx = [table2array(pktof2(:,3:end)),table2array(pkslow12(:,2:end)),table2array(pkslow22(:,2:end)),table2array(pkss2(:,2:end))];
+
+rng(228)
+figure('Color','w','Position',[100,100,560,510])
+embd = tsne(normalize(pmx),'Algorithm','exact','Distance','minkowski','NumDimensions',3);
+scatter3(embd(g==1,1),embd(g==1,2),embd(g==1,3),'o','filled','CData',c(g(g==1),:))
+hold on
+scatter3(embd(g==2,1),embd(g==2,2),embd(g==2,3),'^','filled','CData',c(g(g==2),:))
+hold off
+xlabel("Embedding Dim1")
+ylabel("Embedding Dim2")
+zlabel("Embedding Dim3")
+axis tight
+legend(["MGAT1KO","WT"],'location','best')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
 
 %% custom functions
 function [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx)
