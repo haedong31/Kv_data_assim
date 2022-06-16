@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
 import pandas as pd
-import seaborn as sns
 
 def read_param_file(paths, currents, idx_dict):
     plist = []
@@ -31,14 +30,6 @@ def melt_param(pdf_wt, pdf_ko):
     pdf_ko['Group'] = 'Mgat1KO'
     pdf = pd.concat([pdf_wt, pdf_ko], ignore_index=True)
     return pdf.melt(id_vars=['Group','file'], var_name='param')
-
-def compare_param_dist(pdf_wt, pdf_ko, idx):
-    pdf_wt['Group'] = 'WT'
-    pdf_ko['Group'] = 'Mgat1KO'
-    pdf = pd.concat([pdf_wt, pdf_ko], ignore_index=True)
-
-    p = sns.displot(pdf, x=str(idx), hue='Group', kind='kde', fill=True)
-    p.set_xlabels('Parameter '+str(idx), fontsize=12)
     
 exp_num =  '45'
 currents = ['iktof','ikslow1','ikslow2','ikss']
@@ -50,11 +41,11 @@ idx_dict = {'iktof': [1, 2, 4, 5, 7, 11, 13],
 
 file_names = pd.read_excel('file_names_4half4.xlsx', index_col=None)
 
-wt_dir = Path.cwd() / ('calib_exp'+exp_num) / 'wt'
-ko_dir = Path.cwd() / ('calib_exp'+exp_num) / 'mgat1ko'
+wt_dir = Path.cwd()/('calib_exp'+exp_num)/'wt'
+ko_dir = Path.cwd()/('calib_exp'+exp_num)/'mgat1ko'
 
-fpaths_wt = [Path(wt_dir/(p+'.xlsx')) for p in file_names['WT'].tolist()]
-fpaths_ko = [Path(ko_dir/(p+'.xlsx')) for p in file_names['MGAT1KO'].tolist()]
+fpaths_wt = [Path(wt_dir/(p+'.xlsx')) for p in file_names['WT'].tolist() if pd.isnull(p) == False]
+fpaths_ko = [Path(ko_dir/(p+'.xlsx')) for p in file_names['MGAT1KO'].tolist() if pd.isnull(p) == False]
 
 plist_wt = read_param_file(fpaths_wt, currents, idx_dict)
 plist_ko = read_param_file(fpaths_ko, currents, idx_dict)
@@ -64,10 +55,7 @@ pkslow1 = melt_param(plist_wt[1], plist_ko[1])
 pkslow2 = melt_param(plist_wt[2], plist_ko[2])
 pkss = melt_param(plist_wt[3], plist_ko[3])
 
-pktof.to_csv('exp'+exp_num+'_pktof.csv', index=False)
-pkslow1.to_csv('exp'+exp_num+'_pkslow1.csv', index=False)
-pkslow2.to_csv('exp'+exp_num+'_pkslow2.csv')
-pkss.to_csv('exp'+exp_num+'_pkss.csv', index=False)
-
-# for v in idx_dict['kto']:
-#     compare_param_dist(pkto_wt, pkto_ko, v)
+pktof.to_csv(Path.cwd()/('calib_exp'+exp_num)/'pktof.csv', index=False)
+pkslow1.to_csv(Path.cwd()/('calib_exp'+exp_num)/'pkslow1.csv', index=False)
+pkslow2.to_csv(Path.cwd()/('calib_exp'+exp_num)/'pkslow2.csv', index=False)
+pkss.to_csv(Path.cwd()/('calib_exp'+exp_num)/'pkss.csv', index=False)
