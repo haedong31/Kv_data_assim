@@ -1,6 +1,8 @@
-%% RMSE bar graph and current fitting
+%% protocol
 clc
+clearvars
 close all
+load("file_names_4half4.mat")
 
 exp_nums = ["exp45","exp46","exp47"];
 current_names = {'iktof','ikslow1','ikslow2','ikss'};
@@ -20,7 +22,7 @@ pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
 pdefault{4} = [4912, 5334, 0.16];
 pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
 
-volts = -50:10:50;
+volts = -100:10:50;
 ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
 
@@ -28,6 +30,7 @@ protocol = cell(6,1);
 protocol{1} = -70; % hold_volt
 protocol{2} = -91.1; % ek
 
+%% RMSE bar graph and current fitting
 % plot 1
 fig = figure('Color','w','Position',[50,50,900,350]);
 orient(fig,'landscape')
@@ -313,7 +316,7 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 %% plot kinetics modeling results
 % rectifier currents
 clc
-close all
+% close all
 
 fig = figure('Color','w','Position',[50,50,900,500]);
 orient(fig,'landscape')
