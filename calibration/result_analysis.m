@@ -67,7 +67,7 @@ pulse_t = t(ideal_hold_idx+1:end);
 protocol{6} = pulse_t - pulse_t(1);
 
 subplot(2,4,2)
-plot(t,yksum(:,1),'-','Color','red','LineWidth',1)
+plot(t,yksum(:,3),'-','Color','red','LineWidth',1)
 hold on
 for i=1:length(exp_nums)
     fpath = fullfile(pwd,strcat("calib_",exp_nums(i)),"wt",strcat(files_wt(fidx),".xlsx"));
@@ -79,6 +79,7 @@ for i=1:length(exp_nums)
     plot(t,yhat,'-','Color',c(i,:),'LineWidth',1.5)
  end
 hold off
+ylim([0,1.3])
 grid on
 title(strcat("Data Index ",string(fidx)," at ", string(volts(3))," mV"))
 xlabel("Time (ms)")
@@ -99,6 +100,7 @@ for i=1:length(exp_nums)
     plot(t,yhat,'-','Color',c(i,:),'LineWidth',1.5)
 end
 hold off
+ylim([0,25])
 grid on
 title(strcat("Data Index ",string(fidx)," at ", string(volts(end))," mV"))
 % legend(["","BFGS","SQP","Active Set"])
@@ -140,7 +142,7 @@ pulse_t = t(ideal_hold_idx+1:end);
 protocol{6} = pulse_t - pulse_t(1);
 
 subplot(2,4,4)
-plot(t,yksum(:,1),'Color','red','LineWidth',1)
+plot(t,yksum(:,3),'Color','red','LineWidth',1)
 hold on
 for i=1:length(exp_nums)
     fpath = fullfile(pwd,strcat("calib_",exp_nums(i)),"mgat1ko",strcat(files_ko(fidx),".xlsx"));
@@ -152,7 +154,7 @@ for i=1:length(exp_nums)
     plot(t,yhat,'-','Color',c(i,:),'LineWidth',1.5)    
 end
 hold off
-ylim([0,1])
+ylim([0,1.3])
 grid on
 title(strcat("Data Index ",string(fidx)," at ", string(volts(3))," mV"))
 xlabel("Time (ms)")
@@ -173,16 +175,17 @@ for i=1:length(exp_nums)
     plot(t,yhat,'-','Color',c(i,:),'LineWidth',1.5)    
 end
 hold off
-ylim([0,30])
+ylim([0,25])
 grid on
 title(strcat("Data Index ",string(fidx)," at ", string(volts(end))," mV"))
-legend(["","BFGS","SQP","Active Set"])
+legend(["Experimental","BFGS","SQP","Active Set"])
 xlabel("Time (ms)")
 ylabel("Current (pA/pF)")
 set(gca,'FontWeight','bold')
 
 %% kinetics modeling
 exp_num = "exp45";
+volts = -100:10:70;
 sol_dir = fullfile(pwd,strcat("calib_",exp_num));
 
 atof_wt = NaN(length(files_wt),length(volts));
@@ -256,30 +259,34 @@ orient(fig,'landscape')
 
 % plot1
 subplot(2,2,1)
-atof_sem = std(atof_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(atof_wt,1),atof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+r = 3:16;
+atof_sem = std(atof_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(atof_wt(:,r),1),atof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-atof_sem = std(atof_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(atof_ko,1),atof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+atof_sem = std(atof_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(atof_ko(:,r),1),atof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
+set(gca,'XLimSpec','tight')
 ylim([0,1])
-xticks(volts)
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("a_{ss}^{(1)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % plot2
 subplot(2,2,2)
-itof_sem = std(itof_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(itof_wt,1),itof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+r = 3:12;
+itof_sem = std(itof_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(itof_wt(:,r),1),itof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-itof_sem = std(itof_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(itof_ko,1),itof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+itof_sem = std(itof_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(itof_ko(:,r),1),itof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
+set(gca,'XLimSpec','tight')
 ylim([0,1])
-xticks(volts)
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("i_{ss}^{(1)}")
 legend(["WT","MGAT1KO"],'Location','northeast')
@@ -287,28 +294,32 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % plot3
 subplot(2,2,3)
-taua_tof_sem = std(taua_tof_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(taua_tof_wt,1),taua_tof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+r = 3:16;
+taua_tof_sem = std(taua_tof_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taua_tof_wt(:,r),1),taua_tof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-taua_tof_sem = std(taua_tof_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(taua_tof_ko,1),taua_tof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+taua_tof_sem = std(taua_tof_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taua_tof_ko(:,r),1),taua_tof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+axis tight
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("\tau_{a}^{(1)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % plot4
 subplot(2,2,4)
-taui_tof_sem = std(taui_tof_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(taui_tof_wt,1),taui_tof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+r = 3:12;
+taui_tof_sem = std(taui_tof_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_tof_wt(:,r),1),taui_tof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-taui_tof_sem = std(taui_tof_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(taui_tof_ko,1),taui_tof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+taui_tof_sem = std(taui_tof_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_tof_ko(:,r),1),taui_tof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+axis tight
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("\tau_{i}^{(1)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
@@ -316,93 +327,106 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 %% plot kinetics modeling results
 % rectifier currents
 clc
-% close all
+close all
 
 fig = figure('Color','w','Position',[50,50,900,500]);
 orient(fig,'landscape')
 
 subplot(2,3,1)
-akslow1_sem = std(akslow1_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(akslow1_wt,1),akslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+r = 3:16;
+akslow1_sem = std(akslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(akslow1_wt(:,r),1),akslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-akslow1_sem = std(akslow1_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(akslow1_ko,1),akslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+akslow1_sem = std(akslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(akslow1_ko(:,r),1),akslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+ylim([0,1])
+set(gca,'XLimSpec','tight')
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("a_{ss}^{(2)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 subplot(2,3,2)
-ikslow1_sem = std(ikslow1_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(ikslow1_wt,1),ikslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+r = 4:11;
+ikslow1_sem = std(ikslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(ikslow1_wt(:,r),1),ikslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-ikslow1_sem = std(ikslow1_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(ikslow1_ko,1),ikslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+ikslow1_sem = std(ikslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(ikslow1_ko(:,r),1),ikslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+ylim([0,1])
+set(gca,'XLimSpec','tight')
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("i_{ss}^{(2)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
-subplot(2,3,4)
-taua_kslow1_sem = std(taua_kslow1_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(taua_kslow1_wt,1),taua_kslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+subplot(2,3,3)
+r = 3:16;
+taua_kslow1_sem = std(taua_kslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taua_kslow1_wt(:,r),1),taua_kslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-taua_kslow1_sem = std(taua_kslow1_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(taua_kslow1_ko,1),taua_kslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+taua_kslow1_sem = std(taua_kslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taua_kslow1_ko(:,r),1),taua_kslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+axis tight
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("\tau_{a}^{(2)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
-subplot(2,3,5)
-taui_kslow1_sem = std(taui_kslow1_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(taui_kslow1_wt,1),taui_kslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+subplot(2,3,4)
+r = 3:16;
+taui_kslow1_sem = std(taui_kslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_kslow1_wt(:,r),1),taui_kslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-taui_kslow1_sem = std(taui_kslow1_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(taui_kslow1_ko,1),taui_kslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+taui_kslow1_sem = std(taui_kslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_kslow1_ko(:,r),1),taui_kslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+axis tight
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("\tau_{i}^{(2)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
-subplot(2,3,3)
-taui_kslow2_sem = std(taui_kslow2_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(taui_kslow2_wt,1),taui_kslow2_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+subplot(2,3,5)
+taui_kslow2_sem = std(taui_kslow2_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_kslow2_wt(:,r),1),taui_kslow2_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-taui_kslow2_sem = std(taui_kslow2_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(taui_kslow2_ko,1),taui_kslow2_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+taui_kslow2_sem = std(taui_kslow2_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_kslow2_ko(:,r),1),taui_kslow2_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+axis tight
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("\tau_{i}^{(3)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 subplot(2,3,6)
-taua_kss_sem = std(taua_kss_wt,0,1)/sqrt(length(files_wt));
-errorbar(volts,mean(taua_kss_wt,1),taua_kss_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+taua_kss_sem = std(taua_kss_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taua_kss_wt(:,r),1),taua_kss_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
 hold on
-taua_kss_sem = std(taua_kss_ko,0,1)/sqrt(length(files_ko));
-errorbar(volts,mean(taua_kss_ko,1),taua_kss_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+taua_kss_sem = std(taua_kss_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taua_kss_ko(:,r),1),taua_kss_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
 hold off
 grid on
-xticks(volts)
+axis tight
+xticks(volts(r))
 xlabel("Voltage (mV)")
 ylabel("\tau_{a}^{(4)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
+legend(["WT","MGAT1KO"],'Location','northeast')
 
 %% parameter distribution
 clc
 clearvars
-close all
+% close all
 load('file_names_4half4.mat')
 
 exp_num = "exp45";
