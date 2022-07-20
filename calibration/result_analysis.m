@@ -426,7 +426,7 @@ legend(["WT","MGAT1KO"],'Location','northeast')
 %% parameter distribution
 clc
 clearvars
-% close all
+close all
 load('file_names_4half4.mat')
 
 exp_num = "exp45";
@@ -443,13 +443,15 @@ for i=1:length(pidx)
     psub_wt = psub(string(psub.Group)=="WT",:);
     psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
 
-    [f1,xi1] = ksdensity(psub_wt.value);
-    [f2,xi2] = ksdensity(psub_ko.value);
+%     [f1,xi1] = ksdensity(psub_wt.value);
+%     [f2,xi2] = ksdensity(psub_ko.value);
     
     subplot(2,4,i)
-    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+%     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
     hold on
-    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+%     plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
     hold off
     axis tight
     grid on
@@ -486,18 +488,21 @@ for i=1:length(pidx)
     psub_wt = psub(string(psub.Group)=="WT",:);
     psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
 
-    [f1,xi1] = ksdensity(psub_wt.value);
-    [f2,xi2] = ksdensity(psub_ko.value);
+%     [f1,xi1] = ksdensity(psub_wt.value);
+%     [f2,xi2] = ksdensity(psub_ko.value);
     
     subplot(4,4,i)
-    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+%     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
     hold on
-    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+%     plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
     hold off
     axis tight
     grid on
     xlabel(strcat('Parameter', num2str(pidx(i))))
-    ylabel('Density')
+%     ylabel('Density')
+    ylabel("Frequency")
     set(gca, 'FontName','Arial','FontWeight','bold')
     
     if i==length(pidx)
@@ -526,19 +531,22 @@ for i=1:length(pidx)
     psub_wt = psub(string(psub.Group)=="WT",:);
     psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
 
-    [f1,xi1] = ksdensity(psub_wt.value);
-    [f2,xi2] = ksdensity(psub_ko.value);
+%     [f1,xi1] = ksdensity(psub_wt.value);
+%     [f2,xi2] = ksdensity(psub_ko.value);
     
 
     subplot(4,4,i+8)
-    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+%     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
     hold on
-    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+%     plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
     hold off
     axis tight
     grid on
     xlabel(strcat('Parameter', num2str(pidx(i))))
-    ylabel('Density')
+%     ylabel('Density')
+    ylabel("Frequency")
     set(gca, 'FontName','Arial', 'FontWeight','bold')
     
     if i==length(pidx)
@@ -560,18 +568,21 @@ for i=1:length(pidx)
     psub_wt = psub(string(psub.Group)=="WT",:);
     psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
 
-    [f1,xi1] = ksdensity(psub_wt.value);
-    [f2,xi2] = ksdensity(psub_ko.value);
+%     [f1,xi1] = ksdensity(psub_wt.value);
+%     [f2,xi2] = ksdensity(psub_ko.value);
     
     subplot(4,4,i+12)
-    plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+%     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
     hold on
-    plot(xi2,f2, 'Color','red', 'LineWidth',2)
+%     plot(xi2,f2, 'Color','red', 'LineWidth',2)
+    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
     hold off
     axis tight
     grid on
     xlabel(strcat('Parameter', num2str(pidx(i))))
-    ylabel('Density')
+%     ylabel('Density')
+    ylabel("Frequency")
     set(gca, 'FontName','Arial','FontWeight','bold')
 
     if i==length(pidx)
