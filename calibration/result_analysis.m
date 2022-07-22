@@ -448,21 +448,23 @@ for i=1:length(pidx)
     
     subplot(2,4,i)
 %     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
-    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
+    h1 = histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5);
+    bin_edges1 = h1.BinEdges;
     hold on
 %     plot(xi2,f2, 'Color','red', 'LineWidth',2)
-    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
+    h2 = histogram(psub_ko.value,'BinEdges',bin_edges1,'FaceColor','r','FaceAlpha',0.5);
     hold off
     axis tight
     grid on
-    xlabel(strcat('Parameter', num2str(pidx(i))))
-    ylabel('Density')
-    set(gca, 'FontName','Arial','FontWeight','bold')
+    xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
+%     ylabel('Density')
+    ylabel("Frequency")
+    set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
 
     if i==length(pidx)
         legend(["WT","Mgat1KO"])
         legend box off
-        xlabel("G_{Kto}")
+        xlabel("G_{Kto} Range")
     end
 end
 nrow = size(pktof,1)/length(pidx);
@@ -493,20 +495,21 @@ for i=1:length(pidx)
     
     subplot(4,4,i)
 %     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
-    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
+    h1 = histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5);
+    bin_edges1 = h1.BinEdges;
     hold on
 %     plot(xi2,f2, 'Color','red', 'LineWidth',2)
-    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
+    histogram(psub_ko.value,'BinEdges',bin_edges1,'FaceColor','r','FaceAlpha',0.5)
     hold off
     axis tight
     grid on
-    xlabel(strcat('Parameter', num2str(pidx(i))))
+    xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
 %     ylabel('Density')
     ylabel("Frequency")
-    set(gca, 'FontName','Arial','FontWeight','bold')
+    set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
     
     if i==length(pidx)
-        xlabel("G_{Kslow1}")
+        xlabel("G_{Kslow1} Range")
         legend('WT','Mgat1KO', 'Location','best')
         legend box off
     end
@@ -537,17 +540,18 @@ for i=1:length(pidx)
 
     subplot(4,4,i+8)
 %     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
-    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
+    h1 = histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5);
+    bin_edges1 = h1.BinEdges;
     hold on
 %     plot(xi2,f2, 'Color','red', 'LineWidth',2)
-    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
+    histogram(psub_ko.value,'BinEdges',bin_edges1,'FaceColor','r','FaceAlpha',0.5)
     hold off
     axis tight
     grid on
-    xlabel(strcat('Parameter', num2str(pidx(i))))
+    xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
 %     ylabel('Density')
     ylabel("Frequency")
-    set(gca, 'FontName','Arial', 'FontWeight','bold')
+    set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
     
     if i==length(pidx)
         xlabel("G_{kslow2}")
@@ -573,20 +577,21 @@ for i=1:length(pidx)
     
     subplot(4,4,i+12)
 %     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
-    histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5)
+    h1 = histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5);
+    bin_edges1 = h1.BinEdges;
     hold on
 %     plot(xi2,f2, 'Color','red', 'LineWidth',2)
-    histogram(psub_ko.value,15,'FaceColor','r','FaceAlpha',0.5)
+    histogram(psub_ko.value,'BinEdges',bin_edges1,'FaceColor','r','FaceAlpha',0.5)
     hold off
     axis tight
     grid on
-    xlabel(strcat('Parameter', num2str(pidx(i))))
+    xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
 %     ylabel('Density')
     ylabel("Frequency")
-    set(gca, 'FontName','Arial','FontWeight','bold')
+    set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
 
     if i==length(pidx)
-        xlabel("G_{Kss}")
+        xlabel("G_{Kss} Range")
     end
 end
 pkss2 = array2table(NaN(nrow,length(pidx)+1));
