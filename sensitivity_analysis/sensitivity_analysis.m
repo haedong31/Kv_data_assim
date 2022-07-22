@@ -3,39 +3,27 @@ clearvars
 close all
 
 % import design matrices
-dgn_kto = table2array(readtable('ikto_dgn2.csv'));
+dgn_kto = table2array(readtable('ikto_dgn.csv'));
 dgn_kslow1 = table2array(readtable('ikslow1_dgn.csv'));
 dgn_kslow2 = table2array(readtable('ikslow2_dgn.csv'));
 dgn_kss = table2array(readtable('ikss_dgn.csv'));
 
 % bounds
 kto_default = [33, 15.5, 20, 16, 8, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.2087704319, 0.14067, 0.387];
-kto_default2 = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, 0.000152, 0.067083, 0.00095, 0.051335, 0.4067];
 kslow1_default = [22.5, 45.2, 40.0, 7.7, 5.7, 6.1, 0.0629, 2.058, 803.0, 18.0, 0.9214774521, 0.05766, 0.07496];
-kslow1_default2 = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18.0, 2.058, 803.0, 0.16];
 kslow2_default = [5334, 4912, 0.05766];
 kss_default = [0.0862, 1235.5, 13.17, 0.0428];
 
-% lower bounds
-lb_kto = [-70, -70, eps, 1, eps, eps, eps, eps, eps, eps, eps, eps];
-lb_kto(7:14) = kto_default(5:12)*0.05;
-lb_kto2 = [-70, -70, eps, 1, eps, eps, eps, eps, eps, eps, eps, eps];
-lb_kto2(5:12) = kto_default2(5:12)*0.05;
-
+lb_kto = [-70, eps, eps, eps, eps, 1, eps, eps, eps, eps, eps, eps, eps, eps];
+lb_kto(7:14) = kto_default(7:14)*0.05;
 lb_kslow1 = [-70, -70, -70, 1, 1, eps, eps, eps, 50, eps];
-lb_kslow12 = [-70, -70, -70, 1, 1, eps, eps, eps, eps, 50+eps];
+
 lb_kslow2 = [5000, eps];
 lb_kss = [eps, eps, eps];
 
-% upper bounds
 ub_kto = [70, 30, 40, 35, 20, 30, 1, 1, 1, 10, 0.005, 0.3, 0.005, 0.5];
 ub_kto(7:14) = kto_default(7:14)*1.95;
-ub_kto2 = NaN(1,length(kto_default2)-1);
-ub_kto2(1:4) = [70, 40, 40, 30];
-ub_kto2(5:12) = kto_default2(5:12)*1.95;
-
 ub_kslow1 = [50, 50, 50, 10, 50, 50, 1, 100, 1000, 50];
-ub_kslow12 = [50, 50, 50, 20, 20, 1, 30, 50, 20, 2000];
 ub_kslow2 = [10000, 5000];
 ub_kss = [1, 2000, 100];
 
@@ -68,11 +56,8 @@ protocol_info{4} = time_space;
 
 %% ikto
 tic
-% p = NaN(length(kto_default),1);
-% p(15:17) = kto_default(15:17);
-p = NaN(length(kto_default2),1);
-p(13) = kto_default2(13);
-
+p = NaN(17,1);
+p(15:17) = kto_default(15:17);
 [num_dgn, num_param] = size(dgn_kto);
 response_kto = NaN(num_dgn,6);
 for i=1:num_dgn
@@ -80,16 +65,16 @@ for i=1:num_dgn
     
     for j=1:num_param
         if dgn(j) == 1
-            p(j) = ub_kto2(j);
+            p(j) = ub_kto(j);
         else
-            p(j) = lb_kto2(j);
+            p(j) = lb_kto(j);
         end
     end
     
     o = NaN(length(volts),6);
     for j=1:length(volts)
         protocol_info{2} = volts(j);
-         o(j,:) = ikto_biomarkers2(p, protocol_info);
+         o(j,:) = ikto_biomarkers(p, protocol_info);
     end
     response_kto(i,:) = sum(o,1);
 end
@@ -97,10 +82,8 @@ toc
 
 %% ikslow1
 tic
-p = NaN(length(kslow1_default2),1);
-% p(11:13) = kslow1_default(11:13);
-p(11) = kslow1_default(11);
-
+p = NaN(13,1);
+p(11:13) = kslow1_default(11:13);
 [num_dgn, num_param] = size(dgn_kslow1);
 response_kslow1 = NaN(num_dgn,6);
 for i=1:num_dgn
@@ -108,16 +91,16 @@ for i=1:num_dgn
     
     for j=1:num_param
         if dgn(j) == 1
-            p(j) = ub_kslow12(j);
+            p(j) = ub_kslow1(j);
         else
-            p(j) = lb_kslow12(j);
+            p(j) = lb_kslow1(j);
         end
     end
     
     o = NaN(length(volts),6);
     for j=1:length(volts)
         protocol_info{2} = volts(j);
-         o(j,:) = ikslow1_biomarkers2(p, protocol_info);
+         o(j,:) = ikslow1_biomarkers(p, protocol_info);
     end
     response_kslow1(i,:) = sum(o,1);
 end
@@ -182,8 +165,8 @@ clc
 clearvars
 close all
 
-load('response_kto2.mat')
-dgn_kto = table2array(readtable('ikto_dgn2.csv'));
+load('response_kto.mat')
+dgn_kto = table2array(readtable('ikto_dgn.csv'));
 
 fig = figure('Color','w','Position',[100,100,900,500]);
 orient(fig,'landscape')
@@ -265,7 +248,7 @@ clc
 clearvars
 close all
 
-load('response_kslow12.mat')
+load('response_kslow1.mat')
 dgn_kslow1 = table2array(readtable('ikslow1_dgn.csv'));
 
 fig = figure('Color','w','Position',[100,100,900,500]);
@@ -509,7 +492,479 @@ xlabel('Half-normal Quantiles')
 ylabel('Absolute Effects')
 set(gca,'FontSize',11,'FontWeight','bold')
 
-%% custom function
+%% consolidate half-normal plots
+clc
+clearvars
+close all
+
+load('response_kto.mat')
+load('response_kslow1.mat')
+load('response_kslow2.mat')
+load('response_kss.mat')
+
+dgn_kto = table2array(readtable('ikto_dgn.csv'));
+dgn_kslow1 = table2array(readtable('ikslow1_dgn.csv'));
+dgn_kslow2 = table2array(readtable('ikslow2_dgn.csv'));
+dgn_kss = table2array(readtable('ikss_dgn.csv'));
+
+c = parula(5);
+
+fig = figure('Color','w','Position',[100,100,900,1200]);
+orient(fig,'landscape')
+
+% biomarker 1
+% kto
+subplot(3,2,1)
+[theta,idx,phiinv] = doe_plot(response_kto(:,1),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,1),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,1),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,1),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 2
+% kto
+subplot(3,2,2)
+[theta,idx,phiinv] = doe_plot(response_kto(:,2),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,2),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,2),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,2),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 3
+% kto
+subplot(3,2,3)
+[theta,idx,phiinv] = doe_plot(response_kto(:,3),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,3),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,3),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,3),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 4
+% kto
+subplot(3,2,4)
+[theta,idx,phiinv] = doe_plot(response_kto(:,4),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,4),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,4),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,4),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 5
+% kto
+subplot(3,2,5)
+[theta,idx,phiinv] = doe_plot(response_kto(:,5),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,5),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,5),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,5),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 6
+% kto
+subplot(3,2,6)
+[theta,idx,phiinv] = doe_plot(response_kto(:,6),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(response_kslow1(:,6),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,6),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(response_kslow2(:,6),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+%% consolidate half-normal plots - normalized
+clc
+clearvars
+close all
+
+load('response_kto.mat')
+load('response_kslow1.mat')
+load('response_kslow2.mat')
+load('response_kss.mat')
+
+dgn_kto = table2array(readtable('ikto_dgn.csv'));
+dgn_kslow1 = table2array(readtable('ikslow1_dgn.csv'));
+dgn_kslow2 = table2array(readtable('ikslow2_dgn.csv'));
+dgn_kss = table2array(readtable('ikss_dgn.csv'));
+
+c = parula(5);
+
+fig = figure('Color','w','Position',[100,100,900,1200]);
+orient(fig,'landscape')
+
+% biomarker 1
+% kto
+subplot(3,2,1)
+[theta,idx,phiinv] = doe_plot(normalize(response_kto(:,1),'range'),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow1(:,1),'range'),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,1),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,1),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 2
+% kto
+subplot(3,2,2)
+[theta,idx,phiinv] = doe_plot(normalize(response_kto(:,2),'range'),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow1(:,2),'range'),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,2),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,2),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 3
+% kto
+subplot(3,2,3)
+[theta,idx,phiinv] = doe_plot(normalize(response_kto(:,3),'range'),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow1(:,3),'range'),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,3),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,3),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 4
+% kto
+subplot(3,2,4)
+[theta,idx,phiinv] = doe_plot(normalize(response_kto(:,4),'range'),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow1(:,4),'range'),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,4),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,4),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 5
+% kto
+subplot(3,2,5)
+[theta,idx,phiinv] = doe_plot(normalize(response_kto(:,5),'range'),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow1(:,5),'range'),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,5),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,5),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% biomarker 6
+% kto
+subplot(3,2,6)
+[theta,idx,phiinv] = doe_plot(normalize(response_kto(:,6),'range'),dgn_kto);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(1,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+hold on
+% kslow1
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow1(:,6),'range'),dgn_kslow1);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(2,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kslow2
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,6),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(3,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+
+% kss
+[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,6),'range'),dgn_kslow2);
+plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
+for i=1:length(theta)
+    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','bottom');
+end
+hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"])
+xlabel('Half-normal Quantiles')
+ylabel('Absolute Effects')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+%% custrom functions
 function [theta,idx,phiinv] = doe_plot(y,dgn)
     stat_beta = regress(y,dgn);
     beta = 2*stat_beta;
