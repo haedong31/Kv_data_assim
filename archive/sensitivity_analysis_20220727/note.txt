@@ -1,0 +1,1 @@
+Design matrix of IKto has 14 variables (supposed to be 12)
