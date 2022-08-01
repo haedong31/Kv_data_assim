@@ -18,7 +18,7 @@ dgn2 <- FrF2(nruns = 1024, nfactors = num_param_kslow1, factor.names = param_ksl
 dgn3 <- FrF2(nruns = 2^num_param_kslow2, nfactors = num_param_kslow2, factor.names = param_kslow2)
 dgn4 <- FrF2(nruns = 2^num_param_kss, nfactors = num_param_kss, factor.names = param_kss)
 
-write_csv(dgn1, "./sensitivity_analysis/ikto_dgn2.csv")
+write_csv(dgn1, "./sensitivity_analysis/ikto_dgn.csv")
 write_csv(dgn2, "./sensitivity_analysis/ikslow1_dgn.csv")
 write_csv(dgn3, "./sensitivity_analysis/ikslow2_dgn.csv")
 write_csv(dgn4, "./sensitivity_analysis/ikss_dgn.csv")

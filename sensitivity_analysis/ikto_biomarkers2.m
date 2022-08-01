@@ -40,7 +40,7 @@ end
 
 function current_trc = ikto(p, hold_volt, volt, time_space, ek)    
     % constants & initial values
-    gmax = p(13); % 0.14067
+    gmax = p(13);
     act0 = 0.265563e-02;
     inact0 = 0.9999623535e+00;
 
