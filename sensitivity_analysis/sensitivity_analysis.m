@@ -21,14 +21,14 @@ lb_kto([5,6,10,12]) = kto_default([5,6,10,12])*0.15;
 lb_kto([7,8]) = kto_default([7,8])*0.1;
 lb_kto([9,11]) = kto_default([9,11])*0.7;
 lb_kslow1 = [-70, -70, -70, 1, 1, eps, eps, eps, eps, 50+eps, eps];
-lb_kslow2 = [eps, 5000, eps];
+lb_kslow2 = [5000, eps, eps];
 lb_kss = [eps, eps, eps, eps];
 
 ub_kto = NaN(1,length(kto_default));
 ub_kto([1:4, 13]) = [70, 40, 40, 14, 1];
 ub_kto(5:12) = kto_default(5:12)*1.95;
 ub_kslow1 = [50, 50, 50, 20, 20, 1, 30, 50, 20, 2000, 1];
-ub_kslow2 = [5000, 10000, 1];
+ub_kslow2 = [10000, 5000, 1];
 ub_kss = [1, 2000, 100, 1];
 
 % voltages
@@ -78,7 +78,7 @@ for i=1:num_dgn
         protocol_info{2} = volts(j);
          o(j,:) = ikto_biomarkers2(p, protocol_info);
     end
-    response_kto(i,:) = sum(o,1);
+    response_kto(i,:) = mean(o,1);
 end
 toc
 
@@ -104,7 +104,7 @@ for i=1:num_dgn
         protocol_info{2} = volts(j);
          o(j,:) = ikslow1_biomarkers2(p, protocol_info);
     end
-    response_kslow1(i,:) = sum(o,1);
+    response_kslow1(i,:) = mean(o,1);
 end
 toc
 
@@ -131,7 +131,7 @@ for i=1:num_dgn
         protocol_info{2} = volts(j);
          o(j,:) = ikslow2_biomarkers(p, protocol_info);
     end
-    response_kslow2(i,:) = sum(o,1);
+    response_kslow2(i,:) = mean(o,1);
 end
 toc
 
@@ -158,7 +158,7 @@ for i=1:num_dgn
         protocol_info{2} = volts(j);
          o(j,:) = ikss_biomarkers(p, protocol_info);
     end
-    response_kss(i,:) = sum(o,1);
+    response_kss(i,:) = mean(o,1);
 end
 toc
 
@@ -177,7 +177,8 @@ subplot(2,3,1)
 [theta,idx,phiinv] = doe_plot(response_kto(:,1),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
@@ -189,7 +190,8 @@ subplot(2,3,2)
 [theta,idx,phiinv] = doe_plot(response_kto(:,2),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 2', 'FontSize',11,'FontWeight','bold')
@@ -201,7 +203,8 @@ subplot(2,3,3)
 [theta,idx,phiinv] = doe_plot(response_kto(:,3),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
@@ -213,7 +216,8 @@ subplot(2,3,4)
 [theta,idx,phiinv] = doe_plot(response_kto(:,4),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.8,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 4', 'FontSize',11,'FontWeight','bold')
@@ -225,7 +229,8 @@ subplot(2,3,5)
 [theta,idx,phiinv] = doe_plot(response_kto(:,5),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+2,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 5', 'FontSize',11,'FontWeight','bold')
@@ -237,7 +242,8 @@ subplot(2,3,6)
 [theta,idx,phiinv] = doe_plot(response_kto(:,6),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+500,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
@@ -260,7 +266,8 @@ subplot(2,3,1)
 [theta,idx,phiinv] = doe_plot(response_kslow1(:,1),dgn_kslow1);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
@@ -272,7 +279,8 @@ subplot(2,3,2)
 [theta,idx,phiinv] = doe_plot(response_kslow1(:,2),dgn_kslow1);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+1.5,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 2', 'FontSize',11,'FontWeight','bold')
@@ -284,7 +292,8 @@ subplot(2,3,3)
 [theta,idx,phiinv] = doe_plot(response_kslow1(:,3),dgn_kslow1);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
@@ -296,7 +305,8 @@ subplot(2,3,4)
 [theta,idx,phiinv] = doe_plot(response_kslow1(:,4),dgn_kslow1);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+1,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 4', 'FontSize',11,'FontWeight','bold')
@@ -308,7 +318,8 @@ subplot(2,3,5)
 [theta,idx,phiinv] = doe_plot(response_kslow1(:,5),dgn_kslow1);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+1.8,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 5', 'FontSize',11,'FontWeight','bold')
@@ -320,7 +331,8 @@ subplot(2,3,6)
 [theta,idx,phiinv] = doe_plot(response_kslow1(:,6),dgn_kslow1);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+500,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
@@ -343,7 +355,8 @@ subplot(2,3,1)
 [theta,idx,phiinv] = doe_plot(response_kslow2(:,1),dgn_kslow2);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.001,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
@@ -355,7 +368,8 @@ subplot(2,3,2)
 [theta,idx,phiinv] = doe_plot(response_kslow2(:,2),dgn_kslow2);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 2', 'FontSize',11,'FontWeight','bold')
@@ -367,7 +381,8 @@ subplot(2,3,3)
 [theta,idx,phiinv] = doe_plot(response_kslow2(:,3),dgn_kslow2);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.3,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
@@ -379,7 +394,8 @@ subplot(2,3,4)
 [theta,idx,phiinv] = doe_plot(response_kslow2(:,4),dgn_kslow2);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.3,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 4', 'FontSize',11,'FontWeight','bold')
@@ -391,7 +407,8 @@ subplot(2,3,5)
 [theta,idx,phiinv] = doe_plot(response_kslow2(:,5),dgn_kslow2);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.002,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 5', 'FontSize',11,'FontWeight','bold')
@@ -403,7 +420,8 @@ subplot(2,3,6)
 [theta,idx,phiinv] = doe_plot(response_kslow2(:,6),dgn_kslow2);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
@@ -426,7 +444,8 @@ subplot(2,3,1)
 [theta,idx,phiinv] = doe_plot(response_kss(:,1),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.8,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 1', 'FontSize',11,'FontWeight','bold')
@@ -438,7 +457,8 @@ subplot(2,3,2)
 [theta,idx,phiinv] = doe_plot(response_kss(:,2),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.3,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2)-1,'Biomarker 2', 'FontSize',11,'FontWeight','bold')
@@ -450,7 +470,8 @@ subplot(2,3,3)
 [theta,idx,phiinv] = doe_plot(response_kss(:,3),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.07,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 3', 'FontSize',11,'FontWeight','bold')
@@ -462,7 +483,8 @@ subplot(2,3,4)
 [theta,idx,phiinv] = doe_plot(response_kss(:,4),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.03,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2)-0.2,'Biomarker 4', 'FontSize',11,'FontWeight','bold')
@@ -474,7 +496,8 @@ subplot(2,3,5)
 [theta,idx,phiinv] = doe_plot(response_kss(:,5),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+0.5,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2)-2,'Biomarker 5', 'FontSize',11,'FontWeight','bold')
@@ -486,7 +509,8 @@ subplot(2,3,6)
 [theta,idx,phiinv] = doe_plot(response_kss(:,6),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i)+100,int2str(idx(i)),'FontSize',10);
+    text(phiinv(i),theta(i),int2str(idx(i)),'FontSize',10,...
+        'VerticalAlignment','bottom','HorizontalAlignment','left');
 end
 NW = [min(xlim) max(ylim)]+[diff(xlim) -diff(ylim)]*0.05;
 text(NW(1),NW(2),'Biomarker 6', 'FontSize',11,'FontWeight','bold')
@@ -510,8 +534,8 @@ dgn_kslow2 = table2array(readtable('ikslow2_dgn.csv'));
 dgn_kss = table2array(readtable('ikss_dgn.csv'));
 
 c = parula(5);
-
-fig = figure('Color','w','Position',[100,100,900,1200]);
+% ,'Position',[100,100,900,1200]
+fig = figure('Color','w');
 orient(fig,'landscape')
 
 % biomarker 1
@@ -539,7 +563,7 @@ for i=1:length(theta)
 end
 
 % kss
-[theta,idx,phiinv] = doe_plot(response_kslow2(:,1),dgn_kslow2);
+[theta,idx,phiinv] = doe_plot(response_kss(:,1),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
 for i=1:length(theta)
     text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
@@ -575,7 +599,7 @@ for i=1:length(theta)
 end
 
 % kss
-[theta,idx,phiinv] = doe_plot(response_kslow2(:,2),dgn_kslow2);
+[theta,idx,phiinv] = doe_plot(response_kss(:,2),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
 for i=1:length(theta)
     text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
@@ -611,7 +635,7 @@ for i=1:length(theta)
 end
 
 % kss
-[theta,idx,phiinv] = doe_plot(response_kslow2(:,3),dgn_kslow2);
+[theta,idx,phiinv] = doe_plot(response_kss(:,3),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
 for i=1:length(theta)
     text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
@@ -647,7 +671,7 @@ for i=1:length(theta)
 end
 
 % kss
-[theta,idx,phiinv] = doe_plot(response_kslow2(:,4),dgn_kslow2);
+[theta,idx,phiinv] = doe_plot(response_kss(:,4),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
 for i=1:length(theta)
     text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
@@ -683,7 +707,7 @@ for i=1:length(theta)
 end
 
 % kss
-[theta,idx,phiinv] = doe_plot(response_kslow2(:,5),dgn_kslow2);
+[theta,idx,phiinv] = doe_plot(response_kss(:,5),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
 for i=1:length(theta)
     text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
@@ -719,7 +743,7 @@ for i=1:length(theta)
 end
 
 % kss
-[theta,idx,phiinv] = doe_plot(response_kslow2(:,6),dgn_kslow2);
+[theta,idx,phiinv] = doe_plot(response_kss(:,6),dgn_kss);
 plot(phiinv,theta,'+','MarkerSize',10,'Color',c(4,:),'LineWidth',1.5)
 for i=1:length(theta)
     text(phiinv(i),theta(i)+0.2,int2str(idx(i)),'FontSize',10);
@@ -735,7 +759,7 @@ clc
 clearvars
 close all
 
-load('response_kto`.mat')
+load('response_kto.mat')
 load('response_kslow1.mat')
 load('response_kslow2.mat')
 load('response_kss.mat')
@@ -747,12 +771,12 @@ dgn_kss = table2array(readtable('ikss_dgn.csv'));
 
 c = parula(5);
 
-fig = figure('Color','w','Position',[100,100,500,680]);
+fig = figure('Color','w','Position',[100,100,770,420]);
 orient(fig,'landscape')
 
 % biomarker 1
 % kto
-subplot(3,2,1)
+subplot(2,3,1)
 [theta,idx,phiinv] = doe_plot(normalize(response_kto(:,1),'range'),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',8,'Color',c(1,:),'LineWidth',1.5)
 for i=1:length(theta)
@@ -781,8 +805,6 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"],...
-    'Location','northeast','Box','off')
 title("Anchor Point 1")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
@@ -790,7 +812,7 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % biomarker 2
 % kto
-subplot(3,2,2)
+subplot(2,3,2)
 [theta,idx,phiinv] = doe_plot(normalize(response_kto(:,2),'range'),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',8,'Color',c(1,:),'LineWidth',1.5)
 for i=1:length(theta)
@@ -826,7 +848,7 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % biomarker 3
 % kto
-subplot(3,2,3)
+subplot(2,3,3)
 [theta,idx,phiinv] = doe_plot(normalize(response_kto(:,3),'range'),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',8,'Color',c(1,:),'LineWidth',1.5)
 for i=1:length(theta)
@@ -862,7 +884,7 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % biomarker 4
 % kto
-subplot(3,2,4)
+subplot(2,3,4)
 [theta,idx,phiinv] = doe_plot(normalize(response_kto(:,4),'range'),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',8,'Color',c(1,:),'LineWidth',1.5)
 for i=1:length(theta)
@@ -898,7 +920,7 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % biomarker 5
 % kto
-subplot(3,2,5)
+subplot(2,3,5)
 [theta,idx,phiinv] = doe_plot(normalize(response_kto(:,5),'range'),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',8,'Color',c(1,:),'LineWidth',1.5)
 for i=1:length(theta)
@@ -934,7 +956,7 @@ set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % biomarker 6
 % kto
-subplot(3,2,6)
+subplot(2,3,6)
 [theta,idx,phiinv] = doe_plot(normalize(response_kto(:,6),'range'),dgn_kto);
 plot(phiinv,theta,'+','MarkerSize',8,'Color',c(1,:),'LineWidth',1.5)
 for i=1:length(theta)
@@ -963,6 +985,8 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"],...
+    'Location','northeast')
 title("Anchor Point 6")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
