@@ -805,7 +805,7 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-title("Anchor Point 1")
+title("Marker a")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
 set(gca,'FontWeight','bold','LineWidth',1.5)
@@ -841,7 +841,7 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-title("Anchor Point 2")
+title("Marker b")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
 set(gca,'FontWeight','bold','LineWidth',1.5)
@@ -877,7 +877,9 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-title("Anchor Point 3")
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"],...
+    'Location','northeast')
+title("Marker c")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
 set(gca,'FontWeight','bold','LineWidth',1.5)
@@ -913,7 +915,7 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-title("Anchor Point 4")
+title("Marker d")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
 set(gca,'FontWeight','bold','LineWidth',1.5)
@@ -949,7 +951,7 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-title("Anchor Point 5")
+title("Marker e")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
 set(gca,'FontWeight','bold','LineWidth',1.5)
@@ -985,9 +987,7 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"],...
-    'Location','northeast')
-title("Anchor Point 6")
+title("Marker f")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
 set(gca,'FontWeight','bold','LineWidth',1.5)
