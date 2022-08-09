@@ -792,10 +792,11 @@ for i=1:length(theta)
 end
 
 % kslow2
-[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,1),'range'),dgn_kslow2);
+idx_kslow2 = [2,1];
+[theta,~,phiinv] = doe_plot(normalize(response_kslow2(:,1),'range'),dgn_kslow2);
 plot(phiinv,theta,'*','MarkerSize',8,'Color',c(3,:),'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
+    text(phiinv(i),theta(i),int2str(i),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 
 % kss
@@ -806,6 +807,8 @@ for i=1:length(theta)
 end
 hold off
 title("Marker a")
+legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"],...
+    'Location','northeast')
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
 set(gca,'FontWeight','bold','LineWidth',1.5)
@@ -828,10 +831,10 @@ for i=1:length(theta)
 end
 
 % kslow2
-[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,2),'range'),dgn_kslow2);
+[theta,~,phiinv] = doe_plot(normalize(response_kslow2(:,2),'range'),dgn_kslow2);
 plot(phiinv,theta,'*','MarkerSize',8,'Color',c(3,:),'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
+    text(phiinv(i),theta(i),int2str(i),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 
 % kss
@@ -864,10 +867,10 @@ for i=1:length(theta)
 end
 
 % kslow2
-[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,3),'range'),dgn_kslow2);
+[theta,~,phiinv] = doe_plot(normalize(response_kslow2(:,3),'range'),dgn_kslow2);
 plot(phiinv,theta,'*','MarkerSize',8,'Color',c(3,:),'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
+    text(phiinv(i),theta(i),int2str(i),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 
 % kss
@@ -877,8 +880,6 @@ for i=1:length(theta)
     text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 hold off
-legend(["I_{Kto}","I_{Kslow1}","I_{Kslow2}","I_{Kss}"],...
-    'Location','northeast')
 title("Marker c")
 xlabel('Half-normal Quantiles')
 ylabel('Normalized Absolute Effects')
@@ -902,10 +903,10 @@ for i=1:length(theta)
 end
 
 % kslow2
-[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,4),'range'),dgn_kslow2);
+[theta,~,phiinv] = doe_plot(normalize(response_kslow2(:,4),'range'),dgn_kslow2);
 plot(phiinv,theta,'*','MarkerSize',8,'Color',c(3,:),'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
+    text(phiinv(i),theta(i),int2str(i),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 
 % kss
@@ -938,10 +939,10 @@ for i=1:length(theta)
 end
 
 % kslow2
-[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,5),'range'),dgn_kslow2);
+[theta,~,phiinv] = doe_plot(normalize(response_kslow2(:,5),'range'),dgn_kslow2);
 plot(phiinv,theta,'*','MarkerSize',8,'Color',c(3,:),'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
+    text(phiinv(i),theta(i),int2str(i),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 
 % kss
@@ -974,10 +975,10 @@ for i=1:length(theta)
 end
 
 % kslow2
-[theta,idx,phiinv] = doe_plot(normalize(response_kslow2(:,6),'range'),dgn_kslow2);
+[theta,~,phiinv] = doe_plot(normalize(response_kslow2(:,6),'range'),dgn_kslow2);
 plot(phiinv,theta,'*','MarkerSize',8,'Color',c(3,:),'LineWidth',1.5)
 for i=1:length(theta)
-    text(phiinv(i),theta(i),int2str(idx(i)),'HorizontalAlignment','right','VerticalAlignment','top');
+    text(phiinv(i),theta(i),int2str(i),'HorizontalAlignment','right','VerticalAlignment','top');
 end
 
 % kss
