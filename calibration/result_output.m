@@ -627,9 +627,9 @@ legend(["WT","MGAT1KO"],'Location','northeast')
 clc
 clearvars
 close all
-load('file_names_4half4.mat')
+load('r2_file_names.mat')
 
-exp_num = "exp45";
+exp_num = "exp51";
 base_dir = fullfile(pwd,strcat("calib_",exp_num));
 
 % pktof
@@ -638,6 +638,8 @@ pidx = unique(pktof.param);
 
 fig = figure('Color','w','Position',[50,50,830,320]);
 orient(fig,'landscape')
+tl = tiledlayout(2,4);
+ylabel(tl,"Frequency",'FontWeight','bold')
 for i=1:length(pidx)
     psub = pktof(pktof.param==pidx(i),:);
     psub_wt = psub(string(psub.Group)=="WT",:);
@@ -646,8 +648,9 @@ for i=1:length(pidx)
 %     [f1,xi1] = ksdensity(psub_wt.value);
 %     [f2,xi2] = ksdensity(psub_ko.value);
     
-    subplot(2,4,i)
+%     subplot(2,4,i)
 %     plot(xi1,f1, 'Color','blue', 'LineWidth',2)
+    nexttile
     h1 = histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5);
     bin_edges1 = h1.BinEdges;
     hold on
@@ -658,7 +661,7 @@ for i=1:length(pidx)
     grid on
     xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
 %     ylabel('Density')
-    ylabel("Frequency")
+%     ylabel("Frequency")
     set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
 
     if i==length(pidx)
@@ -705,7 +708,7 @@ for i=1:length(pidx)
     grid on
     xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
 %     ylabel('Density')
-    ylabel("Frequency")
+%     ylabel("Frequency")
     set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
     
     if i==length(pidx)
@@ -750,7 +753,7 @@ for i=1:length(pidx)
     grid on
     xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
 %     ylabel('Density')
-    ylabel("Frequency")
+%     ylabel("Frequency")
     set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
     
     if i==length(pidx)
@@ -787,7 +790,7 @@ for i=1:length(pidx)
     grid on
     xlabel(strcat("p_{", num2str(pidx(i)), "} Range"))
 %     ylabel('Density')
-    ylabel("Frequency")
+%     ylabel("Frequency")
     set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
 
     if i==length(pidx)
