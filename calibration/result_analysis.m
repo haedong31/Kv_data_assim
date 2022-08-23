@@ -1,3 +1,186 @@
+% Bar graphs
+clc
+close all
+clearvars
+
+exp_num = "exp51";
+calib_dir = strcat("calib_",exp_num);
+
+pa_wt = readtable(fullfile(calib_dir,"r2l2_measures_wt.csv"));
+pa_ko = readtable(fullfile(calib_dir,"r2l2_measures_mgat1ko.csv"));
+
+files_wt = strings(length(pa_wt.file_name),1);
+files_ko = strings(length(pa_ko.file_name),1);
+
+for i=1:length(pa_wt.file_name)
+    [~,files_wt(i),~] = fileparts(pa_wt.file_name{i});
+end
+
+for i=1:length(pa_ko.file_name)
+    [~,files_ko(i),~] = fileparts(pa_ko.file_name{i});
+end
+
+r2_wt = pa_wt.mean_R2;
+l2_wt = pa_wt.mean_L2;
+r2_ko = pa_ko.mean_R2;
+l2_ko = pa_ko.mean_L2;
+
+% Without the worst fitting point in MGAT1KO
+[~,rmv_idx1] = mink(r2_wt,2);
+[~,rmv_idx2] = min(r2_ko);
+
+files_wt(rmv_idx1) = [];
+files_wt = categorical(files_wt);
+r2_wt(rmv_idx1) = [];
+files_ko(rmv_idx2) = [];
+files_ko = categorical(files_ko);
+r2_ko(rmv_idx2) = [];
+
+figure('Color','w','Position',[0,0,500,650])
+subplot(6,4,[1,5,9])
+barh(files_wt, r2_wt,'b');
+xlim([0,1])
+grid on
+title("WT")
+% xlabel("Nonlinear R^{2}")
+set(gca,'FontWeight','bold')
+
+subplot(6,4,[13,17,21])
+barh(files_ko,r2_ko,'r')
+xlim([0,1])
+grid on
+title("MGAT1KO")
+xlabel("Nonlinear R^{2}")
+set(gca,'FontWeight','bold')
+
+% Representative example of showing actual fitness
+volts = -30:10:50;
+[~,max_wt] = max(r2_wt);
+exp_data = table2array(...
+    readtable(fullfile("mgat1ko_data/wt-preprocessed",pa_wt.file_name{max_wt})));
+yksum = table2array(...
+    readtable(fullfile(calib_dir,"wt_yhat",pa_wt.file_name{max_wt})));
+t = exp_data(:,1);
+pa_row = pa_wt(string(pa_wt.file_name) == pa_wt.file_name{max_wt},:);
+
+for i=1:size(yksum,2)
+    yi = exp_data(:,i+1);
+    yhati = yksum(:,i);
+    r2 = pa_row{1,2+(i-1)*2};
+    l2 = pa_row{1,3+(i-1)*2};
+
+    if ismember(i,1:3)
+        subplot(6,4,1+i)
+        plot(t,yi,'Color','magenta')
+        hold on
+        plot(t,yhati,'--','Color','green','LineWidth',1.5)
+        hold off
+        axis tight
+        grid on
+        title(strcat(...
+            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
+        xlabel("Time (ms)")
+        ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5);
+        set(gca,'GridLineStyle','--')
+    end
+
+    if ismember(i,4:6)
+        subplot(6,4,2+i)
+        plot(t,yi,'Color','magenta')
+        hold on
+        plot(t,yhati,'--','Color','green','LineWidth',1.5)
+        hold off
+        axis tight
+        grid on
+        title(strcat(...
+            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
+        xlabel("Time (ms)")
+        ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5);
+        set(gca,'GridLineStyle','--')        
+    end
+
+    if ismember(i,7:9)
+        subplot(6,4,3+i)
+        plot(t,yi,'Color','magenta')
+        hold on
+        plot(t,yhati,'--','Color','green','LineWidth',1.5)
+        hold off
+        axis tight
+        grid on
+        title(strcat(...
+            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
+        xlabel("Time (ms)")
+        ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5);
+        set(gca,'GridLineStyle','--')        
+    end
+end
+
+[~,max_ko] = max(r2_ko);
+exp_data = table2array(...
+    readtable(fullfile("mgat1ko_data/mgat1ko-preprocessed",pa_ko.file_name{max_ko})));
+yksum = table2array(...
+    readtable(fullfile(calib_dir,"mgat1ko_yhat",pa_ko.file_name{max_ko})));
+t = exp_data(:,1);
+pa_row = pa_ko(string(pa_ko.file_name) == pa_ko.file_name{max_ko},:);
+
+for i=1:size(yksum,2)
+    yi = exp_data(:,i+1);
+    yhati = yksum(:,i);
+    r2 = pa_row{1,2+(i-1)*2};
+    l2 = pa_row{1,3+(i-1)*2};
+
+    if ismember(i,1:3)
+        subplot(6,4,13+i)
+        plot(t,yi,'Color','magenta')
+        hold on
+        plot(t,yhati,'--','Color','green','LineWidth',1.5)
+        hold off
+        axis tight
+        grid on
+        title(strcat(...
+            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
+        xlabel("Time (ms)")
+        ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5);
+        set(gca,'GridLineStyle','--')
+    end
+
+    if ismember(i,4:6)
+        subplot(6,4,14+i)
+        plot(t,yi,'Color','magenta')
+        hold on
+        plot(t,yhati,'--','Color','green','LineWidth',1.5)
+        hold off
+        axis tight
+        grid on
+        title(strcat(...
+            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
+        xlabel("Time (ms)")
+        ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5);
+        set(gca,'GridLineStyle','--')        
+    end
+
+    if ismember(i,7:9)
+        subplot(6,4,15+i)
+        plot(t,yi,'Color','magenta')
+        hold on
+        plot(t,yhati,'--','Color','green','LineWidth',1.5)
+        hold off
+        axis tight
+        grid on
+        title(strcat(...
+            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
+        xlabel("Time (ms)")
+        ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5);
+        set(gca,'GridLineStyle','--')        
+    end
+end
+
 %% protocol
 clc
 clearvars
@@ -9,7 +192,7 @@ current_names = {'iktof','ikslow1','ikslow2','ikss'};
 tune_idx = cell(5,1);
 tune_idx{1} = [1, 2, 4, 5, 7, 11, 13];
 tune_idx{2} = [2, 3];
-tune_idx{3} = [1, 2, 4, 5, 9, 10, 11];
+tune_idx{3} = [1, 2, 4, 5, 9, 10 11];
 tune_idx{4} = [2, 3];
 tune_idx{5} = [1, 2, 3, 4];
 [mdl_struct,psize] = gen_mdl_struct(current_names,tune_idx);
