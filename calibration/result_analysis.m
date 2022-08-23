@@ -1,4 +1,4 @@
-% Bar graphs
+%----- Bar graphs
 clc
 close all
 clearvars
@@ -25,35 +25,36 @@ l2_wt = pa_wt.mean_L2;
 r2_ko = pa_ko.mean_R2;
 l2_ko = pa_ko.mean_L2;
 
-% Without the worst fitting point in MGAT1KO
+%----- Without the worst fitting point in MGAT1KO
 [~,rmv_idx1] = mink(r2_wt,2);
 [~,rmv_idx2] = min(r2_ko);
 
 files_wt(rmv_idx1) = [];
-files_wt = categorical(files_wt);
+% files_wt = categorical(files_wt);
 r2_wt(rmv_idx1) = [];
 files_ko(rmv_idx2) = [];
-files_ko = categorical(files_ko);
+% files_ko = categorical(files_ko);
 r2_ko(rmv_idx2) = [];
 
-figure('Color','w','Position',[0,0,500,650])
+fig = figure('Color','w','Position',[0,0,500,610]);
+orient(fig,'landscape')
 subplot(6,4,[1,5,9])
-barh(files_wt, r2_wt,'b');
+barh(categorical(1:length(files_wt)), r2_wt,'b');
 xlim([0,1])
 grid on
-title("WT")
+% title("WT")
 % xlabel("Nonlinear R^{2}")
 set(gca,'FontWeight','bold')
 
 subplot(6,4,[13,17,21])
-barh(files_ko,r2_ko,'r')
+barh(categorical(1:length(files_ko)),r2_ko,'r')
 xlim([0,1])
 grid on
-title("MGAT1KO")
-xlabel("Nonlinear R^{2}")
+% title("MGAT1KO")
+% xlabel("Nonlinear R^{2}")
 set(gca,'FontWeight','bold')
 
-% Representative example of showing actual fitness
+%----- Representative example of showing actual fitness
 volts = -30:10:50;
 [~,max_wt] = max(r2_wt);
 exp_data = table2array(...
@@ -69,7 +70,7 @@ for i=1:size(yksum,2)
     r2 = pa_row{1,2+(i-1)*2};
     l2 = pa_row{1,3+(i-1)*2};
 
-    if ismember(i,1:3)
+    if i==1
         subplot(6,4,1+i)
         plot(t,yi,'Color','magenta')
         hold on
@@ -78,10 +79,26 @@ for i=1:size(yksum,2)
         axis tight
         grid on
         title(strcat(...
-            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
-        xlabel("Time (ms)")
-        ylabel("Current (pA/pF)")
-        set(gca,'LineWidth',1.5);
+            string(volts(i))," mV / ",num2str(round(r2,4))));
+%         xlabel("Time (ms)")
+        ylabel(" ")
+        set(gca,'LineWidth',1.5,'FontWeight','bold');
+        set(gca,'GridLineStyle','--')
+    end
+
+    if ismember(i,2:3)
+        subplot(6,4,1+i)
+        plot(t,yi,'Color','magenta')
+        hold on
+        plot(t,yhati,'--','Color','green','LineWidth',1.5)
+        hold off
+        axis tight
+        grid on
+        title(strcat(...
+            string(volts(i))," mV / ",num2str(round(r2,4))));
+%         xlabel("Time (ms)")
+%         ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5,'FontWeight','bold');
         set(gca,'GridLineStyle','--')
     end
 
@@ -94,10 +111,10 @@ for i=1:size(yksum,2)
         axis tight
         grid on
         title(strcat(...
-            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
-        xlabel("Time (ms)")
-        ylabel("Current (pA/pF)")
-        set(gca,'LineWidth',1.5);
+            string(volts(i))," mV / ",num2str(round(r2,4))));
+%         xlabel("Time (ms)")
+%         ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5,'FontWeight','bold');
         set(gca,'GridLineStyle','--')        
     end
 
@@ -110,10 +127,10 @@ for i=1:size(yksum,2)
         axis tight
         grid on
         title(strcat(...
-            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
-        xlabel("Time (ms)")
-        ylabel("Current (pA/pF)")
-        set(gca,'LineWidth',1.5);
+            string(volts(i))," mV / ",num2str(round(r2,4))));
+%         xlabel("Time (ms)")
+%         ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5,'FontWeight','bold');
         set(gca,'GridLineStyle','--')        
     end
 end
@@ -141,10 +158,10 @@ for i=1:size(yksum,2)
         axis tight
         grid on
         title(strcat(...
-            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
-        xlabel("Time (ms)")
-        ylabel("Current (pA/pF)")
-        set(gca,'LineWidth',1.5);
+            string(volts(i))," mV / ",num2str(round(r2,4))));
+%         xlabel("Time (ms)")
+%         ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5,'FontWeight','bold');
         set(gca,'GridLineStyle','--')
     end
 
@@ -157,10 +174,10 @@ for i=1:size(yksum,2)
         axis tight
         grid on
         title(strcat(...
-            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
-        xlabel("Time (ms)")
-        ylabel("Current (pA/pF)")
-        set(gca,'LineWidth',1.5);
+            string(volts(i))," mV / ",num2str(round(r2,4))));
+%         xlabel("Time (ms)")
+%         ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5,'FontWeight','bold');
         set(gca,'GridLineStyle','--')        
     end
 
@@ -173,10 +190,10 @@ for i=1:size(yksum,2)
         axis tight
         grid on
         title(strcat(...
-            string(volts(i))," mV /"," R^{2} ",num2str(round(r2,2))));
-        xlabel("Time (ms)")
-        ylabel("Current (pA/pF)")
-        set(gca,'LineWidth',1.5);
+            string(volts(i))," mV / ",num2str(round(r2,4))));
+%         xlabel("Time (ms)")
+%         ylabel("Current (pA/pF)")
+        set(gca,'LineWidth',1.5,'FontWeight','bold');
         set(gca,'GridLineStyle','--')        
     end
 end
