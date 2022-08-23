@@ -31,9 +31,9 @@ def melt_param(pdf_wt, pdf_ko):
     pdf = pd.concat([pdf_wt, pdf_ko], ignore_index=True)
     return pdf.melt(id_vars=['Group','file'], var_name='param')
     
-exp_num =  '45'
+exp_num =  '51'
 currents = ['iktof','ikslow1','ikslow2','ikss']
-idx_dict = {'iktof': [1, 2, 4, 5, 7, 11, 13],
+idx_dict = {'iktof': [1, 2, 3, 4, 5, 7, 11, 13],
     'iktos': [2, 3],
     'ikslow1': [1, 2, 4, 5, 9, 10, 11],
     'ikslow2': [2, 3],
