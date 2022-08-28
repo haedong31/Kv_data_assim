@@ -1,4 +1,4 @@
-%----- Bar graphs
+%% Model fitness - nonlinear R-squared measure
 clc
 close all
 clearvars
@@ -25,7 +25,7 @@ l2_wt = pa_wt.mean_L2;
 r2_ko = pa_ko.mean_R2;
 l2_ko = pa_ko.mean_L2;
 
-%----- Without the worst fitting point in MGAT1KO
+%----- Without the worst fitting point in MGAT1KO -----%
 [~,rmv_idx1] = mink(r2_wt,2);
 [~,rmv_idx2] = min(r2_ko);
 
@@ -36,7 +36,7 @@ files_ko(rmv_idx2) = [];
 % files_ko = categorical(files_ko);
 r2_ko(rmv_idx2) = [];
 
-fig = figure('Color','w','Position',[0,0,500,610]);
+fig = figure('Color','w','Position',[0,0,750,600]);
 orient(fig,'landscape')
 subplot(6,4,[1,5,9])
 barh(categorical(1:length(files_wt)), r2_wt,'b');
@@ -54,7 +54,7 @@ grid on
 % xlabel("Nonlinear R^{2}")
 set(gca,'FontWeight','bold')
 
-%----- Representative example of showing actual fitness
+%----- Representative example of showing actual fitness -----%
 volts = -30:10:50;
 [~,max_wt] = max(r2_wt);
 exp_data = table2array(...
@@ -132,6 +132,11 @@ for i=1:size(yksum,2)
 %         ylabel("Current (pA/pF)")
         set(gca,'LineWidth',1.5,'FontWeight','bold');
         set(gca,'GridLineStyle','--')        
+
+        if i==9
+            legend(["Experimental I_{K}", "Model Prediction"])
+            legend Box off
+        end
     end
 end
 
@@ -198,7 +203,8 @@ for i=1:size(yksum,2)
     end
 end
 
-%% protocol
+%% Model fitness - RMSE
+%----- protocol -----%
 clc
 clearvars
 close all
@@ -230,7 +236,7 @@ protocol = cell(6,1);
 protocol{1} = -70; % hold_volt
 protocol{2} = -91.1; % ek
 
-%% RMSE bar graph and current fitting
+%----- RMSE bar graph and current fitting -----%
 % plot 1
 fig = figure('Color','w','Position',[50,50,900,350]);
 orient(fig,'landscape')
@@ -383,8 +389,8 @@ xlabel("Time (ms)")
 ylabel("Current (pA/pF)")
 set(gca,'FontWeight','bold')
 
-%% kinetics modeling
-exp_num = "exp45";
+%% Kinetics modeling - Estimation
+exp_num = "exp51";
 volts = -100:10:70;
 sol_dir = fullfile(pwd,strcat("calib_",exp_num));
 
@@ -449,8 +455,7 @@ for i=1:length(files_ko)
     end
 end
 
-%% plot kinetics modeling results
-% ikto 2x2
+%% Kinetics modeling visualization - IKto
 clc
 close all
 
@@ -524,8 +529,7 @@ xlabel("Voltage (mV)")
 ylabel("\tau_{i}^{(1)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
-%% plot kinetics modeling results
-% rectifier currents
+%% Kinetics modeling visualization - Rectifier currents
 clc
 close all
 
@@ -623,7 +627,7 @@ ylabel("\tau_{a}^{(4)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 legend(["WT","MGAT1KO"],'Location','northeast')
 
-%% parameter distribution
+%% Parameter distribution
 clc
 clearvars
 close all
@@ -806,28 +810,41 @@ for i=1:length(pidx)
     pkss2(:,i+1)= pkss(pkss.param==pidx(i),'value');
 end
 
-%% clustering
+%% Low-dimensional embedding
 clc
 close all
 
-g = NaN(size(pktof2,1),1);
-g(pktof2.Group=="Mgat1KO") = 1;
-g(pktof2.Group=="WT") = 2;
-c = brewermap(length(unique(g)),'Set1');
+% g = NaN(size(pktof2,1),1);
+% g(pktof2.Group=="Mgat1KO") = 1;
+% g(pktof2.Group=="WT") = 2;
+% c = brewermap(length(unique(g)),'Set1');
+c = NaN(size(pktof2,1),3);
+idx1 = pktof2.Group=="WT";
+idx2 = pktof2.Group=="Mgat1KO";
+
+c(idx1,:) = repmat([0 0 1],sum(idx1),1);
+c(idx2,:) = repmat([1 0 0],sum(idx2),1);
+
 pmx = [table2array(pktof2(:,3:end)),table2array(pkslow12(:,2:end)),table2array(pkslow22(:,2:end)),table2array(pkss2(:,2:end))];
 
-rng(228)
-figure('Color','w','Position',[100,100,560,510])
+rng(2118)
 embd = tsne(normalize(pmx),'Algorithm','exact','Distance','minkowski','NumDimensions',3);
-scatter3(embd(g==1,1),embd(g==1,2),embd(g==1,3),'o','filled','CData',c(g(g==1),:))
+
+figure('Color','w','Position',[100,100,560,510])
+s1 = scatter3(embd(idx1,1),embd(idx1,2),embd(idx1,3),'o','CData',c(pktof2.Group=="WT",:));
+s1.SizeData = 90;
+s1.LineWidth = 1.5;
 hold on
-scatter3(embd(g==2,1),embd(g==2,2),embd(g==2,3),'^','filled','CData',c(g(g==2),:))
+s2 = scatter3(embd(idx2,1),embd(idx2,2),embd(idx2,3),'^','CData',c(pktof2.Group=="Mgat1KO",:));
+s2.SizeData = 90;
+s2.LineWidth = 1.5;
 hold off
 xlabel("Embedding Dim1")
 ylabel("Embedding Dim2")
 zlabel("Embedding Dim3")
 axis tight
-legend(["MGAT1KO","WT"],'location','best')
+grid off
+legend(["WT","MGAT1KO"],'location','best')
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 
