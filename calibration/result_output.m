@@ -390,8 +390,37 @@ ylabel("Current (pA/pF)")
 set(gca,'FontWeight','bold')
 
 %% Kinetics modeling - Estimation
+clc
+close all
+
+%----- protocol -----%
+load("file_names_4half4.mat")
+
 exp_num = "exp51";
+current_names = {'iktof','ikslow1','ikslow2','ikss'};
+tune_idx = cell(5,1);
+tune_idx{1} = [1, 2, 3, 4, 5, 7, 11, 13];
+tune_idx{2} = [2, 3];
+tune_idx{3} = [1, 2, 4, 5, 9, 10 11];
+tune_idx{4} = [2, 3];
+tune_idx{5} = [1, 2, 3, 4];
+[mdl_struct,psize] = gen_mdl_struct(current_names,tune_idx);
+
+pdefault = cell(5,1);
+pdefault{1} = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
+    0.000152, 0.067083, 0.00095, 0.051335, 0.3846];
+pdefault{2} = [-1050, 270, 0.0629];
+pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
+pdefault{4} = [4912, 5334, 0.16];
+pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
+
 volts = -100:10:70;
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
+
+protocol = cell(6,1);
+protocol{1} = -70; % hold_volt
+protocol{2} = -91.1; % ek
 sol_dir = fullfile(pwd,strcat("calib_",exp_num));
 
 atof_wt = NaN(length(files_wt),length(volts));
@@ -845,7 +874,7 @@ zlabel("Embedding Dim3")
 axis tight
 grid off
 legend(["WT","MGAT1KO"],'location','best')
-set(gca,'FontWeight','bold','LineWidth',1.5)
+set(gca,'FontWeight','bold','FontSize',14,'LineWidth',1.5)
 
 
 %% custom functions
