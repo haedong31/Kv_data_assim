@@ -1,9 +1,55 @@
+@article{chen2019heterogeneous,
+  title={Heterogeneous recurrence analysis of disease-altered spatiotemporal patterns in multi-channel cardiac signals},
+  author={Chen, Ruimin and Imani, Farhad and Yang, Hui},
+  journal={IEEE journal of biomedical and health informatics},
+  volume={24},
+  number={6},
+  pages={1619--1631},
+  year={2019},
+  publisher={IEEE},
+  doi={10.1109/JBHI.2019.2952285}
+}
+
+@article{meyers2020cross,
+  title={Cross-recurrence analysis for pattern matching of multidimensional physiological signals<? A3B2 show [feature]?>},
+  author={Meyers, Adam and Buqammaz, Mohammed and Yang, Hui},
+  journal={Chaos: An Interdisciplinary Journal of Nonlinear Science},
+  volume={30},
+  number={12},
+  pages={123125},
+  year={2020},
+  publisher={AIP Publishing LLC},
+  doi={10.1063/5.0030838}
+}
+
 @techreport{murphy2021mortality,
   title={Mortality in the United States, 2020},
   author={Murphy, Sherry L and Kochanek, Kenneth D and Xu, Jiaquan and Arias, Elizabeth},
   year={2021},
   institution={Centers for Disease Control and Prevention},
   note={Available online at: \url{https://www.cdc.gov/nchs/data/databriefs/db427.pdf}}
+}
+
+@article{yang2010multiscale,
+  title={Multiscale recurrence quantification analysis of spatial cardiac vectorcardiogram signals},
+  author={Yang, Hui},
+  journal={IEEE Transactions on Biomedical Engineering},
+  volume={58},
+  number={2},
+  pages={339--347},
+  year={2010},
+  publisher={IEEE},
+  doi={10.1109/TBME.2010.2063704}
+}
+
+@inproceedings{yang2016whole,
+  title={Whole heart modeling—Spatiotemporal dynamics of electrical wave conduction and propagation},
+  author={Yang, Hui and Chen, Yun and Leonelli, Fabio M},
+  booktitle={2016 38th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC)},
+  pages={5575--5578},
+  year={2016},
+  organization={IEEE},
+  doi={10.1109/EMBC.2016.7591990}
 }
 
 @article{yang2020network,
