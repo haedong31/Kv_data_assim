@@ -1,0 +1,18 @@
+@techreport{murphy2021mortality,
+  title={Mortality in the United States, 2020},
+  author={Murphy, Sherry L and Kochanek, Kenneth D and Xu, Jiaquan and Arias, Elizabeth},
+  year={2021},
+  institution={Centers for Disease Control and Prevention},
+  note={Available online at: \url{https://www.cdc.gov/nchs/data/databriefs/db427.pdf}}
+}
+
+@article{yang2020network,
+  title={Network modeling and Internet of things for smart and connected health systems—a case study for smart heart health monitoring and management},
+  author={Yang, Hui and Kan, Chen and Krall, Alexander and Finke, Daniel},
+  journal={IISE Transactions on Healthcare Systems Engineering},
+  volume={10},
+  number={3},
+  pages={159--171},
+  year={2020}
+  publisher={Taylor \& Francis}
+}
