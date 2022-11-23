@@ -37,14 +37,17 @@ vstep = 10;
 num_steps = 9;
 ek = -91.1;
 
-protocol = cell(8,1);
-protocol{7} = 120; % ideal holding time
-protocol{8} = 4.6*1000; % ideal end time
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
 
 % save time information later when experimental data imlported
+protocol = cell(8,1);
 protocol{1} = holdv;
 protocol{2} = ek;
 protocol{3} = minv:vstep:(minv+vstep*(num_steps-1));
+
+protocol{7} = 120; % ideal holding time
+protocol{8} = 4.6*1000; % ideal end time
 
 % meta data of experimental datasets
 matching_table = readtable(fullfile(pwd,"mgat1ko_data",strcat("matching-table-",group,".xlsx")));
@@ -56,6 +59,7 @@ file_names(cellfun(@isempty,file_names)) = [];
 file_names = string(file_names);
 num_files = length(file_names);
 
+%----- Optimization loop (populational) -----%
 % import experimental data
 ds = cell(1,num_files);
 for i=1:num_files
@@ -63,8 +67,6 @@ for i=1:num_files
     ds{i} = readtable(fpath);
 end
 
-%% populational model opt
-%----- Optimization loop -----%
 num_iters = 2;
 options = optimoptions(@fmincon, ...
     'Algorithm','interior-point','Display','off', ...
@@ -83,7 +85,7 @@ tic
 toc
 save_sol(pop_sol,fullfile(pwd,save_dir,"pop_sol.xlsx"),mdl_struct,pdefault);
 
-%% individual models
+%----- Optimization loop (individual) -----%
 outf = fopen(strcat(exp_num,"_",group,".txt"), 'w');
 for i = 1:num_files
     tic
