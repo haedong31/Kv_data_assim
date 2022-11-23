@@ -4,7 +4,7 @@ clearvars
 warning('off', 'all')
 
 %----- Code arguments & Model information %-----
-group = "ko";
+group = "wt";
 exp_num = "exp45";
 save_dir = strcat("calib_",exp_num,"_",group);
 mkdir(fullfile(pwd,save_dir))
@@ -13,11 +13,11 @@ mkdir(fullfile(pwd,save_dir))
 current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
 
 tune_idx = cell(5,1); % iktof, iktos, ikslow1, ikslow2, ikss
-tune_idx{1} = [1, 2, 4, 5, 7, 11, 13];
-% tune_idx{2} = [2, 3];
-tune_idx{3} = [1, 2, 4, 5, 9, 10, 11];
-tune_idx{4} = [2, 3];
-tune_idx{5} = [1, 2, 3, 4];
+tune_idx{1} = [1,2,3,4,5,7,11,13];
+tune_idx{2} = [2,3];
+tune_idx{3} = [1,2,4,5,9,10,11];
+tune_idx{4} = [1,2,3];
+tune_idx{5} = [1,2,3,4];
 
 pdefault = cell(5,1);
 pdefault{1} = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
