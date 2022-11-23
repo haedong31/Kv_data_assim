@@ -3,29 +3,29 @@ close all
 clearvars
 warning('off', 'all')
 
-%----- Code arguments & Model information %-----
+%----- Code arguments & Model information -----%
 group = "wt";
 exp_num = "exp_48";
 save_dir = strcat("calib_",exp_num,"_",group);
 mkdir(fullfile(pwd,save_dir))
 
-% currents to be included
-current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
+% currents to be included: iktof, iktos, ikslow1, ikslow2, ikss
+current_names = {'iktof','ikslow1','ikslow2','ikss'};
 
-tune_idx = cell(5,1); % iktof, iktos, ikslow1, ikslow2, ikss
-tune_idx{1} = [1, 2, 4, 5, 7, 11, 13];
-% tune_idx{2} = [2, 3];
-tune_idx{3} = [1, 2, 4, 5, 9, 10, 11];
-tune_idx{4} = [2, 3];
-tune_idx{5} = [1, 2, 3, 4];
+tune_idx = cell(5,1);
+tune_idx{1} = [1,2,3,4,5,7,11,13];
+tune_idx{2} = [2,3];
+tune_idx{3} = [1,2,4,5,9,10,11];
+tune_idx{4} = [1,2,3];
+tune_idx{5} = [1,2,3,4];
 
 pdefault = cell(5,1);
-pdefault{1} = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
-    0.000152, 0.067083, 0.00095, 0.051335, 0.3846];
-pdefault{2} = [-1050, 270, 0.0629];
-pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
-pdefault{4} = [4912, 5334, 0.16];
-pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
+pdefault{1} = [33,15.5,20,7,0.03577,0.06237,0.18064,0.3956,...
+    0.000152,0.067083,0.00095,0.051335,0.3846];
+pdefault{2} = [-1050,270,0.0629];
+pdefault{3} = [22.5,45.2,40.0,7.7,5.7,0.0629,6.1,18,2.058,803.0,0.16];
+pdefault{4} = [4912,5334,0.16];
+pdefault{5} = [0.0862,1235.5,13.17,0.0611];
 
 [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx);
 [p0, lb, ub] = gen_param_bounds(mdl_struct, psize, pdefault);
@@ -46,28 +46,26 @@ protocol{1} = holdv;
 protocol{2} = ek;
 protocol{3} = minv:vstep:(minv+vstep*(num_steps-1));
 
-protocol{7} = 120; % ideal holding time
-protocol{8} = 4.6*1000; % ideal end time
-
-% meta data of experimental datasets
-matching_table = readtable(fullfile(pwd,"mgat1ko_data",strcat("matching-table-",group,".xlsx")));
-file_names = matching_table.trace_file_name_4half;
-data_dir = fullfile("mgat1ko_data",strcat(group,"-preprocessed"));
-
-% exclude null rows
-file_names(cellfun(@isempty,file_names)) = [];
-file_names = string(file_names);
-num_files = length(file_names);
+% protocol{7} = 120; % ideal holding time
+% protocol{8} = 4.6*1000; % ideal end time
 
 %----- Optimization loop (populational) -----%
-% import experimental data
-ds = cell(1,num_files);
-for i=1:num_files
-    fpath = fullfile(pwd,data_dir,file_names(i));
-    ds{i} = readtable(fpath);
+% meta data of experimental datasets
+matching_table = readtable(fullfile(pwd,"mgat1ko_data",strcat("matching-table-",group,".xlsx")));
+pop_data_dir = fullfile("mgat1ko_data",strcat(group,"-preprocessed"));
+pop_file_names = matching_table.trace_file_name_4half;
+pop_file_names(cellfun(@isempty,pop_file_names)) = []; % exclude null rows
+pop_file_names = string(pop_file_names);
+num_pop_files = length(pop_file_names);
+
+% import entire set of experimental data
+pop_dset = cell(1,num_pop_files);
+for i=1:num_pop_files
+    fpath = fullfile(pwd,pop_data_dir,pop_file_names(i));
+    pop_dset{i} = readtable(fpath);
 end
 
-num_iters = 2;
+% optimization options for populational model
 options = optimoptions(@fmincon, ...
     'Algorithm','interior-point','Display','off', ...
     'MaxFunctionEvaluations',1e+6,'SpecifyObjectiveGradient',false, ...
@@ -79,13 +77,14 @@ beq = [];
 nonlcon = [];
 
 % obj_rmse_pop(p0,@kcurrent_basic,mdl_struct,pdefault,protocol,ds)
-opt_fun_pop = @(pp) obj_rmse_pop(pp, @kcurrent_basic,mdl_struct,pdefault,protocol,ds);
+opt_fun_pop = @(pp) obj_rmse_pop(pp,@kcurrent_basic,mdl_struct,pdefault,protocol,ds);
 tic
-[pop_sol,fval] = fmincon(opt_fun_pop,p0, A, b, Aeq, beq, lb, ub, nonlcon, options);
+[pop_sol,fval] = fmincon(opt_fun_pop,p0,A,b,Aeq,beq,lb,ub,nonlcon,options);
 toc
 save_sol(pop_sol,fullfile(pwd,save_dir,"pop_sol.xlsx"),mdl_struct,pdefault);
 
 %----- Optimization loop (individual) -----%
+num_iters = 2;
 outf = fopen(strcat(exp_num,"_",group,".txt"), 'w');
 for i = 1:num_files
     tic
