@@ -3,16 +3,16 @@ close all
 clearvars
 warning('off', 'all')
 
-%----- Code arguments & Model information %-----
+%----- Code arguments & Model information -----%
 group = "wt";
 exp_num = "exp45";
 save_dir = strcat("calib_",exp_num,"_",group);
 mkdir(fullfile(pwd,save_dir))
 
-% currents to be included
-current_names = {'iktof', 'ikslow1', 'ikslow2', 'ikss'};
+% currents to be included: iktof, iktos, ikslow1, ikslow2, ikss
+current_names = {'iktof','ikslow1','ikslow2','ikss'};
 
-tune_idx = cell(5,1); % iktof, iktos, ikslow1, ikslow2, ikss
+tune_idx = cell(5,1);
 tune_idx{1} = [1,2,3,4,5,7,11,13];
 tune_idx{2} = [2,3];
 tune_idx{3} = [1,2,4,5,9,10,11];
@@ -20,12 +20,12 @@ tune_idx{4} = [1,2,3];
 tune_idx{5} = [1,2,3,4];
 
 pdefault = cell(5,1);
-pdefault{1} = [33, 15.5, 20, 7, 0.03577, 0.06237, 0.18064, 0.3956, ...
-    0.000152, 0.067083, 0.00095, 0.051335, 0.3846];
-pdefault{2} = [-1050, 270, 0.0629];
-pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
-pdefault{4} = [4912, 5334, 0.16];
-pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
+pdefault{1} = [33,15.5,20,7,0.03577,0.06237,0.18064,0.3956,...
+    0.000152,0.067083,0.00095,0.051335,0.3846];
+pdefault{2} = [-1050,270,0.0629];
+pdefault{3} = [22.5,45.2,40.0,7.7,5.7,0.0629,6.1,18,2.058,803.0,0.16];
+pdefault{4} = [4912,5334,0.16];
+pdefault{5} = [0.0862,1235.5,13.17,0.0611];
 
 [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx);
 [p0, lb, ub] = gen_param_bounds(mdl_struct, psize, pdefault);
@@ -75,12 +75,12 @@ for i = 1:num_files
     running_file = file_names(i);
     file_path = fullfile(pwd,data_dir,running_file);
     trace_data = table2array(readtable(file_path));
-    t = trace_data(:, 1);
+    t = trace_data(:,1);
     yksum = trace_data(:,2:end);
 
     % estimate the critical time points
-    [~,ideal_hold_idx] = min(abs(t - ideal_hold_time));
-    [~,ideal_end_idx] = min(abs(t - ideal_end_time));
+    [~,ideal_hold_idx] = min(abs(t-ideal_hold_time));
+    [~,ideal_end_idx] = min(abs(t-ideal_end_time));
     t = t(1:ideal_end_idx);
     yksum = yksum(1:ideal_end_idx,:);
 
@@ -88,7 +88,7 @@ for i = 1:num_files
     protocol{4} = t;
     protocol{5} = t(1:ideal_hold_idx);
     pulset = t(ideal_hold_idx+1:end);
-    protocol{6} = pulset - pulset(1);
+    protocol{6} = pulset-pulset(1);
     
     % objective function
     opt_fun = @(p) obj_rmse(p, @kcurrent_basic, mdl_struct, pdefault, protocol, yksum);
@@ -100,7 +100,7 @@ for i = 1:num_files
 
     sol_mx = NaN(num_iters,psize);
     rmse_list = NaN(num_iters, 1);
-    parfor j = 1:num_iters
+    parfor j=1:num_iters
         try
             [sol, fval] = fmincon(opt_fun, init_pts(j,:), A, b, Aeq, beq, lb, ub, nonlcon, options);
             sol_mx(j,:) = sol;

@@ -1,13 +1,13 @@
+%% ----- Code arguments & Model information ----- %%
 clc
 close all
 clearvars
 warning('off', 'all')
 
-%----- Code arguments & Model information -----%
-group = "wt";
-exp_num = "exp_48";
-save_dir = strcat("calib_",exp_num,"_",group);
-mkdir(fullfile(pwd,save_dir))
+group = "mgat1ko";
+exp_num = "exp55";
+save_dir = fullfile(pwd,strcat("calib_",exp_num),group);
+mkdir(save_dir)
 
 % currents to be included: iktof, iktos, ikslow1, ikslow2, ikss
 current_names = {'iktof','ikslow1','ikslow2','ikss'};
@@ -30,7 +30,6 @@ pdefault{5} = [0.0862,1235.5,13.17,0.0611];
 [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx);
 [p0, lb, ub] = gen_param_bounds(mdl_struct, psize, pdefault);
 
-%----- Protocol & Experimental data -----%
 holdv = -70;
 minv = -30;
 vstep = 10;
@@ -41,15 +40,12 @@ ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
 
 % save time information later when experimental data imlported
-protocol = cell(8,1);
+protocol = cell(6,1);
 protocol{1} = holdv;
 protocol{2} = ek;
 protocol{3} = minv:vstep:(minv+vstep*(num_steps-1));
 
-% protocol{7} = 120; % ideal holding time
-% protocol{8} = 4.6*1000; % ideal end time
-
-%----- Optimization loop (populational) -----%
+%% ----- Optimization loop (populational) ----- %%
 % meta data of experimental datasets
 matching_table = readtable(fullfile(pwd,"mgat1ko_data",strcat("matching-table-",group,".xlsx")));
 pop_data_dir = fullfile("mgat1ko_data",strcat(group,"-preprocessed"));
@@ -59,11 +55,30 @@ pop_file_names = string(pop_file_names);
 num_pop_files = length(pop_file_names);
 
 % import entire set of experimental data
-pop_dset = cell(1,num_pop_files);
+pop_ideal_holdt = 120; 
+pop_ideal_endt = 4.6*1000;
+
+trace_data = cell(1,num_pop_files);
+t = cell(1,num_pop_files);
+holdt = cell(1,num_pop_files);
+pulset = cell(1,num_pop_files);
 for i=1:num_pop_files
     fpath = fullfile(pwd,pop_data_dir,pop_file_names(i));
-    pop_dset{i} = readtable(fpath);
+    trace_data{i} = table2array(readtable(fpath));
+    runningt = trace_data{i}(:,1);
+    
+    % estimate the critical time points 
+    [~,ideal_hold_idx] = min(abs(runningt-pop_ideal_holdt));
+    [~,ideal_end_idx] = min(abs(runningt-pop_ideal_endt));
+    
+    t{i} = runningt;
+    holdt{i} = runningt(1:ideal_hold_idx);
+    pulset{i} = runningt(ideal_hold_idx+1:end)-runningt(ideal_hold_idx+1);
 end
+
+% create data structure carrying actual data as well as all time protocol info
+data_struct = cell2struct([trace_data;t;holdt;pulset],...
+    ["trace_data","t","holdt","pulset"],1);
 
 % optimization options for populational model
 options = optimoptions(@fmincon, ...
@@ -76,51 +91,72 @@ Aeq = [];
 beq = [];
 nonlcon = [];
 
-% obj_rmse_pop(p0,@kcurrent_basic,mdl_struct,pdefault,protocol,ds)
-opt_fun_pop = @(pp) obj_rmse_pop(pp,@kcurrent_basic,mdl_struct,pdefault,protocol,ds);
+% obj_rmse_pop(p0,@kcurrent_basic,mdl_struct,pdefault,protocol,data_struct)
 tic
+opt_fun_pop = @(pp) obj_rmse_pop(pp,@kcurrent_basic,mdl_struct,pdefault,protocol,data_struct);
 [pop_sol,fval] = fmincon(opt_fun_pop,p0,A,b,Aeq,beq,lb,ub,nonlcon,options);
+save_sol(pop_sol,fullfile(save_dir,"pop_sol.xlsx"),mdl_struct,pdefault);
 toc
-save_sol(pop_sol,fullfile(pwd,save_dir,"pop_sol.xlsx"),mdl_struct,pdefault);
 
-%----- Optimization loop (individual) -----%
-num_iters = 2;
+%% ----- Optimization loop (individual) ----- %%
+holdv = -70;
+minv = 50;
+vstep = 10;
+num_steps = 1;
+ek = -91.1;
+
+protocol{1} = holdv;
+protocol{2} = ek;
+protocol{3} = minv:vstep:(minv+vstep*(num_steps-1));
+idv_ideal_holdt = 470;
+idv_ideal_endt = 25*1000;
+
+idv_data_dir = fullfile(pwd,"mgat1ko_data",strcat(group,"-preprocessed-25s"));
+idv_file_names = matching_table.trace_file_name_25;
+idv_file_names(cellfun(@isempty,idv_file_names)) = []; % exclude null rows
+idv_file_names = string(idv_file_names);
+num_idv_files = length(idv_file_names);
+
+options = optimoptions(@fmincon, ...
+    'Algorithm','interior-point','Display','off', ...
+    'MaxFunctionEvaluations',1e+6,'SpecifyObjectiveGradient',false, ...
+    'UseParallel',true);
+num_iters = 10;
+lambda = 0.25;
 outf = fopen(strcat(exp_num,"_",group,".txt"), 'w');
-for i = 1:num_files
+for i = 1:num_idv_files
     tic
     % read data
-    running_file = file_names(i);
-    file_path = fullfile(pwd,data_dir,running_file);
+    running_file = idv_file_names(i);
+    file_path = fullfile(idv_data_dir,running_file);
     trace_data = table2array(readtable(file_path));
-    t = trace_data(:, 1);
-    yksum = trace_data(:,2:end);
+    t = trace_data(:,1);
 
     % estimate the critical time points
-    [~,ideal_hold_idx] = min(abs(t-protocol{7}));
-    [~,ideal_end_idx] = min(abs(t-protocol{8}));
-    t = t(1:ideal_end_idx);
-    yksum = yksum(1:ideal_end_idx,:);
+    [~,ideal_hold_idx] = min(abs(t-idv_ideal_holdt));
+    [~,ideal_end_idx] = min(abs(t-idv_ideal_endt));
+    t = trace_data(1:ideal_end_idx,1);
+    yksum = trace_data(1:ideal_end_idx,2:end);
 
     % save time information in the protocol
     protocol{4} = t;
     protocol{5} = t(1:ideal_hold_idx);
-    pulset = t(ideal_hold_idx+1:end);
-    protocol{6} = pulset - pulset(1);
+    protocol{6} = t(ideal_hold_idx+1:end)-t(ideal_hold_idx+1);
     
     % objective function
-    obj_rmse_idv(p0,pop_sol,0.1,@kcurrent_basic,mdl_struct,pdefault,protocol,yksum)
-    opt_fun = @(p) obj_rmse_idv(p,pop_sol,0.1,@kcurrent_basic,mdl_struct,pdefault,protocol,yksum);
-    
+%     obj_rmse_idv(p0,pop_sol,0.1,@kcurrent_basic,mdl_struct,pdefault,protocol,yksum)
+    opt_fun = @(p) obj_rmse_idv(p,pop_sol,lambda,@kcurrent_basic,mdl_struct,pdefault,protocol,yksum);
+
     % initial points
-    init_pts = lhsdesign(num_iters, psize);
-    init_pts = scale_param(init_pts, lb, ub);
+    init_pts = lhsdesign(num_iters,psize);
+    init_pts = scale_param(init_pts,lb,ub);
     init_pts(1,:) = p0';
 
     sol_mx = NaN(num_iters,psize);
-    rmse_list = NaN(num_iters, 1);
-    for j = 1:num_iters
+    rmse_list = NaN(num_iters,1);
+    for j=1:num_iters
         try
-            [sol, fval] = fmincon(opt_fun, init_pts(j,:)', A, b, Aeq, beq, lb, ub, nonlcon, options);
+            [sol,fval] = fmincon(opt_fun,init_pts(j,:)',A,b,Aeq,beq,lb,ub,nonlcon,options);
             sol_mx(j,:) = sol;
             rmse_list(j) = fval;
         catch msg
@@ -131,19 +167,20 @@ for i = 1:num_files
 
     % print optimization results for the current file
     for j = 1:num_iters
-        outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f', i, num_files, running_file, j, num_iters, rmse_list(j));
-        fprintf(outf, '%s\n', outs);
-        disp(outs)        
+        outs = sprintf('[File %i/%i] %s [Reps %i/%i] Min RMSE: %f',...
+            i,num_idv_files,running_file,j,num_iters,rmse_list(j));
+        fprintf(outf,'%s\n',outs);
+        disp(outs)
     end
     
     % save the entire solution matrix
-    save_path1 = fullfile(pwd, save_dir, strcat("raw_sol_",file_names(i)));
-    writematrix(sol_mx, save_path1);
+    save_path1 = fullfile(save_dir,strcat("raw_sol_",idv_file_names(i)));
+    writematrix(sol_mx,save_path1);
     
     % best solution in terms of minimum RMSE
     [~,best_fit_idx] = min(rmse_list);
     best_sol = sol_mx(best_fit_idx,:);
-    save_path2 = fullfile(pwd,save_dir,running_file);
+    save_path2 = fullfile(save_dir,running_file);
     save_sol(best_sol,save_path2,mdl_struct,pdefault);
     toc
 end
@@ -152,7 +189,7 @@ poolobj = gcp('nocreate');
 delete(poolobj);
 
 %% ----- Custom functions ----- %%
-function [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx)
+function [mdl_struct,psize] = gen_mdl_struct(current_names,tune_idx)
     num_currents = length(current_names);
     
     % index 1
@@ -186,7 +223,7 @@ function [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx)
     mdl_struct = cell2struct(model_info, field_names, 1);    
 end
 
-function [p0, lb, ub] = gen_param_bounds(mdl_struct, psize, pdefault)
+function [p0,lb,ub] = gen_param_bounds(mdl_struct,psize,pdefault)
     p0 = NaN(psize,1);
     lb = NaN(psize,1);
     ub = NaN(psize,1);    
@@ -245,7 +282,7 @@ function [p0, lb, ub] = gen_param_bounds(mdl_struct, psize, pdefault)
     end
 end
 
-function scaledp = scale_param(unitp, lb, ub)
+function scaledp = scale_param(unitp,lb,ub)
     [num_pt, num_var] = size(unitp);
     scaledp = NaN(num_pt, num_var);
     for i = 1:num_pt
@@ -292,48 +329,23 @@ function save_sol(sol,save_path,mdl_struct,pdefault)
     writematrix(sol_mx,save_path, 'Sheet','Parameters', 'Range','A2');
 end
 
-function z = obj_rmse(p, kcurrent_model, mdl_struct, pdefault, protocol, yksum)
+function z = obj_rmse_pop(p,kcurrent_model,mdl_struct,pdefault,protocol,data_struct)
     volts = protocol{3};
-    num_volts = length(volts);
-    hold_idx = length(protocol{5});
-
-    rmse_list = NaN(num_volts,1);
-    for i = 1:num_volts
-        yi = yksum(:,i);
-        ymx = kcurrent_model(p, mdl_struct, pdefault, protocol, volts(i));
-        yhat = sum(ymx,2);
-        rmse_list(i) = sqrt(mean((yi(hold_idx+1:end) - yhat(hold_idx+1:end)).^2));
-    end
-    z = sum(rmse_list);
-end
-
-function z = obj_rmse_pop(p, kcurrent_model, mdl_struct, pdefault, protocol, ds)
-    volts = protocol{3};
-    hold_idx = length(protocol{5});
+    num_files = length(data_struct); % i; # of subjects
+    num_volts = length(volts); % k; # of measurements
     
-    num_files = length(ds); % i
-    num_volts = length(volts); % k; note that j=1 (# signals)
-
     rmse_list = NaN(num_files,num_volts);
     for i=1:num_files
-        df = table2array(ds{i});
-        t = df(:,1);
-        yksum = df(:,2:end);
+        yksum = data_struct(i).trace_data(:,2:end);
+        protocol{4} = data_struct(i).t;
+        protocol{5} = data_struct(i).holdt;
+        protocol{6} = data_struct(i).pulset;
 
-        [~,ideal_hold_idx] = min(abs(t-protocol{7}));
-        [~,ideal_end_idx] = min(abs(t-protocol{8}));
-        t = t(1:ideal_end_idx);
-        yksum = yksum(1:ideal_end_idx,:);
-        
-        protocol{4} = t;
-        protocol{5} = t(1:ideal_hold_idx);
-        pulset = t(ideal_hold_idx+1:end);
-        protocol{6} = pulset - pulset(1);
-
+        hold_idx = length(protocol{5});
         for j=1:num_volts
-            yj = yksum(:,j);
             ymx = kcurrent_model(p,mdl_struct,pdefault,protocol,volts(j));
             yhat = sum(ymx,2);
+            yj = yksum(:,j);
             rmse_list(i,j) = sqrt(mean((yj(hold_idx+1:end) - yhat(hold_idx+1:end)).^2));
         end
     end
