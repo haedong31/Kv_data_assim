@@ -39,8 +39,8 @@ num_files = length(file_names);
 holdv = -70;
 volts = 50;
 ek = -91.1;
-ideal_hold_time = 120;
-ideal_end_time = 4.6*1000;
+ideal_holdt = 470;
+% ideal_endt = 25*1000;
 
 protocol = cell(6,1);
 protocol{1} = holdv;
@@ -55,10 +55,10 @@ for i=1:num_files
     t = exp_data(:,1);
     yksum = exp_data(:,2:end);
 
-    [~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
-    [~, ideal_end_idx] = min(abs(t - ideal_end_time));
-    t = t(1:ideal_end_idx);
-    yksum = yksum(1:ideal_end_idx, :);
+    [~, ideal_hold_idx] = min(abs(t-ideal_holdt));
+%     [~, ideal_end_idx] = min(abs(t-ideal_endt));
+%     t = t(1:ideal_end_idx);
+%     yksum = yksum(1:ideal_end_idx, :);
 
     protocol{4} = t;
     protocol{5} = t(1:ideal_hold_idx);
@@ -72,7 +72,7 @@ for i=1:num_files
         ymx = kcurrent_basic(sol, mdl_struct, pdefault, protocol, volts(j));
         yksum_hat(:,j) = sum(ymx,2);
     end
-    writematrix(yksum_hat,fullfile(save_dir,file_names(i)));
+    writetable(table(t,yksum_hat),fullfile(save_dir,file_names(i)));
 end
 
 %% add RMSE to the file names of calibration results

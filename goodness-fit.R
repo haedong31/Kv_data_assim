@@ -3,18 +3,20 @@ library(readxl)
 library(PAmeasures)
 
 file_group <- "wt"
-exp_num <- "exp51"
+exp_num <- "exp55"
 
 calib_dir <- file.path("calibration", str_c("calib_",exp_num))
-data_dir <- file.path("calibration", "mgat1ko_data", str_c(file_group,"-preprocessed"))
+data_dir <- file.path("calibration", "mgat1ko_data", 
+                      str_c(file_group,"-preprocessed-25s"))
 
 matching_tbl <- read_excel(
   file.path("calibration", "mgat1ko_data", 
-                          str_c("matching-table-", file_group, ".xlsx")))
-file_names <- matching_tbl$trace_file_name_4half %>% na.omit()
+            str_c("matching-table-", file_group, ".xlsx")))
+# file_names <- matching_tbl$trace_file_name_4half %>% na.omit()
+file_names <- matching_tbl$trace_file_name_25 %>% na.omit()
 
 # prepare for iteration
-num_volts <- 9
+num_volts <- 1
 num_files <- length(file_names)
 
 col_names1 <- c("t", str_c("y",1:num_volts))
@@ -35,12 +37,12 @@ col_names3 <- c(col_names3, "mean_R2", "mean_L2")
 for (i in seq_along(file_names)) {
   exp_data <- read_excel(
     file.path(data_dir,file_names[i]),
-    col_names = FALSE)
+    col_names = TRUE)
   colnames(exp_data) <- col_names1
   
   yhat <- read_excel(
     file.path(calib_dir, str_c(file_group, "_yhat"), file_names[i]),
-    col_names = FALSE)
+    col_names = TRUE)
   colnames(yhat) <- col_names2
   
   r <- vector("list", length = length(col_names3))
