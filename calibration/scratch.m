@@ -1,3 +1,80 @@
+%% Save simulated current outputs in .csv
+clc
+close all
+clearvars
+
+group = "mgat1ko";
+exp_num = "exp55";
+calib_dir = fullfile(pwd,strcat("calib_",exp_num));
+data_dir = fullfile(pwd,"mgat1ko_data",strcat(group,"-preprocessed-25s"));
+save_dir = fullfile(calib_dir,strcat(group,"_yhat"));
+mkdir(save_dir)
+
+% currents to be included: iktof, iktos, ikslow1, ikslow2, ikss
+current_names = {'iktof','ikslow1','ikslow2','ikss'};
+
+tune_idx = cell(5,1);
+tune_idx{1} = [1,2,3,4,5,7,11,13];
+tune_idx{2} = [2,3];
+tune_idx{3} = [1,2,4,5,9,10,11];
+tune_idx{4} = [1,2,3];
+tune_idx{5} = [1,2,3,4];
+
+pdefault = cell(5,1);
+pdefault{1} = [33,15.5,20,7,0.03577,0.06237,0.18064,0.3956,...
+    0.000152,0.067083,0.00095,0.051335,0.3846];
+pdefault{2} = [-1050,270,0.0629];
+pdefault{3} = [22.5,45.2,40.0,7.7,5.7,0.0629,6.1,18,2.058,803.0,0.16];
+pdefault{4} = [4912,5334,0.16];
+pdefault{5} = [0.0862,1235.5,13.17,0.0611];
+
+[mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx);
+
+matching_table = readtable(fullfile(pwd,"mgat1ko_data",strcat("matching-table-",group,".xlsx")));
+file_names = matching_table.trace_file_name_25;
+file_names(cellfun(@isempty,file_names)) = [];
+file_names = string(file_names);
+num_files = length(file_names);
+
+holdv = -70;
+volts = 50;
+ek = -91.1;
+ideal_hold_time = 120;
+ideal_end_time = 4.6*1000;
+
+protocol = cell(6,1);
+protocol{1} = holdv;
+protocol{2} = ek;
+protocol{3} = volts;
+
+for i=1:num_files
+    calib = table2array(readtable(fullfile(calib_dir,group,file_names(i))));
+    sol = gen_sol_vec(calib, mdl_struct, psize);
+
+    exp_data = table2array(readtable(fullfile(data_dir,file_names(i))));
+    t = exp_data(:,1);
+    yksum = exp_data(:,2:end);
+
+    [~, ideal_hold_idx] = min(abs(t - ideal_hold_time));
+    [~, ideal_end_idx] = min(abs(t - ideal_end_time));
+    t = t(1:ideal_end_idx);
+    yksum = yksum(1:ideal_end_idx, :);
+
+    protocol{4} = t;
+    protocol{5} = t(1:ideal_hold_idx);
+    pulse_t = t(ideal_hold_idx+1:end);
+    pulse_t_adj = pulse_t - pulse_t(1);
+    protocol{6} = pulse_t_adj;
+    
+    yksum_hat = NaN(length(t),length(volts));
+    for j=1:length(volts)
+        yksum_i = yksum(:,j);
+        ymx = kcurrent_basic(sol, mdl_struct, pdefault, protocol, volts(j));
+        yksum_hat(:,j) = sum(ymx,2);
+    end
+    writematrix(yksum_hat,fullfile(save_dir,file_names(i)));
+end
+
 %% add RMSE to the file names of calibration results
 clc
 close all
@@ -1310,3 +1387,47 @@ plot(t, ykss)
 plot(t, yksum, 'Color','red', 'LineWidth',2)
 hold off
 legend('ykto','ykslow1','ykslow2','ykss','yksum')
+
+%% custom functions
+function [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx)
+    num_currents = length(current_names);
+    
+    % index 1
+    idx_info1 = cell(1,num_currents);
+    for i = 1:num_currents
+        switch current_names{i}
+            case 'iktof'
+                idx_info1{i} = tune_idx{1};
+            case 'iktos'
+                idx_info1{i} = tune_idx{2};
+            case 'ikslow1'
+                idx_info1{i} = tune_idx{3};
+            case 'ikslow2'
+                idx_info1{i} = tune_idx{4};
+            case 'ikss'
+                idx_info1{i} = tune_idx{5};
+        end
+    end
+
+    % index 2
+    idx_info2 = cell(1,num_currents);
+    psize = 0;
+    for i = 1: num_currents
+        psize_old = psize;
+        psize = psize + length(idx_info1{i});
+        idx_info2{i} = (1+psize_old):(psize);
+    end
+
+    model_info = [current_names; idx_info1; idx_info2];
+    field_names = ["name","idx1","idx2"];
+    mdl_struct = cell2struct(model_info, field_names, 1);    
+end
+
+function sol = gen_sol_vec(sol_mx, model_struct, psize)
+    sol = zeros(1, psize);
+    for i = 1:length(model_struct)
+        running_sol = sol_mx(:, i);
+        running_sol = running_sol(~isnan(running_sol));
+        sol(model_struct(i).idx2) = running_sol(model_struct(i).idx1);
+    end
+end
