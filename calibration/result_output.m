@@ -488,11 +488,12 @@ end
 clc
 close all
 
-fig = figure('Color','w','Position',[50,50,600,500]);
-orient(fig,'landscape')
+figure('Color','w','Position',[50,50,600,500]);
+t = tiledlayout(2,2);
+xlabel(t,"Voltage (mV)",'FontWeight','bold')
 
 % plot1
-subplot(2,2,1)
+nexttile
 r = 3:16;
 atof_sem = std(atof_wt(:,r),0,1)/sqrt(length(files_wt));
 errorbar(volts(r),mean(atof_wt(:,r),1),atof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
@@ -504,12 +505,12 @@ grid on
 set(gca,'XLimSpec','tight')
 ylim([0,1])
 xticks(volts(r))
-xlabel("Voltage (mV)")
 ylabel("a_{ss}^{(1)}")
+legend(["WT","MGAT1KO"],'Location','northwest')
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % plot2
-subplot(2,2,2)
+nexttile
 r = 3:12;
 itof_sem = std(itof_wt(:,r),0,1)/sqrt(length(files_wt));
 errorbar(volts(r),mean(itof_wt(:,r),1),itof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
@@ -521,13 +522,11 @@ grid on
 set(gca,'XLimSpec','tight')
 ylim([0,1])
 xticks(volts(r))
-xlabel("Voltage (mV)")
 ylabel("i_{ss}^{(1)}")
-legend(["WT","MGAT1KO"],'Location','northeast')
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % plot3
-subplot(2,2,3)
+nexttile
 r = 3:16;
 taua_tof_sem = std(taua_tof_wt(:,r),0,1)/sqrt(length(files_wt));
 errorbar(volts(r),mean(taua_tof_wt(:,r),1),taua_tof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
@@ -538,12 +537,11 @@ hold off
 grid on
 axis tight
 xticks(volts(r))
-xlabel("Voltage (mV)")
 ylabel("\tau_{a}^{(1)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 % plot4
-subplot(2,2,4)
+nexttile
 r = 3:12;
 taui_tof_sem = std(taui_tof_wt(:,r),0,1)/sqrt(length(files_wt));
 errorbar(volts(r),mean(taui_tof_wt(:,r),1),taui_tof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
@@ -554,11 +552,10 @@ hold off
 grid on
 axis tight
 xticks(volts(r))
-xlabel("Voltage (mV)")
 ylabel("\tau_{i}^{(1)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
-%% Kinetics modeling visualization - Rectifier currents
+%% Kinetics modeling visualization - Rectifier currents (2x3)
 clc
 close all
 
@@ -655,6 +652,99 @@ xlabel("Voltage (mV)")
 ylabel("\tau_{a}^{(4)}")
 set(gca,'FontWeight','bold','LineWidth',1.5)
 legend(["WT","MGAT1KO"],'Location','northeast')
+
+%% Kinetics modeling visualization - Rectifier currents (3x2)
+clc
+close all
+
+figure('Color','w','Position',[50,50,600,750]);
+t = tiledlayout(3,2);
+xlabel(t,"Voltage (mV)",'FontWeight','bold')
+
+nexttile
+r = 3:16;
+akslow1_sem = std(akslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(akslow1_wt(:,r),1),akslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+akslow1_sem = std(akslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(akslow1_ko(:,r),1),akslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+ylim([0,1])
+set(gca,'XLimSpec','tight')
+xticks(volts(r))
+ylabel("a_{ss}^{(2)}")
+legend(["WT","MGAT1KO"],'Location','northwest')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+r = 4:11;
+ikslow1_sem = std(ikslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(ikslow1_wt(:,r),1),ikslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+ikslow1_sem = std(ikslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(ikslow1_ko(:,r),1),ikslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+ylim([0,1])
+set(gca,'XLimSpec','tight')
+xticks(volts(r))
+ylabel("i_{ss}^{(2)}")
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+r = 3:16;
+taua_kslow1_sem = std(taua_kslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taua_kslow1_wt(:,r),1),taua_kslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+taua_kslow1_sem = std(taua_kslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taua_kslow1_ko(:,r),1),taua_kslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+axis tight
+xticks(volts(r))
+ylabel("\tau_{a}^{(2)}")
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+r = 3:16;
+taui_kslow1_sem = std(taui_kslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_kslow1_wt(:,r),1),taui_kslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+taui_kslow1_sem = std(taui_kslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_kslow1_ko(:,r),1),taui_kslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+axis tight
+xticks(volts(r))
+ylabel("\tau_{i}^{(2)}")
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+taui_kslow2_sem = std(taui_kslow2_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_kslow2_wt(:,r),1),taui_kslow2_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+taui_kslow2_sem = std(taui_kslow2_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_kslow2_ko(:,r),1),taui_kslow2_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+axis tight
+xticks(volts(r))
+ylabel("\tau_{i}^{(3)}")
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+taua_kss_sem = std(taua_kss_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taua_kss_wt(:,r),1),taua_kss_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+taua_kss_sem = std(taua_kss_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taua_kss_ko(:,r),1),taua_kss_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+axis tight
+xticks(volts(r))
+ylabel("\tau_{a}^{(4)}")
+set(gca,'FontWeight','bold','LineWidth',1.5)
 
 %% Parameter distribution
 clc
