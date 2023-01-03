@@ -43,6 +43,7 @@ xlim([0,1])
 grid on
 % title("WT")
 % xlabel("Nonlinear R^{2}")
+ylabel("Cell Index")
 set(gca,'FontWeight','bold')
 
 subplot(6,3,[10,13,16])
@@ -51,6 +52,7 @@ xlim([0,1])
 grid on
 % title("MGAT1KO")
 % xlabel("Nonlinear R^{2}")
+ylabel("Cell Index")
 set(gca,'FontWeight','bold')
 
 %----- Representative example of showing actual fitness -----%
@@ -83,7 +85,7 @@ for i=1:length(volts)
             string(volts(i))," mV / ",num2str(round(r2,4))));
         ylabel(" ")
         set(gca,'LineWidth',1.5,'FontWeight','bold');
-        set(gca,'GridLineStyle','--')
+        set(gca,'GridLineStyle','--');
     end
 
     if i==2
@@ -96,8 +98,11 @@ for i=1:length(volts)
         grid on
         title(strcat(...
             string(volts(i))," mV / ",num2str(round(r2,4))));
+
+        legend(["Experimental I_{K}", "Model Prediction"])
+        legend Box off
         set(gca,'LineWidth',1.5,'FontWeight','bold');
-        set(gca,'GridLineStyle','--')
+        set(gca,'GridLineStyle','--');
     end
 
     if ismember(i,3:4)
@@ -111,7 +116,7 @@ for i=1:length(volts)
         title(strcat(...
             string(volts(i))," mV / ",num2str(round(r2,4))));
         set(gca,'LineWidth',1.5,'FontWeight','bold');
-        set(gca,'GridLineStyle','--')        
+        set(gca,'GridLineStyle','--');
     end
 
     if ismember(i,5:6)
@@ -125,12 +130,7 @@ for i=1:length(volts)
         title(strcat(...
             string(volts(i))," mV / ",num2str(round(r2,4))));
         set(gca,'LineWidth',1.5,'FontWeight','bold');
-        set(gca,'GridLineStyle','--')        
-
-        if i==9
-            legend(["Experimental I_{K}", "Model Prediction"])
-            legend Box off
-        end
+        set(gca,'GridLineStyle','--');
     end
 end
 
