@@ -1288,14 +1288,13 @@ pmx = [table2array(pktof2(:,3:end)),table2array(pkslow12(:,2:end)),table2array(p
 rng(7981)
 embd = tsne(normalize(pmx),'Algorithm','exact','Distance','minkowski','NumDimensions',3);
 
-% some distributions of kinetic parameters
-psub = pktof(pktof.param==1,:);
-psub_wt = psub(string(psub.Group)=="WT",:);
-psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
-[f1,xi1] = ksdensity(psub_wt.value);
-[f2,xi2] = ksdensity(psub_ko.value);
+det(cov(embd(idx1,:)))
+det(cov(embd(idx2,:)))
 
-figure('Color','w','Position',[100,100,560,510])
+% scatter plot (embedding)
+fig = figure('Color','w','Position',[100,100,900,500]);
+orient(fig,'landscape')
+subplot(2,3,[1,2,4,5])
 s1 = scatter3(embd(idx1,1),embd(idx1,2),embd(idx1,3),'o','CData',c(pktof2.Group=="WT",:));
 s1.SizeData = 90;
 s1.LineWidth = 1.5;
@@ -1311,6 +1310,39 @@ axis tight
 grid off
 legend(["WT","MGAT1KO"],'location','best')
 set(gca,'FontWeight','bold','LineWidth',1.5)
+
+% GKslow1
+psub = pkslow1(pkslow1.param==11,:);
+psub_wt = psub(string(psub.Group)=="WT",:);
+psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
+% [f1,xi1] = ksdensity(psub_wt.value);
+% [f2,xi2] = ksdensity(psub_ko.value);
+subplot(2,3,3)
+h1 = histogram(psub_wt.value,15,'FaceColor','b','FaceAlpha',0.5);
+bin_edges1 = h1.BinEdges;
+hold on
+% plot(xi2,f2, 'Color','red', 'LineWidth',2)
+h2 = histogram(psub_ko.value,'BinEdges',bin_edges1,'FaceColor','r','FaceAlpha',0.5);
+hold off
+axis tight
+grid on
+xlabel("Model Calibrated G_{Kslow1}")
+ylabel('Density')
+legend(["WT","MGAT1KO"])
+set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
+
+% experimental density 
+subplot(2,3,6)
+h1 = histogram(Ik1.PeakAF,15,'FaceColor','b','FaceAlpha',0.5);
+bin_edges1 = h1.BinEdges;
+hold on
+h2 = histogram(Ik4.PeakAF,'BinEdges',bin_edges1,'FaceColor','r','FaceAlpha',0.5);
+hold off
+axis tight
+grid on
+xlabel("Experimental I_{K} Density")
+ylabel('Frequency')
+set(gca, 'FontName','Arial','FontWeight','bold','LineWidth',1.5)
 
 %% Quantify the variability
 pmx_wt = embd(idx1,:);
