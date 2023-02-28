@@ -608,15 +608,28 @@ pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
 pdefault{4} = [4912, 5334, 0.16];
 pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
 
-volts = -100:10:70;
+volts = -50:10:50;
 ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
 
 protocol = cell(6,1);
 protocol{1} = -70; % hold_volt
 protocol{2} = -91.1; % ek
+protocol{3} = volts;
+
+t = 1:ideal_end_time;
+pulse_t = t(ideal_hold_time+1:end);
+pulse_t_adj = pulse_t - pulse_t(1);
+protocol{4} = t;
+protocol{5} = t(1:ideal_hold_time);
+protocol{6} = pulse_t_adj;
+
 sol_dir = fullfile(pwd,strcat("calib_",exp_num));
 
+dense_tof_wt = NaN(length(files_wt),length(volts));
+dense_kslow1_wt = NaN(length(files_wt),length(volts));
+dense_kslow2_wt = NaN(length(files_wt),length(volts));
+dense_kss_wt = NaN(length(files_wt),length(volts));
 atof_wt = NaN(length(files_wt),length(volts));
 itof_wt = NaN(length(files_wt),length(volts));
 taua_tof_wt = NaN(length(files_wt),length(volts));
@@ -628,6 +641,10 @@ taui_kslow1_wt = NaN(length(files_wt),length(volts));
 taui_kslow2_wt = NaN(length(files_wt),length(volts));
 taua_kss_wt = NaN(length(files_wt),length(volts));
 
+dense_tof_ko = NaN(length(files_ko),length(volts));
+dense_kslow1_ko = NaN(length(files_ko),length(volts));
+dense_kslow2_ko = NaN(length(files_ko),length(volts));
+dense_kss_ko = NaN(length(files_ko),length(volts));
 atof_ko = NaN(length(files_ko),length(volts));
 itof_ko = NaN(length(files_ko),length(volts));
 taua_tof_ko = NaN(length(files_ko),length(volts));
@@ -644,7 +661,12 @@ for i=1:length(files_wt)
     
     for j=1:length(volts)
         protocol{3} = volts(j);
-        [~,kv] = kv_model(sol,mdl_struct,pdefault,protocol);
+        [ymx,kv] = kv_model(sol,mdl_struct,pdefault,protocol);
+        
+        dense_tof_wt(i,j) = max(ymx(:,1));
+        dense_kslow1_wt(i,j) = max(ymx(:,2));
+        dense_kslow2_wt(i,j) = max(ymx(:,3));
+        dense_kss_wt(i,j) = max(ymx(:,4));
         atof_wt(i,j) = kv{1}(1);
         itof_wt(i,j) = kv{1}(2);
         taua_tof_wt(i,j) = kv{1}(3);
@@ -664,7 +686,12 @@ for i=1:length(files_ko)
 
     for j=1:length(volts)
         protocol{3} = volts(j);
-        [~,kv] = kv_model(sol,mdl_struct,pdefault,protocol);
+        [ymx,kv] = kv_model(sol,mdl_struct,pdefault,protocol);
+
+        dense_tof_ko(i,j) = max(ymx(:,1));
+        dense_kslow1_ko(i,j) = max(ymx(:,2));
+        dense_kslow2_ko(i,j) = max(ymx(:,3));
+        dense_kss_ko(i,j) = max(ymx(:,4));        
         atof_ko(i,j) = kv{1}(1);
         itof_ko(i,j) = kv{1}(2);
         taua_tof_ko(i,j) = kv{1}(3);
@@ -677,6 +704,74 @@ for i=1:length(files_ko)
         taua_kss_ko(i,j) = kv{4}(2);        
     end
 end
+
+%% The current-density plots
+clc
+close all
+
+figure('Color','w','Position',[50,50,600,500]);
+t = tiledlayout(2,2);
+xlabel(t,"Voltage (mV)",'FontWeight','bold')
+
+nexttile
+dtof_sem = std(dense_tof_wt,0,1)/sqrt(length(files_wt));
+errorbar(volts,mean(dense_tof_wt,1),dtof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+dtof_sem = std(dense_tof_ko,0,1)/sqrt(length(files_ko));
+errorbar(volts,mean(dense_tof_ko,1),dtof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+ylim([0,30])
+set(gca,'XLimSpec','tight')
+xticks(volts)
+ylabel("I_{Kto} Density (pA/pF)")
+legend(["WT","MGAT1KO"],'Location','northwest')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+dkslow1_sem = std(dense_kslow1_wt,0,1)/sqrt(length(files_wt));
+errorbar(volts,mean(dense_kslow1_wt,1),dkslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+dkslow1_sem = std(dense_kslow1_ko,0,1)/sqrt(length(files_ko));
+errorbar(volts,mean(dense_kslow1_ko,1),dkslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+ylim([0,30])
+set(gca,'XLimSpec','tight')
+xticks(volts)
+ylabel("I_{Kslow1} Density (pA/pF)")
+legend(["WT","MGAT1KO"],'Location','northwest')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+dkslow2_sem = std(dense_kslow2_wt,0,1)/sqrt(length(files_wt));
+errorbar(volts,mean(dense_kslow2_wt,1),dkslow2_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+dkslow2_sem = std(dense_kslow2_ko,0,1)/sqrt(length(files_ko));
+errorbar(volts,mean(dense_kslow2_ko,1),dkslow2_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+ylim([0,30])
+set(gca,'XLimSpec','tight')
+xticks(volts)
+ylabel("I_{Kslow2} Density (pA/pF)")
+legend(["WT","MGAT1KO"],'Location','northwest')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+dkss_sem = std(dense_kss_wt,0,1)/sqrt(length(files_wt));
+errorbar(volts,mean(dense_kss_wt,1),dkss_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+ylim([0,30])
+dkss_sem = std(dense_kss_ko,0,1)/sqrt(length(files_ko));
+errorbar(volts,mean(dense_kss_ko,1),dkss_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+set(gca,'XLimSpec','tight')
+xticks(volts)
+ylabel("I_{Kss} Density (pA/pF)")
+legend(["WT","MGAT1KO"],'Location','northwest')
+set(gca,'FontWeight','bold','LineWidth',1.5)
 
 %% Kinetics modeling visualization - IKto
 clc
@@ -1140,8 +1235,15 @@ c(idx2,:) = repmat([1 0 0],sum(idx2),1);
 
 pmx = [table2array(pktof2(:,3:end)),table2array(pkslow12(:,2:end)),table2array(pkslow22(:,2:end)),table2array(pkss2(:,2:end))];
 
-rng(2118)
+rng(7981)
 embd = tsne(normalize(pmx),'Algorithm','exact','Distance','minkowski','NumDimensions',3);
+
+% some distributions of kinetic parameters
+psub = pktof(pktof.param==1,:);
+psub_wt = psub(string(psub.Group)=="WT",:);
+psub_ko = psub(string(psub.Group)=="Mgat1KO",:);
+[f1,xi1] = ksdensity(psub_wt.value);
+[f2,xi2] = ksdensity(psub_ko.value);
 
 figure('Color','w','Position',[100,100,560,510])
 s1 = scatter3(embd(idx1,1),embd(idx1,2),embd(idx1,3),'o','CData',c(pktof2.Group=="WT",:));
@@ -1158,8 +1260,15 @@ zlabel("Embedding Dim3")
 axis tight
 grid off
 legend(["WT","MGAT1KO"],'location','best')
-set(gca,'FontWeight','bold','FontSize',14,'LineWidth',1.5)
+set(gca,'FontWeight','bold','LineWidth',1.5)
 
+%% Quantify the variability
+pmx_wt = embd(idx1,:);
+pmx_ko = embd(idx2,:);
+cov_wt = cov(pmx_wt);
+cov_ko = cov(pmx_ko);
+det(cov_wt)
+det(cov_ko)
 
 %% custom functions
 function [mdl_struct, psize] = gen_mdl_struct(current_names, tune_idx)
