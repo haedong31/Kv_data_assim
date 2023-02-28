@@ -608,7 +608,8 @@ pdefault{3} = [22.5, 45.2, 40.0, 7.7, 5.7, 0.0629, 6.1, 18, 2.058, 803.0, 0.16];
 pdefault{4} = [4912, 5334, 0.16];
 pdefault{5} = [0.0862, 1235.5, 13.17, 0.0611];
 
-volts = -50:10:50;
+% volts = -50:10:50;
+volts = -100:10:70;
 ideal_hold_time = 120;
 ideal_end_time = 4.6*1000;
 
@@ -740,7 +741,6 @@ ylim([0,30])
 set(gca,'XLimSpec','tight')
 xticks(volts)
 ylabel("I_{Kslow1} Density (pA/pF)")
-legend(["WT","MGAT1KO"],'Location','northwest')
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 nexttile
@@ -755,7 +755,6 @@ ylim([0,30])
 set(gca,'XLimSpec','tight')
 xticks(volts)
 ylabel("I_{Kslow2} Density (pA/pF)")
-legend(["WT","MGAT1KO"],'Location','northwest')
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 nexttile
@@ -770,7 +769,58 @@ grid on
 set(gca,'XLimSpec','tight')
 xticks(volts)
 ylabel("I_{Kss} Density (pA/pF)")
-legend(["WT","MGAT1KO"],'Location','northwest')
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+%% Inactivation time constants
+clc
+close all
+
+figure('Color','w','Position',[50,50,600,500])
+t = tiledlayout(2,2);
+xlabel(t,"Voltage (mV)",'FontWeight','bold')
+
+nexttile
+r = 3:12;
+taui_tof_sem = std(taui_tof_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_tof_wt(:,r),1),taui_tof_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+taui_tof_sem = std(taui_tof_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_tof_ko(:,r),1),taui_tof_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+axis tight
+xticks(volts(r))
+ylabel("\tau_{i}^{(Kto)}")
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+r = 3:16;
+taui_kslow1_sem = std(taui_kslow1_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_kslow1_wt(:,r),1),taui_kslow1_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+taui_kslow1_sem = std(taui_kslow1_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_kslow1_ko(:,r),1),taui_kslow1_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+axis tight
+xticks(volts(r))
+% xlabel("Voltage (mV)")
+ylabel("\tau_{i}^{(Kslow1)}")
+set(gca,'FontWeight','bold','LineWidth',1.5)
+
+nexttile
+taui_kslow2_sem = std(taui_kslow2_wt(:,r),0,1)/sqrt(length(files_wt));
+errorbar(volts(r),mean(taui_kslow2_wt(:,r),1),taui_kslow2_sem,'-o','Color','blue','MarkerFaceColor','blue','LineWidth',1.5)
+hold on
+taui_kslow2_sem = std(taui_kslow2_ko(:,r),0,1)/sqrt(length(files_ko));
+errorbar(volts(r),mean(taui_kslow2_ko(:,r),1),taui_kslow2_sem,'--s','Color','red','MarkerFaceColor','red','LineWidth',1.5)
+hold off
+grid on
+axis tight
+xticks(volts(r))
+% xlabel("Voltage (mV)")
+ylabel("\tau_{i}^{(Kslow2)}")
+legend(["WT","MGAT1KO"],'Location','northwest','Box','off')
 set(gca,'FontWeight','bold','LineWidth',1.5)
 
 %% Kinetics modeling visualization - IKto
