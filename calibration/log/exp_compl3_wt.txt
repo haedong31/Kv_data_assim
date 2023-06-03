@@ -1,0 +1,168 @@
+[File 1/34] 15o26002.xlsx [Reps 1/5] Min RMSE: 1.701893
+[File 1/34] 15o26002.xlsx [Reps 2/5] Min RMSE: 1.653565
+[File 1/34] 15o26002.xlsx [Reps 3/5] Min RMSE: 1.669344
+[File 1/34] 15o26002.xlsx [Reps 4/5] Min RMSE: 1.653318
+[File 1/34] 15o26002.xlsx [Reps 5/5] Min RMSE: 1.655766
+Elapsed time: 441.793625
+[File 2/34] 15o26005.xlsx [Reps 1/5] Min RMSE: 3.848050
+[File 2/34] 15o26005.xlsx [Reps 2/5] Min RMSE: 3.848012
+[File 2/34] 15o26005.xlsx [Reps 3/5] Min RMSE: 3.848019
+[File 2/34] 15o26005.xlsx [Reps 4/5] Min RMSE: 3.848011
+[File 2/34] 15o26005.xlsx [Reps 5/5] Min RMSE: 3.848012
+Elapsed time: 458.066910
+[File 3/34] 15o26008.xlsx [Reps 1/5] Min RMSE: 4.693646
+[File 3/34] 15o26008.xlsx [Reps 2/5] Min RMSE: 4.791053
+[File 3/34] 15o26008.xlsx [Reps 3/5] Min RMSE: 4.791053
+[File 3/34] 15o26008.xlsx [Reps 4/5] Min RMSE: 4.791048
+[File 3/34] 15o26008.xlsx [Reps 5/5] Min RMSE: 4.747151
+Elapsed time: 411.066090
+[File 4/34] 15o26014.xlsx [Reps 1/5] Min RMSE: 5.936828
+[File 4/34] 15o26014.xlsx [Reps 2/5] Min RMSE: 5.952300
+[File 4/34] 15o26014.xlsx [Reps 3/5] Min RMSE: 5.947054
+[File 4/34] 15o26014.xlsx [Reps 4/5] Min RMSE: 5.952313
+[File 4/34] 15o26014.xlsx [Reps 5/5] Min RMSE: 5.977222
+Elapsed time: 458.852170
+[File 5/34] 15o26017.xlsx [Reps 1/5] Min RMSE: 4.425504
+[File 5/34] 15o26017.xlsx [Reps 2/5] Min RMSE: 4.425605
+[File 5/34] 15o26017.xlsx [Reps 3/5] Min RMSE: 4.425471
+[File 5/34] 15o26017.xlsx [Reps 4/5] Min RMSE: 4.425471
+[File 5/34] 15o26017.xlsx [Reps 5/5] Min RMSE: 4.425471
+Elapsed time: 501.058874
+[File 6/34] 15o26020.xlsx [Reps 1/5] Min RMSE: 4.623329
+[File 6/34] 15o26020.xlsx [Reps 2/5] Min RMSE: 4.616530
+[File 6/34] 15o26020.xlsx [Reps 3/5] Min RMSE: 4.627084
+[File 6/34] 15o26020.xlsx [Reps 4/5] Min RMSE: 4.617056
+[File 6/34] 15o26020.xlsx [Reps 5/5] Min RMSE: 4.544877
+Elapsed time: 342.264364
+[File 7/34] 15o26023.xlsx [Reps 1/5] Min RMSE: 3.896251
+[File 7/34] 15o26023.xlsx [Reps 2/5] Min RMSE: 3.856759
+[File 7/34] 15o26023.xlsx [Reps 3/5] Min RMSE: 3.862835
+[File 7/34] 15o26023.xlsx [Reps 4/5] Min RMSE: 3.856890
+[File 7/34] 15o26023.xlsx [Reps 5/5] Min RMSE: 3.856958
+Elapsed time: 442.918221
+[File 8/34] 15o26031.xlsx [Reps 1/5] Min RMSE: 3.435868
+[File 8/34] 15o26031.xlsx [Reps 2/5] Min RMSE: 3.499349
+[File 8/34] 15o26031.xlsx [Reps 3/5] Min RMSE: 3.444772
+[File 8/34] 15o26031.xlsx [Reps 4/5] Min RMSE: 3.435877
+[File 8/34] 15o26031.xlsx [Reps 5/5] Min RMSE: 3.435867
+Elapsed time: 662.033868
+[File 9/34] 15o29002.xlsx [Reps 1/5] Min RMSE: 4.215908
+[File 9/34] 15o29002.xlsx [Reps 2/5] Min RMSE: 4.202967
+[File 9/34] 15o29002.xlsx [Reps 3/5] Min RMSE: 4.215910
+[File 9/34] 15o29002.xlsx [Reps 4/5] Min RMSE: 4.203778
+[File 9/34] 15o29002.xlsx [Reps 5/5] Min RMSE: 4.215910
+Elapsed time: 396.545350
+[File 10/34] 15o29009.xlsx [Reps 1/5] Min RMSE: 5.287237
+[File 10/34] 15o29009.xlsx [Reps 2/5] Min RMSE: 5.251839
+[File 10/34] 15o29009.xlsx [Reps 3/5] Min RMSE: 5.251878
+[File 10/34] 15o29009.xlsx [Reps 4/5] Min RMSE: 5.251839
+[File 10/34] 15o29009.xlsx [Reps 5/5] Min RMSE: 5.251870
+Elapsed time: 400.758745
+[File 11/34] 15o29012.xlsx [Reps 1/5] Min RMSE: 4.076357
+[File 11/34] 15o29012.xlsx [Reps 2/5] Min RMSE: 4.075875
+[File 11/34] 15o29012.xlsx [Reps 3/5] Min RMSE: 4.075791
+[File 11/34] 15o29012.xlsx [Reps 4/5] Min RMSE: 4.076347
+[File 11/34] 15o29012.xlsx [Reps 5/5] Min RMSE: 4.113693
+Elapsed time: 474.804350
+[File 12/34] 15o29015.xlsx [Reps 1/5] Min RMSE: 3.270766
+[File 12/34] 15o29015.xlsx [Reps 2/5] Min RMSE: 3.267992
+[File 12/34] 15o29015.xlsx [Reps 3/5] Min RMSE: 3.242129
+[File 12/34] 15o29015.xlsx [Reps 4/5] Min RMSE: 3.234524
+[File 12/34] 15o29015.xlsx [Reps 5/5] Min RMSE: 3.263689
+Elapsed time: 357.737737
+[File 13/34] 15o29021.xlsx [Reps 1/5] Min RMSE: 3.238652
+[File 13/34] 15o29021.xlsx [Reps 2/5] Min RMSE: 3.238642
+[File 13/34] 15o29021.xlsx [Reps 3/5] Min RMSE: 3.238598
+[File 13/34] 15o29021.xlsx [Reps 4/5] Min RMSE: 3.274165
+[File 13/34] 15o29021.xlsx [Reps 5/5] Min RMSE: 3.238553
+Elapsed time: 491.336235
+[File 14/34] 15o29024.xlsx [Reps 1/5] Min RMSE: 1.921231
+[File 14/34] 15o29024.xlsx [Reps 2/5] Min RMSE: 1.885805
+[File 14/34] 15o29024.xlsx [Reps 3/5] Min RMSE: 1.897203
+[File 14/34] 15o29024.xlsx [Reps 4/5] Min RMSE: 1.897209
+[File 14/34] 15o29024.xlsx [Reps 5/5] Min RMSE: 1.885910
+Elapsed time: 449.582825
+[File 15/34] 15o29027.xlsx [Reps 1/5] Min RMSE: 2.527296
+[File 15/34] 15o29027.xlsx [Reps 2/5] Min RMSE: 2.531661
+[File 15/34] 15o29027.xlsx [Reps 3/5] Min RMSE: 2.480731
+[File 15/34] 15o29027.xlsx [Reps 4/5] Min RMSE: 2.480711
+[File 15/34] 15o29027.xlsx [Reps 5/5] Min RMSE: 2.480710
+Elapsed time: 482.313115
+[File 16/34] 15o20002.xlsx [Reps 1/5] Min RMSE: 3.821405
+[File 16/34] 15o20002.xlsx [Reps 2/5] Min RMSE: 3.858845
+[File 16/34] 15o20002.xlsx [Reps 3/5] Min RMSE: 3.839490
+[File 16/34] 15o20002.xlsx [Reps 4/5] Min RMSE: 3.839495
+[File 16/34] 15o20002.xlsx [Reps 5/5] Min RMSE: 3.821439
+Elapsed time: 456.468484
+[File 17/34] 15o20005.xlsx [Reps 1/5] Min RMSE: 5.195728
+[File 17/34] 15o20005.xlsx [Reps 2/5] Min RMSE: 5.194225
+[File 17/34] 15o20005.xlsx [Reps 3/5] Min RMSE: 5.194434
+[File 17/34] 15o20005.xlsx [Reps 4/5] Min RMSE: 5.185630
+[File 17/34] 15o20005.xlsx [Reps 5/5] Min RMSE: 5.196441
+Elapsed time: 334.756900
+[File 18/34] 15o20010.xlsx [Reps 1/5] Min RMSE: 5.566150
+[File 18/34] 15o20010.xlsx [Reps 2/5] Min RMSE: 5.569913
+[File 18/34] 15o20010.xlsx [Reps 3/5] Min RMSE: 5.567238
+[File 18/34] 15o20010.xlsx [Reps 4/5] Min RMSE: 5.565870
+[File 18/34] 15o20010.xlsx [Reps 5/5] Min RMSE: 5.565724
+Elapsed time: 455.473599
+[File 19/34] 15o20015.xlsx [Reps 1/5] Min RMSE: 6.191819
+[File 19/34] 15o20015.xlsx [Reps 2/5] Min RMSE: 6.192838
+[File 19/34] 15o20015.xlsx [Reps 3/5] Min RMSE: 6.193107
+[File 19/34] 15o20015.xlsx [Reps 4/5] Min RMSE: 6.110817
+[File 19/34] 15o20015.xlsx [Reps 5/5] Min RMSE: 6.110812
+Elapsed time: 398.766191
+[File 20/34] 15o21003.xlsx [Reps 1/5] Min RMSE: 3.687628
+[File 20/34] 15o21003.xlsx [Reps 2/5] Min RMSE: 3.682256
+[File 20/34] 15o21003.xlsx [Reps 3/5] Min RMSE: 3.682017
+[File 20/34] 15o21003.xlsx [Reps 4/5] Min RMSE: 3.713435
+[File 20/34] 15o21003.xlsx [Reps 5/5] Min RMSE: 3.682081
+Elapsed time: 462.083340
+[File 21/34] 15o21008.xlsx [Reps 1/5] Min RMSE: 6.345508
+[File 21/34] 15o21008.xlsx [Reps 2/5] Min RMSE: 6.357790
+[File 21/34] 15o21008.xlsx [Reps 3/5] Min RMSE: 6.345503
+[File 21/34] 15o21008.xlsx [Reps 4/5] Min RMSE: 6.394801
+[File 21/34] 15o21008.xlsx [Reps 5/5] Min RMSE: 6.377133
+Elapsed time: 398.621941
+[File 22/34] 15o22002.xlsx [Reps 1/5] Min RMSE: 3.081068
+[File 22/34] 15o22002.xlsx [Reps 2/5] Min RMSE: 3.138183
+[File 22/34] 15o22002.xlsx [Reps 3/5] Min RMSE: 3.112718
+[File 22/34] 15o22002.xlsx [Reps 4/5] Min RMSE: 3.113235
+[File 22/34] 15o22002.xlsx [Reps 5/5] Min RMSE: 3.140545
+Elapsed time: 351.261179
+[File 23/34] 15o22008.xlsx [Reps 1/5] Min RMSE: 1.860746
+[File 23/34] 15o22008.xlsx [Reps 2/5] Min RMSE: 1.871373
+[File 23/34] 15o22008.xlsx [Reps 3/5] Min RMSE: 1.871293
+[File 23/34] 15o22008.xlsx [Reps 4/5] Min RMSE: 1.871309
+[File 23/34] 15o22008.xlsx [Reps 5/5] Min RMSE: 1.888491
+Elapsed time: 510.241704
+[File 24/34] 15n10002.xlsx [Reps 1/5] Min RMSE: 3.803573
+[File 24/34] 15n10002.xlsx [Reps 2/5] Min RMSE: 3.779090
+[File 24/34] 15n10002.xlsx [Reps 3/5] Min RMSE: 3.804869
+[File 24/34] 15n10002.xlsx [Reps 4/5] Min RMSE: 3.779036
+[File 24/34] 15n10002.xlsx [Reps 5/5] Min RMSE: 3.826150
+Elapsed time: 510.695937
+[File 25/34] 15n10006.xlsx [Reps 1/5] Min RMSE: 8.581322
+[File 25/34] 15n10006.xlsx [Reps 2/5] Min RMSE: 9.145670
+[File 25/34] 15n10006.xlsx [Reps 3/5] Min RMSE: 9.145688
+[File 25/34] 15n10006.xlsx [Reps 4/5] Min RMSE: 8.527747
+[File 25/34] 15n10006.xlsx [Reps 5/5] Min RMSE: 8.531394
+Elapsed time: 455.034144
+[File 26/34] 15n10009.xlsx [Reps 1/5] Min RMSE: 3.564574
+[File 26/34] 15n10009.xlsx [Reps 2/5] Min RMSE: 3.564570
+[File 26/34] 15n10009.xlsx [Reps 3/5] Min RMSE: 3.568978
+[File 26/34] 15n10009.xlsx [Reps 4/5] Min RMSE: 3.564574
+[File 26/34] 15n10009.xlsx [Reps 5/5] Min RMSE: 3.564570
+Elapsed time: 467.642702
+[File 27/34] 15n10012.xlsx [Reps 1/5] Min RMSE: 2.567387
+[File 27/34] 15n10012.xlsx [Reps 2/5] Min RMSE: 2.532164
+[File 27/34] 15n10012.xlsx [Reps 3/5] Min RMSE: 2.749921
+[File 27/34] 15n10012.xlsx [Reps 4/5] Min RMSE: 2.533744
+[File 27/34] 15n10012.xlsx [Reps 5/5] Min RMSE: 2.537064
+Elapsed time: 411.376707
+[File 28/34] 15n23002.xlsx [Reps 1/5] Min RMSE: 5.548813
+[File 28/34] 15n23002.xlsx [Reps 2/5] Min RMSE: 5.494446
+[File 28/34] 15n23002.xlsx [Reps 3/5] Min RMSE: 5.494300
+[File 28/34] 15n23002.xlsx [Reps 4/5] Min RMSE: 5.494267
+[File 28/34] 15n23002.xlsx [Reps 5/5] Min RMSE: 5.494380
+Elapsed time: 444.128807
