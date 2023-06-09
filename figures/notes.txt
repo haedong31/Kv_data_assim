@@ -1,0 +1,5 @@
+Figure 4 - sensitivity analysis results
+Figure 6 - model fitness (R2 score)
+Figure 7 - current densities
+Figure 8 - time constants
+Figure 9 - embedding
