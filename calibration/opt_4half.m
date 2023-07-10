@@ -5,7 +5,7 @@ warning('off', 'all')
 
 %----- Code arguments & Model information -----%
 group = "wt";
-exp_num = "exp45";
+exp_num = "exp51";
 save_dir = strcat("calib_",exp_num,"_",group);
 mkdir(fullfile(pwd,save_dir))
 
