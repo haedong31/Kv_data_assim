@@ -1,7 +1,0 @@
-Motivation - Electrical signaling plays vital roles in the heart that initiates and controls the synchronous contraction of cardiac muscles. Voltage-gated ion channels (VGICs) are the functional unit of electrical activities in cardiomyocytes, so they have been important subjects of research in cardiac electrophysiology.
-Gaps & Needs - Among major cardiac VGICs, K\textsuperscript{+} channel (K\textsubscript{v}) has a distinctive feature in that it has multiple isoforms. Although each K\textsubscript{v} isoform produces a unique current having different functionality, only the sum of these individual K\textsuperscript{+} currents (I\textsubscript{Ksum}) can be recorded through in-vitro experiments.
-Objective - 
-Motivation - 
-Approach - 
-Expeirment & Perofrmance - 
-Significance - 
